@@ -1,0 +1,6 @@
+Django
+numpy
+pandas
+mpmath
+scipy
+sympy

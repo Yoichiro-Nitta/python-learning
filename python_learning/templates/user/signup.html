@@ -1,0 +1,34 @@
+{% extends 'pythonL/base.html' %}
+
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="p-2"><h3><p class="text-center">ユーザー登録</p></h3></div>
+<div class="container text-center p-2">
+        <h4>ユーザー名、メールアドレス、パスワードを入力してください。</h4>
+</div>
+<div style="height: 50px;"></div>
+    <div class="container text-center p-2">
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-11">
+        <form action="{% url 'pythonL:signup_view' %}" method="post">
+             {% csrf_token %}
+            <div class="p-2 text-start"><label>ユーザー名</label><br>{{ form.username }}</div>
+            <div class="p-2 text-start"><label>メールアドレス</label><br>{{ form.email }}</div>
+            <div class="p-2 text-start"><label>パスワード</label><br>{{ form.password1 }}</div>
+            <div class="p-2 text-start"><label>パスワード（確認）</label><br>{{ form.password2 }}</div>
+            <div class="p-2 text-start"><input type="submit" value="登録"></div>
+        </form>
+        </div>
+      </div>
+    </div>
+    <div class="container text-center p-2"><a href="{% url 'pythonL:index' %}">戻る</a></div>
+{% endblock content %}
+
+    
+
+          
+            
+         

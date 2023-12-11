@@ -1,0 +1,7 @@
+{
+    "name": "python-learning",
+    "dockerFile": "Dockerfile",
+    "extensions": [
+        "ms-python.python"
+    ]
+ }

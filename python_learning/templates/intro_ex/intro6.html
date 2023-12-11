@@ -1,0 +1,142 @@
+{% extends 'pythonL/base.html' %}
+
+{% block title %}Python-Learning Introduction{% endblock title %}
+
+
+{% block content %}
+<div class="p-2"><h3><p class="text-center">関数</p></h3></div>
+<div style="height: 60px;"></div>
+<div class="ps-3">
+    <div class="h4">🔵関数とは</div>
+    <div>
+    Pythonにおける関数とは、ある特定の処理をひとまとまりにしたもののことです。<br>
+    数学の関数とは多少意味合いが異なっているので注意が必要です。
+    関数は次のような形で記述されます。
+        <div class="p-2">
+        <div style="width: 420px; background-color: linen; border: darkorange solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            関数名()
+        </div>
+        </div>
+        <div style="height: 5px;"></div>
+    今まで何度も使用してきた「print()」も関数です。<br>
+    print関数は「()の中に入れたものを出力する（書き出す）」という処理を行ってくれます。<br>
+    「print()」のようにPythonにあらかじめ定義された関数を組み込み関数といいます。<br>
+    type()やstr()やint()、range()なども組み込み関数です。
+    <div style="height: 40px;"></div>
+    <div class="h4">🔵関数を定義</div>
+    関数は自分で定義することもできます。その場合、以下のように記述します。
+    <div class="p-2">
+        <div style="width: 420px; background-color: linen; border: darkorange solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            <span style="color: brown">def</span> 関数名():<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;行いたい処理
+        </div>
+        </div>
+    「行いたい処理」は縦に複数並べて記述することも可能です。<br>
+    関数を定義し、それを実行するためには以下のようにします。
+    <div class="p-2">
+        <div style="width: 420px; background-color: lightyellow; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 5px 0 #c0c0c0;">
+            def myfunction():<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;print("Hello Python")<br>
+            <br>
+            myfunction()
+        </div>
+        <div style="width: 420px; background-color: lightcyan; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            Hello Python
+        </div>
+        </div>
+    最後の行で「myfunction()」としてますが、この記述によって定義した関数を実行しています。<br>
+    このように「関数名()」として関数を実行することを「関数の呼び出し」ともいいます。
+    <div style="height: 40px;"></div>
+    <div class="h4">🔵引数と戻り値</div>
+    組み込み関数のlen()関数を見てみましょう。
+        <div class="p-2">
+        <div style="width: 420px; background-color: lightyellow; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 5px 0 #c0c0c0;">
+            a = len("apple")<br>
+            print(a)
+        </div>
+        <div style="width: 420px; background-color: lightcyan; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            5
+        </div>
+        </div>
+        len()関数はstr型の"apple"をデータとして受け取って、その文字数をint型として返し、aという変数に格納されています。<br>
+        このように関数は何かしらのデータを受け取り、さらにそれに応じてデータを返すが可能です。<br>
+        関数が受け取るデータのことを<b>引数</b>、返す値のことを<b>戻り値</b>といいます。
+        引数と戻り値が存在する関数の書き方を示しておきます。
+            <div class="p-2">
+            <div style="width: 420px; background-color: linen; border: darkorange solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+                <span style="color: brown">def</span> 関数名(引数):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;行いたい処理1<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;行いたい処理2<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;︙<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;return 戻り値
+            </div>
+            </div>
+        戻り値を使用する場合は最後にretuen文を記述し、その後に戻り値を記述します。
+        
+        <div style="height: 40px;"></div>
+        <div class="h4">🔴エディターを使って、今までの復習</div>
+        下のエディターを使って関数を書いてみよう。
+    <div style="height: 10px;"></div>
+    <div class="p-1">
+        <div class="row">
+        <div class="col-4">
+        <div id="editor" style="height: 128px;">{{ text }}</div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
+        <form action="{% url 'pythonL:intro_ex' 6 %}" method="post">{% csrf_token %}
+        <textarea id="text" name="text"></textarea>
+        <textarea id="backup" name="backup">{{ text }}</textarea>
+        </div>
+        <div class="pt-4 col-1"><button type="submit" class="btn btn-primary">実行</button></div></form>
+        <div class="col-7"></div>
+        </div>
+        <div style="height: 10px;"></div>
+        <div class="row">
+        <div class="col-5"><textarea class="ps-2" name="output" rows="4" style="background-color: lightcyan; border: blue solid 1px; width: 500px;">{{ out }}{{ err }}
+        </textarea></div>
+        <div class="col-7"></div>
+        </div>
+    </div>
+    <div style="height: 20px;"></div>
+    <div class="p-2">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <span><a href="{% url 'pythonL:intro_ex' 5 %}">戻る</a></span>
+                <span style="display: inline-block; width: 50%;"></span>
+                <span><a href="{% url 'pythonL:intro' %}">一覧へ</a></span>
+            </div>
+            <div class="col-4"></div>
+        </div>
+        
+    </div>
+</div>
+</div>
+<footer style="height: 30px; position: relative; bottom: 0;  width: 100%; background-color: navy;">
+</footer>
+<script>
+    document.getElementById( 'text' ).style.display = 'none';
+document.getElementById( 'backup' ).style.display = 'none';
+
+let editor = ace.edit("editor");
+editor.$blockScrolling = Infinity;
+editor.setTheme("ace/theme/monokai");
+editor.getSession().setMode("ace/mode/python");
+editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: false
+  });
+editor.getSession().on('change', function(){
+      let textcode = editor.getSession().getValue();
+      document.getElementById( 'text' ).value = textcode;});
+
+    let elem = document.getElementById('editor');
+    let elem_Y = elem.getBoundingClientRect().top + window.pageYOffset;
+window.addEventListener("load", function() {
+        if (document.getElementById( 'backup' ).value != '') {
+            scrollTo({top: elem_Y, left: 0, behavior: "instant",});
+        }
+    });
+</script>
+{% endblock content %}

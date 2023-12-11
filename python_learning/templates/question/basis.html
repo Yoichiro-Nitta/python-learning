@@ -1,0 +1,100 @@
+{% extends 'pythonL/base.html' %}
+
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container  pt-2">
+    <div class="row">
+        <div class="col-11">
+            <h4><p>{{ q_title }}</p></h4>
+            <div style="height: 5px;"></div>
+            {% autoescape off %}
+            {{ q_sentence | linebreaksbr }}
+            {% endautoescape %}
+            <div style="height: 5px;"></div>
+            {% if q_data != "" %}
+            <div style="width: 450px; border: green solid 1px; font-size: 100%; padding: 10px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+                {{ q_data }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <div style="height: 10px;"></div>
+    <div class="row">
+        <div class="col-6">
+            {% autoescape off %}
+            {% if pre_code != "" and ev >= 3 %}
+            <div  style="width: 90%; height:  124px; background-color: #272822; color: #F8F8F3; border: brown solid 2px;">
+                <div style="text-align: center; display: inline-block; vertical-align: top; width: 40px; height: 120px; background-color: #2F312A;">&nbsp;</div>
+                <div style="display: inline-block;">{{ pre_visual | linebreaksbr }}</div>
+            </div>  
+            {% elif pre_code != "" and ev < 3 %}
+            <div style="width: 90%; height:  76px; background-color: #272822; color: #F8F8F3; border: brown solid 2px;">
+                <div style="text-align: center; display: inline-block; vertical-align: top; width: 40px; height: 72px; background-color: #2F312A;">&nbsp;</div>
+                <div style="display: inline-block;">{{ pre_visual | linebreaksbr }}</div>
+            </div>
+            {% endif %}
+            {% endautoescape %}
+            <div id="editor" style="height: 400px; width: 90%;">{{ text }}</div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
+            {% if post_code != "" %}
+            {% autoescape off %}
+            <div style="width: 90%; height: 80px; background-color: #272822; color: #F8F8F3; border: blue solid 2px;">
+            <div style="text-align: center; display: inline-block; vertical-align: top; width: 40px; height: 76px; background-color: #2F312A;">&nbsp;</div>
+            <div style="display: inline-block;">{{ post_visual | linebreaksbr }}</div>
+            </div>
+            {% endautoescape %}
+            {% endif %}
+        </div>
+        <div class="col-6">
+            <div style="height: 202px; width: 480;"></div>
+            {% if pre_code != "" and ev >= 3 %}
+            <div style="height: 124px; width: 480;"></div>
+            {% elif pre_code != "" and ev < 3 %}
+            <div style="height: 76px; width: 480;"></div>
+            {% endif %}
+            {% if post_code != "" %}
+            <div style="height: 80px; width: 480;"></div>
+            {% endif %}
+            <form action="?" method="post">{% csrf_token %}
+                <textarea style="display:none" id="text" name="text"></textarea>
+                <textarea style="display:none" id="backup" name="backup">{{ text }}</textarea>
+                <textarea style="display:none"  name="data1">{{ data1 }}</textarea>
+                <textarea style="display:none"  name="data2">{{ data2 }}</textarea>
+                <textarea class="ps-2" name="output" rows="8" style="background-color: lightcyan; border: blue solid 1px; width: 100%;" readonly>{{ out }}{{ err }}</textarea>
+        </div>
+    </div>
+    <div class="m-3 text-end">
+        <span><button type="submit" class="btn btn-primary" formaction="{% url 'pythonL:basis' pk %}">出力確認</button></span>
+        <span><button type="submit" class="btn btn-danger" formaction="{% url 'pythonL:basis_a' pk %}">解答する</button></span>
+    </div>
+    <div class="text-center"><a href="{% url 'pythonL:questions' %}">問題一覧へ</a></div>
+</div>
+<script>
+let editor = ace.edit("editor");
+editor.$blockScrolling = Infinity;
+editor.setTheme("ace/theme/monokai");
+editor.getSession().setMode("ace/mode/python");
+editor.setFontSize(14);
+editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+      });
+editor.getSession().on('change', function(){
+        let textcode = editor.getSession().getValue();
+        document.getElementById( 'text' ).value = textcode;});
+
+let elem = document.getElementById('editor');
+let elem_Y = elem.getBoundingClientRect().top + window.pageYOffset;
+window.addEventListener("load", function() {
+        if (document.getElementById( 'backup' ).value != '') {
+            scrollTo({top: elem_Y, left: 0, behavior: "instant",});
+        }
+    });
+  </script>
+
+{% endblock content %}

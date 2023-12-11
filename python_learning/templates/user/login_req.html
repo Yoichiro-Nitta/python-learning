@@ -1,0 +1,13 @@
+{% extends 'pythonL/base.html' %}
+
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="p-2"><h4><p class="text-center">ログインが必要です。。</p></h4></div>
+<div style="height: 50px;">
+</div>
+    <div class="container text-center p-2"><a href="{% url 'pythonL:login_view' %}">ログイン画面へ</a></div>
+    <div style="height: 20px;"></div>
+    <div class="container text-center p-2"><a href="{% url 'pythonL:index' %}">戻る</a></div>
+{% endblock content %}

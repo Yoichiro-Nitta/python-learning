@@ -1,0 +1,58 @@
+{% extends 'pythonL/base.html' %}
+
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="p-2"><h2><p class="text-center">Python学習サイト</p></h2></div>
+<div style="height: 100px;"></div>
+<div class="container-fluid text-center">
+    <div class="row">
+        <div class="col-3">
+            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">
+                <a href="{% url 'pythonL:intro' %}">python入門講座</a>
+            </div>
+            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">
+                <a href="{% url 'pythonL:questions' %}">python基礎問題</a>
+            </div>
+            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">資格試験形式問題</div>
+            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">paiza挑戦のために</div>
+            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">機械学習練習</div>
+            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">準備中</div>
+        </div>
+        <div class="col-9">
+            <div>
+                <p class="h4 text-start">学習用コンテンツの内容は以下のようになってます。</p>
+            </div>
+            <div style="height: 20px;"></div>
+            <div>
+            <table>
+                <tr style="height: 40px;">
+                <td class="text-end">python入門講座･･･</td>
+                <td class="text-start">python学習０日〜１週間の方向けの入門編です。</td>
+                </tr>
+                <tr style="height: 40px;">
+                <td class="text-end">python基礎問題･･･</td>
+                <td class="text-start">python学習１週間〜２ヶ月の方向けの基礎演習です。</td>
+                </tr>
+                <tr style="height: 40px;">
+                <td class="text-end">資格試験形式問題･･･</td>
+                <td class="text-start">資格試験を受験予定の方向けの練習問題です。</td>
+                </tr>
+                <tr style="height: 40px;">
+                <td class="text-end">paiza挑戦のために･･･</td>
+                <td class="text-start">これからpaizaを挑戦する方向けの内容です。</td>
+                </tr>
+                <tr style="height: 40px;">
+                <td class="text-end">機械学習練習･･･</td>
+                <td class="text-start">説明文準備中</td>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+<footer style="height: 30px; position: relative; bottom: 0;  width: 100%; background-color: navy;">
+    <div class="container-fluid text-end"><a href="{% url 'admin:index' %}">管理画面へ</a></div>
+  </footer>
+{% endblock content %}

@@ -1,0 +1,163 @@
+{% extends 'pythonL/base.html' %}
+
+{% block title %}Python-Learning Introduction{% endblock title %}
+
+
+{% block content %}
+<div class="p-2"><h3><p class="text-center">if文（分岐）と条件式</p></h3></div>
+<div style="height: 60px;"></div>
+<div class="ps-3">
+    <div class="h4">🔵if文</div>
+    <div>
+    条件に当てはまる場合に処理を行いたい（もし〇〇なら処理△△を実行）時は<b>if文</b>を使用します。<br>
+    if文の書き方は以下の通りです。
+        <div class="p-2">
+        <div style="width: 420px; background-color: linen; border: darkorange solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            if 条件式:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;条件式が正しい場合に行う処理
+        </div>
+        </div>
+        <div style="height: 5px;"></div>
+    Pythonではif文などの処理を書く場合は、その処理の内容にインデント（字下げ）を行う必要があります。
+        <div class="p-2">
+        <div style="width: 420px; background-color: lightyellow; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 5px 0 #c0c0c0;">
+            x = 5<br>
+            if x == 5:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;print("xは5です。")
+        </div>
+        <div style="width: 420px; background-color: lightcyan; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            xは5です。
+        </div>
+        </div>
+    ここで、「x == 5」という新しい記述の仕方が出てきましたので、次に条件式の書き方を解説したいと思います。
+    <div style="height: 40px;"></div>
+    <div class="h4">🔵条件式（比較演算子）</div>
+    「xとyが等しい」を表したい場合は「x == y」のように「=」を２個並べて記述します。<br>
+    「=」が１個の場合は、右側のデータを左側の変数に<b>代入</b>することを意味するので、条件式の場合は「==」と記述しましょう。<br>
+    また、「xとyが等しくない」を表したい場合は「x != y」のように「=」の前に「!」を加えて記述します。<br>
+    他にも、int型のように大小が比べられるものの場合、「x &gt;= y」と記述することで「xがy以上である」という条件式を記述することができます。<br>
+    「==」や「!=」のように、左辺と右辺を比べる記号を比較演算子と呼びます。比較演算子の一覧を下に示しておきます。
+        <div class="p-2">
+        <div style="width: 420px; background-color: aquamarine; border: olive solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 5px 0 #c0c0c0;">
+            <pre>x == y&#009;&#009;#xがyと等しい</pre>
+            <pre>x != y&#009;&#009;#xがyと異なる</pre>
+            <pre>x &lt; y&#009;&#009;#xがyよりも小さい</pre>
+            <pre>x &gt; y&#009;&#009;#xがyよりも大きい</pre>
+            <pre>x &lt;= y&#009;&#009;#xがy以下である</pre>
+            <pre>x &gt;= y&#009;&#009;#xがy以上である</pre>
+            <pre>x is y&#009;&#009;#xがyと等しい</pre>
+            <pre>x is not y&#009;#xがyと異なる</pre>
+            <pre>x in y&#009;&#009;#xがyに含まれる</pre>
+            <pre>x not in y&#009;#xがyに含まれない</pre>
+        </div>
+        </div>
+    <div style="height: 40px;"></div>
+    <div class="h4">🔵条件式（ブール演算子）</div>
+    複数の条件式を組み合わせて新たな条件式を作ることができます。<br>
+    その際に使用するのが「and」「or」「not」という演算子（ブール演算子）になります。
+    <div class="p-2">
+        <div style="width: 640px; background-color: aquamarine; border: olive solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 5px 0 #c0c0c0;">
+            <pre>条件式A and 条件式B&#009;#条件式Aと条件式Bの両方が正しい(Trueである)</pre>
+            <pre>条件式A or 条件式B&#009;#条件式Aと条件式Bの少なくとも１つが正しい(Trueである)</pre>
+            <pre>not 条件式A&#009;&#009;#条件式Aが正しくない(Falseである)</pre>
+        </div>
+        </div>
+        <div style="height: 40px;"></div>
+        <div class="h4">🔵else、elif</div>
+        if文の条件に当てはまらなかった場合の処理を書きたい場合は、else文を使うことができます。
+            <div class="p-2">
+            <div style="width: 420px; background-color: lightyellow; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 5px 0 #c0c0c0;">
+                y = 12<br>
+                if y &lt;= 10:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;print("yは10以下です。")<br>
+                else:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;print("yは10より大きいです。")
+            </div>
+            <div style="width: 420px; background-color: lightcyan; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+                yは10より大きいです。
+            </div>
+            </div>
+        上の例では、if文の条件である「yが10以下」にyが当てはまらなかったため、else文の処理が実行されます。<br>
+        また、if文の条件が当てはまらなかった場合に別の条件を定義したい場合にはelifを使用します。<br>
+        (elifは複数個指定することもできます。)
+            <div class="p-2">
+            <div style="width: 420px; background-color: lightyellow; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 5px 0 #c0c0c0;">
+                z = 18<br>
+                if z &lt; 10:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;print("zは小さな数です。")<br>
+                elif 10 &lt;= z &lt; 100:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;print("zはそこそこの数です。")<br>
+                else:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;print("zは大きな数です。")
+            </div>
+            <div style="width: 420px; background-color: lightcyan; border: blue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+                zはそこそこの数です。
+            </div>
+            </div>
+        <div style="height: 40px;"></div>
+        <div class="h4">🔴エディターを使って、今までの復習</div>
+        下のエディターを使ってif文を書いてみよう。
+    <div style="height: 10px;"></div>
+    <div class="p-1">
+        <div class="row">
+        <div class="col-4">
+        <div id="editor" style="height: 128px;">{{ text }}</div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
+        <form action="{% url 'pythonL:intro_ex' 3 %}" method="post">{% csrf_token %}
+        <textarea id="text" name="text"></textarea>
+        <textarea id="backup" name="backup">{{ text }}</textarea>
+        </div>
+        <div class="pt-5 col-1"><button type="submit" class="btn btn-primary">実行</button></div></form>
+        <div class="col-7"></div>
+        </div>
+        <div style="height: 10px;"></div>
+        <div class="row">
+        <div class="col-5"><textarea class="ps-2" name="output" rows="4" style="background-color: lightcyan; border: blue solid 1px; width: 500px;">{{ out }}{{ err }}
+        </textarea></div>
+        <div class="col-7"></div>
+        </div>
+    </div>
+    <div style="height: 20px;"></div>
+    <div class="p-2">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <span><a href="{% url 'pythonL:intro_ex' 2 %}">戻る</a></span>
+                <span style="display: inline-block; width: 50%;"></span>
+                <span class="text-end"><a href="{% url 'pythonL:intro_ex' 4 %}">次へ</a></span>
+            </div>
+            <div class="col-4"></div>
+        </div>
+        
+    </div>
+</div>
+</div>
+<footer style="height: 30px; position: relative; bottom: 0;  width: 100%; background-color: navy;">
+</footer>
+<script>
+    document.getElementById( 'text' ).style.display = 'none';
+document.getElementById( 'backup' ).style.display = 'none';
+
+let editor = ace.edit("editor");
+editor.$blockScrolling = Infinity;
+editor.setTheme("ace/theme/monokai");
+editor.getSession().setMode("ace/mode/python");
+editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: false
+  });
+editor.getSession().on('change', function(){
+      let textcode = editor.getSession().getValue();
+      document.getElementById( 'text' ).value = textcode;});
+
+    let elem = document.getElementById('editor');
+    let elem_Y = elem.getBoundingClientRect().top + window.pageYOffset;
+window.addEventListener("load", function() {
+        if (document.getElementById( 'backup' ).value != '') {
+            scrollTo({top: elem_Y, left: 0, behavior: "instant",});
+        }
+    });
+</script>
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends 'pythonL/base.html' %}
+
+{% block title %}Python-Learning Introduction{% endblock title %}
+
+
+{% block content %}
+<div class="p-2"><h3><p class="text-center">python入門講座</p></h3></div>
+<div style="height: 100px;"></div>
+<div class="container-fluid text-center">
+    <div class="row">
+        <div class="col-4">
+            <a href="{% url 'pythonL:intro_ex' 1 %}">文字列・数値の出力</a>
+        </div>
+        <div class="col-4">
+            <a href="{% url 'pythonL:intro_ex' 2 %}">変数と型</a>
+        </div>
+        <div class="col-4">
+            <a href="{% url 'pythonL:intro_ex' 3 %}">if文（分岐）と条件式</a>
+        </div>
+    </div>
+    <div style="height: 100px;"></div>
+    <div class="row">
+        <div class="col-4">
+            <a href="{% url 'pythonL:intro_ex' 4 %}">リスト型・辞書型</a>
+        </div>
+        <div class="col-4">
+            <a href="{% url 'pythonL:intro_ex' 5 %}">for文・while文（繰り返し）</a>
+        </div>
+        <div class="col-4">
+            <a href="{% url 'pythonL:intro_ex' 6 %}">関数</a>
+        </div>
+    </div>
+</div>
+<footer>
+    <div style="height: 30px; position: absolute; bottom: 0;  width: 100%; background-color: navy;"></div>
+  </footer>
+{% endblock content %}

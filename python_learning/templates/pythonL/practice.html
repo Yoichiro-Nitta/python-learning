@@ -1,0 +1,54 @@
+{% extends 'pythonL/base.html' %}
+
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container  p-1">
+<div class="row">
+  <div class="col-6 pb-3">
+    問題は次の形式で出題されます。
+    <div style="height: 10px;"></div>
+    問題：以下のものを出力してください。
+    <div style="width: 450px; border: green solid 1px; font-size: 100%; padding: 10px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+        Hello, World!
+    </div>
+  </div>
+  <div class="col-6"></div>
+</div>
+<div class="row">
+  <div class="col-6">
+      <div id="editor" style="height: 400px; width: 90%;">{{ text }}</div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
+  </div>
+  <div class="col-6">
+      <div style="height: 202px; width: 480;"></div>
+      <form action="?" method="post">{% csrf_token %}
+          <textarea style="display:none" id="text" name="text"></textarea>
+          <textarea style="display:none"  name="backup">{{ text }}</textarea>
+          <textarea class="ps-2" name="output" rows="8" style="background-color: lightcyan; border: blue solid 1px; width: 100%;" readonly>{{ out }}{{ err }}</textarea>
+  </div>
+</div>
+<div class="m-3 text-end">
+  <span><button type="submit" class="btn btn-primary" formaction="{% url 'pythonL:practice' %}">出力確認</button></span>
+  <span><button type="submit" class="btn btn-danger" formaction="{% url 'pythonL:practice_a' %}">解答する</button></span>
+</div>
+<div class="text-center"><a href="{% url 'pythonL:questions' %}">一覧画面へ戻る</a></div>
+</div>
+<script>
+  let editor = ace.edit("editor");
+  editor.$blockScrolling = Infinity;
+  editor.setTheme("ace/theme/monokai");
+  editor.getSession().setMode("ace/mode/python");
+  editor.setFontSize(14);
+  editor.setOptions({
+      enableBasicAutocompletion: true,
+      enableSnippets: true,
+      enableLiveAutocompletion: false
+    });
+  editor.getSession().on('change', function(){
+        let textcode = editor.getSession().getValue();
+        document.getElementById( 'text' ).value = textcode;});
+</script>
+{% endblock content %}
