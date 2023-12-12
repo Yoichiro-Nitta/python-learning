@@ -36,11 +36,14 @@
       </div>
     <div style="height: 40px;"></div>
     <div class="row">
+    
+    <div class="col-4">
     {% if p >= 1 %}
-    <div class="col-4"><a href="{% url 'pythonL:basis' p %}">前の問題へ</a></div>
+    <a href="{% url 'pythonL:basis' p %}">前の問題へ</a>
     {% endif %} 
+    </div>
     <div class="col-4"><a href="{% url 'pythonL:questions' %}">問題一覧へ</a></div>
-    {% if n <= 5 %}
+    {% if n <= last %}
     <div class="col-4"><a href="{% url 'pythonL:basis' n %}">次の問題へ</a></div>
     {% endif %} 
     </div>

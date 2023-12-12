@@ -1,2 +1,1 @@
-num = 35
-print(type(num))
+print(313 * 151)
