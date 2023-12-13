@@ -8,26 +8,17 @@
 <div style="height: 100px;"></div>
 <div class="container-fluid text-center">
     <div class="row">
-        <div class="col-4">
-            <a href="{% url 'pythonL:intro_ex' 1 %}">文字列・数値の出力</a>
+        <div class="col-2">
         </div>
-        <div class="col-4">
-            <a href="{% url 'pythonL:intro_ex' 2 %}">変数と型</a>
+        <div class="col-8">
+            {% for intro in introforewords %}
+            <div class="p-2" style="height: 44px; background-color: #d8ffd8; border: green solid 2px;">
+                <a href="{% url 'pythonL:intro_ex' intro.section %}">{{ intro.title }}</a>
+            </div>
+            <div style="height: 20px;"></div>
+            {% endfor %}
         </div>
-        <div class="col-4">
-            <a href="{% url 'pythonL:intro_ex' 3 %}">if文（分岐）と条件式</a>
-        </div>
-    </div>
-    <div style="height: 100px;"></div>
-    <div class="row">
-        <div class="col-4">
-            <a href="{% url 'pythonL:intro_ex' 4 %}">リスト型・辞書型</a>
-        </div>
-        <div class="col-4">
-            <a href="{% url 'pythonL:intro_ex' 5 %}">for文・while文（繰り返し）</a>
-        </div>
-        <div class="col-4">
-            <a href="{% url 'pythonL:intro_ex' 6 %}">関数</a>
+        <div class="col-2">
         </div>
     </div>
 </div>

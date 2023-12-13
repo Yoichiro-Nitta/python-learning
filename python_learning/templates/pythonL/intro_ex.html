@@ -1,0 +1,114 @@
+{% extends 'pythonL/base.html' %}
+{% load static %}
+{% block title %}Python-Learning Introduction{% endblock title %}
+
+
+{% block content %}
+<div style="height: 40px; background-color: aliceblue;"></div>
+<div class="container-fluid" style="font-size: 18px;">
+    <div class="row">
+        <div class="col-1" style="background-color: aliceblue;"></div>
+    <div class="col-6">
+        <div><h2><p class="text-center">{{ title }}</p></h2></div>
+    {% autoescape off %}
+    {% for ex in explanations %}
+    {% if ex.text_type == "heading" %}
+    <div style="height: 50px;"></div>
+    <div class="h4">{{ ex.content }}</div>
+
+    {% elif ex.text_type == "text" %}
+    <div style="height: 2px;"></div>
+    {{ ex.content }}
+    <div style="height: 2px;"></div>
+    
+    {% elif ex.text_type == "red" %}
+    <div class="p-2">
+        <div style="width: 80%; background-color: linen; border: darkorange solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            {{ ex.content }}
+        </div>
+    </div>
+    
+    {% elif ex.text_type == "yellow" %}
+    <div class="p-2">
+        <div style="width: 80%; background-color: lightyellow; border: darkgoldenrod solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 5px 0 #c0c0c0;">
+            {{ ex.content }}
+        </div>
+
+    {% elif ex.text_type == "blue" %}
+        <div style="width: 80%; background-color: lightcyan; border: dodgerblue solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            {{ ex.content }}
+        </div>
+    </div>
+
+    {% elif ex.text_type == "green" %}
+    <div class="p-2">
+        <div style="width: 80%; background-color: #c0ffe0; border: darkgreen solid 1px; font-size: 100%; padding: 8px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            {{ ex.content }}
+        </div>
+    </div>
+
+    {% elif ex.text_type == "img" %}
+    <div class="p-1">
+        <img style="width: 40%; height: 40%;" src="{% static ex.content %}">
+    </div>
+
+    {% else %}
+    {{ ex.content }}
+
+    {% endif %} 
+    {% endfor %}
+    {% endautoescape %}
+
+    <div style="height: 40px;"></div>
+    <div class="h4">🔴エディターを使って、今までの復習</div>
+    下のエディターを使って今回の内容の復習をしてみましょう。
+    <div style="height: 10px;"></div>
+    <div class="p-1">
+        <div class="row">
+        <div class="col-10">
+        <div id="editor" style="height: 133px; width: 100%;">{{ text }}</div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
+        <form action="{% url 'pythonL:intro_ex' pk %}" method="post">{% csrf_token %}
+        <textarea style="display:none" id="text" name="text"></textarea>
+        <textarea style="display:none" id="backup" name="backup">{{ text }}</textarea>
+        </div>
+        <div class="pt-5 col-2"><button type="submit" class="btn btn-primary">実行</button></div></form>
+        <div><textarea class="ps-2" name="output" style="height: 133px; background-color: lightcyan; border: blue solid 1px; width: 100%;">{{ out }}{{ err }}
+        </textarea></div>
+        </div>
+        <div style="height: 10px;"></div>
+    </div>
+    <div style="height: 20px;"></div>
+    </div>
+    <div class="col-4">
+        <div style="background-color: aqua; height: 400px; position: sticky; top: 0;"></div>
+    </div>
+    <div class="col-1" style="background-color: aliceblue;"></div>
+    </div>
+    <div class="p-2">
+        <div class="row">
+            <div class="col-4 text-end">
+            {% if p >= 1 %}
+            <a href="{% url 'pythonL:intro_ex' p %}">前へ</a>
+            {% endif %} 
+            </div>
+            <div class="col-4 text-center">
+                <a href="{% url 'pythonL:intro' %}">一覧へ</a>
+                
+            </div>
+            <div class="col-4 text-start">
+                {% if n <= 6 %}
+                <a href="{% url 'pythonL:intro_ex' n %}">次へ</a>
+                {% endif %} 
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+<footer>
+    <div style="height: 30px; position: relative; bottom: 0;  width: 100%; background-color: navy;"></div>
+  </footer>
+  <script src="{% static 'js/app.js' %}"></script>
+{% endblock content %}

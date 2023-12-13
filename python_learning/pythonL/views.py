@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import CustomUser, Basis, Quartet, Competition
+from .models import CustomUser, IntroCourse, Basis, Quartet, Competition
 from application import assist, pllist
 from .forms import SignupForm, LoginForm
 from django.contrib.auth import login, logout
@@ -49,9 +49,16 @@ def logout_view(request):
 
 
 def intro(request):
-    return render(request, 'pythonL/intro.html')
+    introforewords = IntroCourse.objects.filter(order = 1)
+    introforewords = introforewords.order_by('section')
+    params ={"introforewords": introforewords}
+    return render(request, 'pythonL/intro.html', params)
 
 def intro_ex(request, pk):
+    explanations = IntroCourse.objects.filter(section = pk)
+    explanations = explanations.order_by('order')
+    title = explanations.first().title
+    n, p = pk + 1, pk - 1
     if request.method == 'POST':
         text = request.POST['text'] 
         backup = request.POST['backup'] 
@@ -64,9 +71,11 @@ def intro_ex(request, pk):
         err = op.stderr
         err = err.split('",')[-1]
         params = {
-        'text': text, 'out' : out, 'err': err}
-        return render(request, f'intro_ex/intro{pk}.html', params)
-    return render(request, f'intro_ex/intro{pk}.html')
+        'text': text, 'out' : out, 'err': err, 
+        "explanations": explanations, "title": title, "pk": pk, "n": n, "p": p}
+        return render(request, 'pythonL/intro_ex.html', params)
+    params = {"explanations": explanations, "title":title, "pk": pk, "n": n, "p": p}
+    return render(request, 'pythonL/intro_ex.html', params)
 
 def questions(request):
     return render(request, 'pythonL/questions.html')
@@ -185,14 +194,13 @@ def basis(request, pk):
         c = random.randint(0, len(q_data)-2)
         q_data, c_output, e_answer = q_data[c], c_output[c], e_answer[c]
 
-    
     user = request.user
     user.s_output = c_output
     user.s_answer = e_answer
     user.save()
     ev = pre_visual.count("\n") * 1
 
-    q_title = question.name
+    q_title = question.title
     data1 = str([q_title, q_sentence, pre_visual, post_visual])
     data2 = str([q_data, pre_code, post_code])
 

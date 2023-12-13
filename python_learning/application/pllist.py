@@ -2,6 +2,8 @@
 numbers = [ i for i in range(26)]
 float_numbers = list(map(float, numbers))
 str_numbers = list(map(str, numbers))
+alphabets = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
+             "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ]
 color = ["black", "white", "blue", "red", "green", "white"]
 fruits = ["apple", "orange", "banana", "grape", "peach", "lemon", "lime", 
          "pineapple", "strawberry", "raspberry", "grapefruit", "avocado", "yuzu"]

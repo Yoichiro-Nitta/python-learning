@@ -1,1 +1,1 @@
-print(aiu)
+print(3)
