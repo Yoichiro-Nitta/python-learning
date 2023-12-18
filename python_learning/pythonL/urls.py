@@ -13,6 +13,6 @@ urlpatterns = [
     path('questions', views.questions, name='questions'),
     path('practice', views.practice, name='practice'),
     path('practice_a', views.practice_a, name='practice_a'),
-    path('basis/<int:pk>', views.basis, name='basis'),
-    path('basis_a/<int:pk>', views.basis_a, name='basis_a'),
+    path('drill/<int:un>/<int:pk>', views.drill, name='drill'),
+    path('drill_a/<int:un>/<int:pk>', views.drill_a, name='drill_a'),
 ]

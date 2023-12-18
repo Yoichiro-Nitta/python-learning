@@ -4,9 +4,10 @@
 
 
 {% block content %}
+<div class="container-fluid" style="background-color: white;">
 <div class="p-2"><h2><p class="text-center">Python学習サイト</p></h2></div>
 <div style="height: 100px;"></div>
-<div class="container-fluid text-center">
+<div class="text-center">
     <div class="row">
         <div class="col-3">
             <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">
@@ -51,6 +52,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 <footer style="height: 30px; position: relative; bottom: 0;  width: 100%; background-color: navy;">
     <div class="container-fluid text-end"><a href="{% url 'admin:index' %}">管理画面へ</a></div>

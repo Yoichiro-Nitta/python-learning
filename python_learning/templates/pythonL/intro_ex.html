@@ -1,14 +1,19 @@
 {% extends 'pythonL/base.html' %}
 {% load static %}
+{% block css %}
+<style>
+    .x_body{
+        background-color: aliceblue;
+    }
+</style>
+{% endblock css %}
 {% block title %}Python-Learning Introduction{% endblock title %}
 
-
 {% block content %}
-<div style="height: 40px; background-color: aliceblue;"></div>
-<div class="container-fluid" style="font-size: 18px;">
+<div style="height: 40px;"></div>
+<div class="container" style="font-size: 18px;">
     <div class="row">
-        <div class="col-1" style="background-color: aliceblue;"></div>
-    <div class="col-6">
+    <div class="col-8" style="background-color: white;">
         <div><h2><p class="text-center">{{ title }}</p></h2></div>
     {% autoescape off %}
     {% for ex in explanations %}
@@ -65,26 +70,31 @@
     <div style="height: 10px;"></div>
     <div class="p-1">
         <div class="row">
-        <div class="col-10">
+        <div class="col-9">
         <div id="editor" style="height: 133px; width: 100%;">{{ text }}</div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
+        <div style="height: 10px;"></div>
+        <div><textarea class="ps-2" name="output" style="height: 133px; background-color: lightcyan; border: blue solid 1px; width: 100%;">{{ out }}{{ err }}
+        </textarea></div>
         <form action="{% url 'pythonL:intro_ex' pk %}" method="post">{% csrf_token %}
         <textarea style="display:none" id="text" name="text"></textarea>
         <textarea style="display:none" id="backup" name="backup">{{ text }}</textarea>
         </div>
-        <div class="pt-5 col-2"><button type="submit" class="btn btn-primary">実行</button></div></form>
-        <div><textarea class="ps-2" name="output" style="height: 133px; background-color: lightcyan; border: blue solid 1px; width: 100%;">{{ out }}{{ err }}
-        </textarea></div>
+        
+        <div class="col-3">
+            <div style="height: 120px;"></div>
+            <div class="ps-2"><button type="submit" class="btn btn-primary">実行</button></div>
+        </div></form>
+        
         </div>
         <div style="height: 10px;"></div>
     </div>
     <div style="height: 20px;"></div>
     </div>
-    <div class="col-4">
-        <div style="background-color: aqua; height: 400px; position: sticky; top: 0;"></div>
+    <div class="col-4" style="background-color: aliceblue;">
+        <div style="background-color: white; height: 400px; position: sticky; top: 0;"></div>
     </div>
-    <div class="col-1" style="background-color: aliceblue;"></div>
     </div>
     <div class="p-2">
         <div class="row">

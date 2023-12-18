@@ -14,7 +14,7 @@
             {% endautoescape %}
             <div style="height: 5px;"></div>
             {% if q_data != "" %}
-            <div style="width: 450px; border: green solid 1px; font-size: 100%; padding: 10px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            <div style="width: 48%; border: green solid 1px; font-size: 100%; padding: 10px; box-shadow: 0 5px 7px 0 #c0c0c0;">
                 {{ q_data }}
             </div>
             {% endif %}
@@ -37,9 +37,9 @@
             </div>
             {% endif %}
             {% endautoescape %}
-            <div id="editor" style="height: 400px; width: 90%;">{{ text }}</div>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
+            <div id="editor" style="height: 380px; width: 90%;">{{ text }}</div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ace.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ext-language_tools.js"></script>
             {% if post_code != "" %}
             {% autoescape off %}
             <div style="width: 90%; height: 80px; background-color: #272822; color: #F8F8F3; border: blue solid 2px;">
@@ -50,14 +50,14 @@
             {% endif %}
         </div>
         <div class="col-6">
-            <div style="height: 202px; width: 480;"></div>
+            <div style="height: 182px;"></div>
             {% if pre_code != "" and ev >= 3 %}
-            <div style="height: 124px; width: 480;"></div>
+            <div style="height: 124px;"></div>
             {% elif pre_code != "" and ev < 3 %}
-            <div style="height: 76px; width: 480;"></div>
+            <div style="height: 76px;"></div>
             {% endif %}
             {% if post_code != "" %}
-            <div style="height: 80px; width: 480;"></div>
+            <div style="height: 80px;"></div>
             {% endif %}
             <form action="?" method="post">{% csrf_token %}
                 <textarea style="display:none" id="text" name="text"></textarea>
@@ -68,10 +68,11 @@
         </div>
     </div>
     <div class="m-3 text-end">
-        <span><button type="submit" class="btn btn-primary" formaction="{% url 'pythonL:basis' pk %}">出力確認</button></span>
-        <span><button type="submit" class="btn btn-danger" formaction="{% url 'pythonL:basis_a' pk %}">解答する</button></span>
+        <span><button type="submit" class="btn btn-primary" formaction="{% url 'pythonL:drill' un pk %}">出力確認</button></span>
+        <span><button type="submit" class="btn btn-danger" formaction="{% url 'pythonL:drill_a' un pk %}">解答する</button></span>
     </div>
     <div class="text-center"><a href="{% url 'pythonL:questions' %}">問題一覧へ</a></div>
+    <div style="height: 60px;"></div>
 </div>
 <script>
 let editor = ace.edit("editor");

@@ -37,13 +37,19 @@
     <div style="height: 40px;"></div>
     <div class="row">
     <div class="col-4">
-    {% if p >= 1 %}
-    <a href="{% url 'pythonL:basis' p %}">前の問題へ</a>
+    {% if pp >= 1 %}
+    <a href="{% url 'pythonL:drill' un pp %}">前の問題へ</a>
+    {% elif pp == 0 and un >= 2 %}
+    <a href="{% url 'pythonL:drill' pu pu_last %}">前の問題へ</a>
+    {% else %}
     {% endif %} 
     </div>
     <div class="col-4"><a href="{% url 'pythonL:questions' %}">問題一覧へ</a></div>
-    {% if n <= last %}
-    <div class="col-4"><a href="{% url 'pythonL:basis' n %}">次の問題へ</a></div>
+    {% if np <= pk_last %}
+    <div class="col-4"><a href="{% url 'pythonL:drill' un np %}">次の問題へ</a></div>
+    {% elif np > pk_last and un < un_last %}
+    <div class="col-4"><a href="{% url 'pythonL:drill' nu 1 %}">次の問題へ</a></div>
+    {% else %}
     {% endif %} 
     </div>
   </div>

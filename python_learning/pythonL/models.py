@@ -108,9 +108,9 @@ class IntroCourse(models.Model):
 
 
 class Basis(models.Model):
-    name = models.CharField(max_length=80, verbose_name="題名")
-    title = models.CharField(max_length=60,verbose_name="問題名")
-    section = models.PositiveIntegerField(verbose_name="区分")
+    title = models.CharField(max_length=60,verbose_name="問題内容")
+    unit = models.PositiveIntegerField(verbose_name="大区分")
+    section = models.PositiveSmallIntegerField(verbose_name="小区分")
     category = models.SmallIntegerField(verbose_name="分類")
     level = models.PositiveSmallIntegerField(verbose_name="難易度")
     question = models.TextField(verbose_name="問題文")
@@ -118,15 +118,19 @@ class Basis(models.Model):
     pre_visual = models.TextField(blank=True, verbose_name="入力視像（前）")
     post_code = models.TextField(blank=True, verbose_name="指定入力（後）")
     post_visual = models.TextField(blank=True, verbose_name="入力視像（後）")
-    i_range = models.TextField(blank=True, verbose_name="範囲")
+    i_range = models.TextField(blank=True, verbose_name="範囲[]/gvc/")
     role_code = models.TextField(blank=True, verbose_name="演算コード")
-    q_data = models.TextField(blank=True, verbose_name="出題データ/nct/bbcl/")
-    c_output = models.TextField(blank=True, verbose_name="要求出力/nct/改")
-    e_answer = models.TextField(blank=True, verbose_name="解答例/nct/mrcl/")
+    q_data = models.TextField(blank=True, verbose_name="出題データ/nct/")
+    c_output = models.TextField(blank=True, verbose_name="範囲の範囲/要求出力/nct/")
+    e_answer = models.TextField(blank=True, verbose_name="解答例/nct/")
     explanation = models.TextField(blank=True, verbose_name="解説")
+    q_key = models.BooleanField(verbose_name="フィルター用", default=False)
+    major_h = models.CharField(blank=True, max_length=20, verbose_name="問題グループ")#q_keyがTrueの時のみ
+    minor_h = models.CharField(blank=True, max_length=20, verbose_name="問題名")#q_keyがTrueの時のみ
+
 
     def __str__(self):
-        return self.name
+        return self.title
 
 class Quartet(models.Model):
     name = models.CharField(max_length=60,verbose_name="問題名")
