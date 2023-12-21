@@ -1,0 +1,73 @@
+{% extends 'pythonL/base.html' %}
+{% load static %}
+
+
+{% block title %}Python-Learning{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div style="height: 40px;"></div>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8 text-start">
+        <h4>提出コード結果詳細</h4>
+        <hr>
+        {% for check, fade_in in combine %}
+        <div class="" style="display: flex;">
+        <div style="width: 70%; font-size: 18px;">テストケース{{ forloop.counter }}</div>
+        <div class="{{ fade_in }}" style="width: 30%; font-size: 16px; ">
+            {% if check %}
+            <span style="color: green; font-size: 18px;"><b>○</b></span><span style="font-size: 17px;">正解</span>
+            {% else %}
+            ❌不正解
+            {% endif %}
+        </div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+    <div class="col-2"></div>
+</div>
+</div>
+<div class="row p-2">
+    <div class="col-1"></div>
+    <div class="col-5">
+      <div>あなたの解答</div>
+      <div id="editor1" class="p-2" style="height: 200px;">{{ text }}</div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+    </div>
+    <div class="col-5">
+      <div>解答例</div>
+      <div id="editor2" class="p-2" style="height: 200px; display: none;">{{ e_answer }}</div>
+      <div style="height: 60px;"></div>
+      <div class="text-center"><button class="btn btn-success" id="show">解答例を表示する</button></div>
+    </div>
+    <div class="col-1"></div>
+  </div>
+  <script>
+    let editor1 = ace.edit("editor1");
+    editor1.$blockScrolling = Infinity;
+    editor1.setTheme("ace/theme/monokai");
+    editor1.getSession().setMode("ace/mode/python");
+    editor1.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+      });
+      let editor2 = ace.edit("editor2");
+    editor2.$blockScrolling = Infinity;
+    editor2.setTheme("ace/theme/monokai");
+    editor2.getSession().setMode("ace/mode/python");
+    editor2.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+      });
+    let switchBtn = document.getElementById('show');
+    let edit = document.getElementById('editor2');
+    switchBtn.addEventListener('click', ()=> {
+        edit.style.display ='';
+        show.style.display ='none';
+}, false);
+  </script>
+{% endblock content %}

@@ -1,3 +1,2 @@
-numbers = [20, 3, 30, 22]
-numbers.insert(3, 20)
-print(numbers)
+numbers = [1, 1, 3, 3, 3, 3, 1]
+print(numbers.count(2))

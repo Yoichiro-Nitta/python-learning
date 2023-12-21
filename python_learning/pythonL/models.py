@@ -46,6 +46,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
+    s_input = models.TextField(blank=True)
     s_output = models.TextField(blank=True)
     s_answer = models.TextField(blank=True)
     s_explain = models.TextField(blank=True)
@@ -147,10 +148,13 @@ class Quartet(models.Model):
 
 
 class Competition(models.Model):
-    name = models.CharField(max_length=60,verbose_name="問題名")
+    title = models.CharField(max_length=60,verbose_name="問題名")
     section = models.PositiveIntegerField(verbose_name="区分")
     level = models.PositiveSmallIntegerField(verbose_name="難易度")
     question = models.TextField(verbose_name="問題文")
+    input_format = models.TextField(verbose_name="入力フォーマット")
+    expectation = models.TextField(verbose_name="期待出力")
+    condition = models.TextField(verbose_name="条件")
     input_ex = models.TextField(verbose_name="入力例")
     output_ex = models.TextField(verbose_name="出力例")
     input_data = models.TextField(verbose_name="入力データ")
@@ -159,4 +163,4 @@ class Competition(models.Model):
     explanation = models.TextField(blank=True, verbose_name="解説")
 
     def __str__(self):
-        return self.name
+        return self.title

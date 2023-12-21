@@ -1,0 +1,81 @@
+.body_color{
+    background-color: white;
+}
+
+.fadeIn_1{
+    animation-name:fadeInAnime1;
+    animation-delay: 500ms;
+    animation-duration:1s;
+    animation-fill-mode:forwards;
+    opacity:0;
+    }
+    
+    @keyframes fadeInAnime1{
+      from { opacity: 0; }
+      to {opacity: 1;  }
+    }
+
+.fadeIn_2{
+    animation-name:fadeInAnime2;
+    animation-delay: 1500ms;
+    animation-duration:1s;
+    animation-fill-mode:forwards;
+    opacity:0;
+    }
+      
+    @keyframes fadeInAnime2{
+      from { opacity: 0; }
+      to {opacity: 1;  }
+    }
+
+.fadeIn_3{
+    animation-name:fadeInAnime3;
+    animation-delay: 2500ms;
+    animation-duration:1s;
+    animation-fill-mode:forwards;
+    opacity:0;
+    }
+      
+    @keyframes fadeInAnime3{
+      from { opacity: 0; }
+      to {opacity: 1;  }
+    }
+  
+.fadeIn_4{
+    animation-name:fadeInAnime4;
+    animation-delay: 3500ms;
+    animation-duration:1s;
+    animation-fill-mode:forwards;
+    opacity:0;
+    }
+        
+    @keyframes fadeInAnime4{
+      from { opacity: 0; }
+      to {opacity: 1;  }
+    }
+
+.fadeIn_5{
+    animation-name:fadeInAnime5;
+    animation-delay: 4500ms;
+    animation-duration:1s;
+    animation-fill-mode:forwards;
+    opacity:0;
+    }
+      
+    @keyframes fadeInAnime5{
+      from { opacity: 0; }
+      to {opacity: 1;  }
+    }
+  
+.fadeIn_6{
+    animation-name:fadeInAnime6;
+    animation-delay: 5500ms;
+    animation-duration:1s;
+    animation-fill-mode:forwards;
+    opacity:0;
+    }
+        
+    @keyframes fadeInAnime6{
+      from { opacity: 0; }
+      to {opacity: 1;  }
+    }

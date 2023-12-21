@@ -1,3 +1,4 @@
+(()=>{
 let editor = ace.edit("editor");
 editor.$blockScrolling = Infinity;
 editor.setTheme("ace/theme/monokai");
@@ -13,9 +14,10 @@ editor.getSession().on('change', function(){
       document.getElementById( 'text' ).value = textcode;});
 
     let elem = document.getElementById('editor');
-    let elem_Y = elem.getBoundingClientRect().top + window.pageYOffset;
+    let elem_Y = elem.getBoundingClientRect().top + window.scrollY;
 window.addEventListener("load", function() {
         if (document.getElementById( 'backup' ).value != '') {
             scrollTo({top: elem_Y, left: 0, behavior: "instant",});
         }
     });
+  })();

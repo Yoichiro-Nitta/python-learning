@@ -1,0 +1,127 @@
+{% extends 'pythonL/base.html' %}
+
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container  pt-2">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h4><p>{{ title }}</p></h4>
+            <div style="height: 5px;"></div>
+            <b>【問題】</b><br>
+            {% autoescape off %}
+            {{ sentence | linebreaksbr }}
+            {% endautoescape %}
+            <div style="height: 15px;"></div>
+            <div class="p-2" style="width: 80%; border: darkgreen solid 1px;">
+                📄<b>期待する出力</b><br>
+                {{ expectation | linebreaksbr }}
+            </div>
+            <div style="height: 5px;"></div>
+            <div class="p-2" style="width: 80%; border: darkblue solid 1px;">
+                ☑️<b>条件</b><br>
+                すべてのテストケースにおいて、以下の条件をみたします。<br>
+                {{ condition | linebreaksbr }}
+            </div>
+            <div style="height: 5px;"></div>
+            <div class="p-2" style="width: 80%; border: gray solid 1px;">
+                ⌨️<b>入力される値</b><br>
+                入力は以下のフォーマットで与えられます。
+                <div class="p-1 m-2" style="width: 80%; border: darkgrey solid 1px; background-color: gainsboro;">
+                    {{ format_data | linebreaksbr }}
+                </div>
+                {{ format_text | linebreaksbr }}
+            </div>
+            <div style="height: 25px;"></div>
+            {% for input, output in examples %}
+            ・テストケース{{ forloop.counter }}
+            <div class="p-2" style="width: 80%; border: grey solid 1px;">
+                <b>入力値</b>
+                <div class="p-1 m-2" style="width: 80%; border: darkgrey solid 1px; background-color: gainsboro;">
+                    {{ input | linebreaksbr }}
+                </div>
+            </div>
+            <div class="p-2" style="width: 80%; border: grey solid 1px;">
+                <b>求められる出力</b>
+                <div class="p-1 m-2" style="width: 80%; border: darkgrey solid 1px; background-color: gainsboro;">
+                    {{ output | linebreaksbr }}
+                </div>
+            </div>
+            <div style="height: 15px;"></div>
+            {% endfor %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <div style="height: 10px;"></div>
+    <div class="row">
+        <div class="col-6">
+            <div id="editor" style="height: 475px; width: 90%;">{{ text }}</div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ace.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ext-language_tools.js"></script>
+        </div>
+        <div class="col-6">
+            <select class="form-select form-select-sm bg-info" id="testcase" onchange="select()">
+                {% for testcase in testcases %}
+                {% if forloop.counter == sn %}
+                <option value="{{ testcase }}" selected>テストケース{{ forloop.counter }}</option>
+                {% else %}
+                <option value="{{ testcase }}">テストケース{{ forloop.counter }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+              <div style="height: 4px;"></div>
+            <form action="?" method="post">{% csrf_token %}
+                入力される値
+            <textarea style="height: 90px; width: 100%; background-color: lemonchiffon;" id ="input_ex" name="input_ex" readonly>{{ input_ex }}</textarea>
+                要求される出力
+                <textarea style="height: 90px; width: 100%; background-color: aquamarine;" id ="output_ex" name="output_ex" readonly>{{ output_ex }}</textarea>
+                <div style="height: 2px;"></div>
+                <textarea style="display:none" id ="selected_n" name="selected_n">{{ sn }}</textarea>
+                <textarea style="display:none" id="text" name="text"></textarea>
+                <textarea style="display:none" id="backup" name="backup">{{ text }}</textarea>
+                <textarea class="ps-2" name="output" rows="8" style="background-color: lightcyan; border: blue solid 1px; width: 100%;" readonly>{{ out }}{{ err }}</textarea>
+        </div>
+    </div>
+    <div class="m-3 text-end">
+        <span><button type="submit" class="btn btn-primary" formaction="{% url 'pythonL:compe' pk %}">出力確認</button></span>
+        <span><button type="submit" class="btn btn-danger" formaction="{% url 'pythonL:compe_a' pk %}">解答する</button></span>
+    </div>
+     <!--<div class="text-center"><a href="{% url 'pythonL:questions' %}">問題一覧へ</a></div>-->
+    <div style="height: 60px;"></div>
+</div>
+<script>
+let editor = ace.edit("editor");
+editor.$blockScrolling = Infinity;
+editor.setTheme("ace/theme/monokai");
+editor.getSession().setMode("ace/mode/python");
+editor.setFontSize(14);
+editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+      });
+editor.getSession().on('change', function(){
+        let textcode = editor.getSession().getValue();
+        document.getElementById( 'text' ).value = textcode;});
+
+function select() {
+    let in_out = document.getElementById("testcase").value.split("//");
+    
+        document.getElementById("input_ex").innerHTML = in_out[0];
+        document.getElementById("output_ex").innerHTML = in_out[1];
+        document.getElementById("selected_n").innerHTML = in_out[2];
+      }
+
+
+let elem = document.getElementById('editor');
+let elem_Y = elem.getBoundingClientRect().top + window.scrollY;
+window.addEventListener("load", function() {
+        if (document.getElementById( 'backup' ).value != '') {
+            scrollTo({top: elem_Y, left: 0, behavior: "instant",});
+        }
+    });
+  </script>
+
+{% endblock content %}
