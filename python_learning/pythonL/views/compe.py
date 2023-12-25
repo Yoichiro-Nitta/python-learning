@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from pythonL.models import CustomUser, IntroCourse, Basis, Quartet, Competition
 from django.contrib.auth.decorators import login_required
+import time
 import random
 import subprocess
 
@@ -12,20 +13,41 @@ def compe(request, pk):
     title, sentence = question.title, question.question,
     expectation, condition = question.expectation, question.condition
     format_data, format_text = question.input_format.split("\r\n/separate/\r\n")
+    
     #入力データ、出力データは取得後分割しリストに変換
-    input_ex_list = question.input_ex.split("\r\n/separate/\r\n")
-    output_ex_list = question.output_ex.split("\r\n/separate/\r\n")
+    input_ex_list = question.input_ex.replace("\r", "").split("\n/separate/\n")
+    output_ex_list = question.output_ex.replace("\r", "").split("\n/separate/\n")
     examples = zip(input_ex_list, output_ex_list)
+
+    # エディター色とテストケースをforloop用にまとめる
+    color_text = ["ace/theme/vibrant_ink", 
+                  "ace/theme/monokai", 
+                  "ace/theme/cobalt", 
+                  "ace/theme/solarized_light", 
+                  "ace/theme/crimson_editor"]
+    editor_color = ["Vibrant Ink", "Monokai", "Cobalt", "Solarized Light","Crimson Editor"]
+    editor_colors = zip(color_text, editor_color)
     testcases = [input_ex_list[i] + "//" + output_ex_list[i] + "//" + str(i + 1) for i in range(len(input_ex_list))]
+
     if request.method == 'POST':
         text = request.POST['text'] 
         backup = request.POST['backup'] 
+        defalt_color = request.POST['defalt_color']
+        color_dict = {"ace/theme/vibrant_ink": 1, 
+                      "ace/theme/monokai": 2, 
+                      "ace/theme/cobalt": 3, 
+                      "ace/theme/solarized_light": 4, 
+                      "ace/theme/crimson_editor": 5} 
+        cn = color_dict[defalt_color]
+        # post時に選択されていたselectタグの値をint型で取得
         sn = int(request.POST['selected_n'] )
+        n_input = input_ex_list[sn - 1] + "\n"
         if text == '':
             text = backup
         with open('pythonL/competition.py', 'w') as f:
                 f.write(text)
-        op = subprocess.run('python pythonL/competition.py',input= input_ex_list[sn - 1], shell=True, capture_output=True, text=True, timeout=3)
+        # selectタグの値によって入力値を自動で選択されるように工夫
+        op = subprocess.run('python pythonL/competition.py',input=n_input, shell=True, capture_output=True, text=True, timeout=3)
         out, err = op.stdout, op.stderr
         err = err.split('",')[-1]
         params = {'text': text, 'out' : out, 'err': err, 
@@ -33,12 +55,18 @@ def compe(request, pk):
                 "expectation": expectation, "condition": condition, 
                 "format_data": format_data, "format_text": format_text, 
                 "input_ex": input_ex_list[sn - 1], "output_ex": output_ex_list[sn - 1], 
-                "examples": examples, "testcases": testcases, 
-                "sn": sn, "pk": pk}
+                "examples": examples, "editor_colors": editor_colors, "testcases": testcases, 
+                 "defalt_color": defalt_color, "cn": cn, "sn": sn, "pk": pk}
         return render(request, 'question/compe.html', params)
-        
+    
+    # editor色の初期値
+    cn = 1
+    # selectタグの初期値
     sn = 1
 
+    defalt_color = "ace/theme/vibrant_ink"
+
+    # 「非表示の入力値」、「求められる出力」、「解答例」をユーザーのデータベースに保存 
     user = request.user
     user.s_input = question.input_data
     user.s_output = question.output_data
@@ -49,42 +77,62 @@ def compe(request, pk):
               "expectation": expectation, "condition": condition, 
               "format_data": format_data, "format_text": format_text, 
               "input_ex": input_ex_list[0], "output_ex": output_ex_list[0], 
-              "examples": examples, "testcases": testcases, 
-              "sn": sn, "pk": pk}
+              "examples": examples, "editor_colors": editor_colors, "testcases": testcases, 
+              "defalt_color": defalt_color, 
+              "cn": cn, "sn": sn, "pk": pk}
     return render(request, 'question/compe.html', params)
 
 
 @login_required
 def compe_a(request, pk):
+    #非公開の入力データ、出力データを再取得
     question = Competition.objects.get(section = pk)
-    input_ex_list = question.input_ex.split("\r\n/separate/\r\n")
-    output_ex_list = question.output_ex.split("\r\n/separate/\r\n")
+    input_ex_list = question.input_ex.replace("\r", "").split("\n/separate/\n")
+    output_ex_list = question.output_ex.replace("\r", "").split("\n/separate/\n")
+
     if request.method == 'POST':
         text = request.POST['text'] 
         backup = request.POST['backup'] 
         if text == '':
             text = backup
+        # ユーザのデータベースから「非表示の入力値」、「求められる出力」、「解答例」を取得
         user = request.user
         c_input = user.s_input
         c_output = user.s_output
         e_answer = user.s_answer
-        c_input = c_input.split("\r\n/separate/\r\n")
-        c_output = c_output.split("\r\n/separate/\r\n")
+        # 統合された情報を分解
+        c_input = c_input.replace("\r", "").split("\n/separate/\n")
+        c_output = c_output.replace("\r", "").split("\n/separate/\n")
+        # 表示、非表示で分かれていた「入力値」「正解出力値」を統一
         q_input = input_ex_list + c_input
         q_output = output_ex_list + c_output
+        q_input = list(map(lambda x : x + "\n", q_input))
+        q_output = list(map(lambda x : x + "\n", q_output))
+        # ユーザーの出力格納用リストを用意
         u_answer = []
+        #　処理時間格納用リストを用意
+        processing_time = []
+
+        with open('pythonL/competition.py', 'w') as f:
+            f.write(text)
+        
+        # 処理時間を計測しながらそれぞれの標準入力に対する処理を実行
         for i in range(len(q_input)):
-            with open('pythonL/competition.py', 'w') as f:
-                f.write(text)
+            start = time.time()
             op = subprocess.run('python pythonL/competition.py',input= q_input[i], shell=True, capture_output=True, text=True, timeout=3)
+            end = time.time()
             u_answer.append(op.stdout)
-        check = []
-        fade_in = []
+            time_diff = end - start
+            processing_time.append(round(time_diff, 2))
+        
+        check = [] # テストケース毎の正誤を格納するリスト
+        fade_in = [] # フェードイン用のcssクラスを格納するリスト
         for i in range(len(q_input)):
-            q_output[i] = q_output[i] + "\n"
             check.append(u_answer[i] == q_output[i])
             fade_in.append(f'fadeIn_{i+1}')
-        combine = zip(check, fade_in)
+
+        # for文でまわすためにzipオブジェクトを作成
+        combine = zip(check, processing_time, fade_in)
         params = {"combine": combine, "text": text, "e_answer": e_answer }
         return render(request, 'question/compe_a.html', params)
     return render(request, 'question/compe_a.html')

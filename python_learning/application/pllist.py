@@ -13,3 +13,6 @@ fruits = ["apple", "orange", "banana", "grape", "peach", "lemon", "lime",
 sports = ["rugby", "football", "baseball", "basketball", "volleyball", "dodgeball", "handball", 
           "badminton", "tennis", "table tennis", "golf", "bowling", "squash", "skiing"]
 planets = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"]
+
+bbcl = ["Black", "Brown", "color", "list"]
+mrcl = ["Majoricable", "Red", "color", "list"]

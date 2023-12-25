@@ -2,10 +2,49 @@
     background-color: white;
 }
 
+.red_box{
+  background-color: linen;
+  border: 1px solid darkorange;
+  font-size: 100%;
+  padding: 8px;
+  box-shadow: 0 5px 7px 0 #c0c0c0;
+}
+
+.yellow_box{
+  background-color: lightyellow; 
+  border: 1px solid darkgoldenrod ; 
+  font-size: 100%; 
+  padding: 8px; 
+  box-shadow: 0 5px 5px 0 #c0c0c0;
+}
+
+.blue_box{
+  background-color: lightcyan; 
+  border: 1px solid dodgerblue; 
+  font-size: 100%; 
+  padding: 8px; 
+  box-shadow: 0 5px 7px 0 #c0c0c0;
+}
+
+.green_box{
+  background-color: #c0ffe0; 
+  border: 1px solid darkgreen; 
+  font-size: 100%; 
+  padding: 8px; 
+  box-shadow: 0 5px 7px 0 #c0c0c0;
+}
+
+.gray_theme{
+  background-color: gainsboro; 
+  border: 1px solid darkgrey; 
+}
+
+
+
 .fadeIn_1{
     animation-name:fadeInAnime1;
-    animation-delay: 500ms;
-    animation-duration:1s;
+    animation-delay: 400ms;
+    animation-duration:800ms;
     animation-fill-mode:forwards;
     opacity:0;
     }
@@ -17,8 +56,8 @@
 
 .fadeIn_2{
     animation-name:fadeInAnime2;
-    animation-delay: 1500ms;
-    animation-duration:1s;
+    animation-delay: 1200ms;
+    animation-duration: 800ms;
     animation-fill-mode:forwards;
     opacity:0;
     }
@@ -30,8 +69,8 @@
 
 .fadeIn_3{
     animation-name:fadeInAnime3;
-    animation-delay: 2500ms;
-    animation-duration:1s;
+    animation-delay: 2000ms;
+    animation-duration: 800ms;
     animation-fill-mode:forwards;
     opacity:0;
     }
@@ -43,8 +82,8 @@
   
 .fadeIn_4{
     animation-name:fadeInAnime4;
-    animation-delay: 3500ms;
-    animation-duration:1s;
+    animation-delay: 2800ms;
+    animation-duration: 800ms;
     animation-fill-mode:forwards;
     opacity:0;
     }
@@ -56,8 +95,8 @@
 
 .fadeIn_5{
     animation-name:fadeInAnime5;
-    animation-delay: 4500ms;
-    animation-duration:1s;
+    animation-delay: 3600ms;
+    animation-duration: 800ms;
     animation-fill-mode:forwards;
     opacity:0;
     }
@@ -69,8 +108,8 @@
   
 .fadeIn_6{
     animation-name:fadeInAnime6;
-    animation-delay: 5500ms;
-    animation-duration:1s;
+    animation-delay: 4400ms;
+    animation-duration: 800ms;
     animation-fill-mode:forwards;
     opacity:0;
     }
@@ -79,3 +118,29 @@
       from { opacity: 0; }
       to {opacity: 1;  }
     }
+  
+.fadeIn_7{
+      animation-name:fadeInAnime7;
+      animation-delay: 5200ms;
+      animation-duration: 800ms;
+      animation-fill-mode:forwards;
+      opacity:0;
+      }
+        
+      @keyframes fadeInAnime7{
+        from { opacity: 0; }
+        to {opacity: 1;  }
+      }
+    
+.fadeIn_8{
+      animation-name:fadeInAnime8;
+      animation-delay: 6000ms;
+      animation-duration: 800ms;
+      animation-fill-mode:forwards;
+      opacity:0;
+      }
+          
+      @keyframes fadeInAnime8{
+        from { opacity: 0; }
+        to {opacity: 1;  }
+      }

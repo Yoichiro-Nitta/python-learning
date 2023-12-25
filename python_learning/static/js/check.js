@@ -13,6 +13,7 @@ editor.getSession().on('change', function(){
       let textcode = editor.getSession().getValue();
       document.getElementById( 'text' ).value = textcode;});
 
+
     let elem = document.getElementById('editor');
     let elem_Y = elem.getBoundingClientRect().top + window.scrollY;
 window.addEventListener("load", function() {

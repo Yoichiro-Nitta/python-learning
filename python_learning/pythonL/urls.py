@@ -19,4 +19,6 @@ urlpatterns = [
     path('drill_a/<int:un>/<int:pk>', drill.drill_a, name='drill_a'),
     path('compe/<int:pk>', compe.compe, name='compe'),
     path('compe_a/<int:pk>', compe.compe_a, name='compe_a'),
+    path('p_like/', index.p_like, name='p_like'),
+    path('p_like_ex/', index.p_like_ex, name='p_like_ex'),
 ]

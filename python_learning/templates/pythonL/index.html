@@ -4,7 +4,7 @@
 
 
 {% block content %}
-<div class="container-fluid" style="background-color: white;">
+<div class="container-fluid">
 <div class="p-2"><h2><p class="text-center">Python学習サイト</p></h2></div>
 <div style="height: 100px;"></div>
 <div class="text-center">
@@ -17,7 +17,9 @@
                 <a href="{% url 'pythonL:questions' %}">python基礎問題</a>
             </div>
             <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">資格試験形式問題</div>
-            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">paiza挑戦のために</div>
+            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">
+                <a href="{% url 'pythonL:p_like' %}">paiza挑戦のために</a>
+            </div>
             <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">機械学習練習</div>
             <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">準備中</div>
         </div>

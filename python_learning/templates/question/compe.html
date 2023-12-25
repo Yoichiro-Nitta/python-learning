@@ -1,5 +1,5 @@
 {% extends 'pythonL/base.html' %}
-
+{% load static %}
 {% block title %}Python-Learning{% endblock title %}
 
 
@@ -29,7 +29,7 @@
             <div class="p-2" style="width: 80%; border: gray solid 1px;">
                 ⌨️<b>入力される値</b><br>
                 入力は以下のフォーマットで与えられます。
-                <div class="p-1 m-2" style="width: 80%; border: darkgrey solid 1px; background-color: gainsboro;">
+                <div class="p-1 m-2 gray_theme" style="width: 80%;">
                     {{ format_data | linebreaksbr }}
                 </div>
                 {{ format_text | linebreaksbr }}
@@ -38,14 +38,14 @@
             {% for input, output in examples %}
             ・テストケース{{ forloop.counter }}
             <div class="p-2" style="width: 80%; border: grey solid 1px;">
-                <b>入力値</b>
-                <div class="p-1 m-2" style="width: 80%; border: darkgrey solid 1px; background-color: gainsboro;">
+                <b>入力される値</b>
+                <div class="p-1 m-2 gray_theme" style="width: 80%; ">
                     {{ input | linebreaksbr }}
                 </div>
             </div>
             <div class="p-2" style="width: 80%; border: grey solid 1px;">
                 <b>求められる出力</b>
-                <div class="p-1 m-2" style="width: 80%; border: darkgrey solid 1px; background-color: gainsboro;">
+                <div class="p-1 m-2 gray_theme" style="width: 80%;">
                     {{ output | linebreaksbr }}
                 </div>
             </div>
@@ -56,13 +56,22 @@
     </div>
     <div style="height: 10px;"></div>
     <div class="row">
-        <div class="col-6">
-            <div id="editor" style="height: 475px; width: 90%;">{{ text }}</div>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ace.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ext-language_tools.js"></script>
+        <div class="col-2">
+            <select class="form-select-sm ms-3 mb-1 bg-light text-center" style="width: 90%;" id="editor_color" onchange="color()">
+                {% for key, color in editor_colors %}
+                {% if forloop.counter == cn %}
+                <option value="{{ key }}" selected>{{ color }}</option>
+                {% else %} 
+                <option value="{{ key }}">{{ color }}</option>          
+                {% endif %}
+                {% endfor %}
+            </select>
         </div>
-        <div class="col-6">
-            <select class="form-select form-select-sm bg-info" id="testcase" onchange="select()">
+        <div class="col-5">
+            エディターの配色を変更できます。
+        </div>
+        <div class="col-5">
+            <select class="form-select-sm bg-info text-center" style="width: 30%;" id="testcase" onchange="select()">
                 {% for testcase in testcases %}
                 {% if forloop.counter == sn %}
                 <option value="{{ testcase }}" selected>テストケース{{ forloop.counter }}</option>
@@ -71,13 +80,21 @@
                 {% endif %}
                 {% endfor %}
               </select>
-              <div style="height: 4px;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-7">
+            <div id="editor" style="height: 476px; width: 100%;">{{ text }}</div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ace.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ext-language_tools.js"></script>
+        </div>
+        <div class="col-5">
             <form action="?" method="post">{% csrf_token %}
                 入力される値
-            <textarea style="height: 90px; width: 100%; background-color: lemonchiffon;" id ="input_ex" name="input_ex" readonly>{{ input_ex }}</textarea>
+            <textarea class="ps-2" style="height: 109px; width: 100%; background-color: lemonchiffon;" id ="input_ex" name="input_ex" readonly>{{ input_ex }}</textarea>
                 要求される出力
-                <textarea style="height: 90px; width: 100%; background-color: aquamarine;" id ="output_ex" name="output_ex" readonly>{{ output_ex }}</textarea>
-                <div style="height: 2px;"></div>
+                <textarea class="ps-2" style="height: 109px; width: 100%; background-color: aquamarine;" id ="output_ex" name="output_ex" readonly>{{ output_ex }}</textarea>
+                <input type="hidden" id="defalt_color" name="defalt_color" value="{{ defalt_color }}">
                 <textarea style="display:none" id ="selected_n" name="selected_n">{{ sn }}</textarea>
                 <textarea style="display:none" id="text" name="text"></textarea>
                 <textarea style="display:none" id="backup" name="backup">{{ text }}</textarea>
@@ -88,13 +105,16 @@
         <span><button type="submit" class="btn btn-primary" formaction="{% url 'pythonL:compe' pk %}">出力確認</button></span>
         <span><button type="submit" class="btn btn-danger" formaction="{% url 'pythonL:compe_a' pk %}">解答する</button></span>
     </div>
+    </form>
+    
      <!--<div class="text-center"><a href="{% url 'pythonL:questions' %}">問題一覧へ</a></div>-->
     <div style="height: 60px;"></div>
 </div>
 <script>
+let eColor = document.getElementById( 'defalt_color' ).value
 let editor = ace.edit("editor");
 editor.$blockScrolling = Infinity;
-editor.setTheme("ace/theme/monokai");
+editor.setTheme(eColor);
 editor.getSession().setMode("ace/mode/python");
 editor.setFontSize(14);
 editor.setOptions({
@@ -105,6 +125,11 @@ editor.setOptions({
 editor.getSession().on('change', function(){
         let textcode = editor.getSession().getValue();
         document.getElementById( 'text' ).value = textcode;});
+function color() {
+    let changedColor = document.getElementById("editor_color").value;
+    editor.setTheme(changedColor);
+    document.getElementById( 'defalt_color' ).value = changedColor;
+      };
 
 function select() {
     let in_out = document.getElementById("testcase").value.split("//");
@@ -112,7 +137,7 @@ function select() {
         document.getElementById("input_ex").innerHTML = in_out[0];
         document.getElementById("output_ex").innerHTML = in_out[1];
         document.getElementById("selected_n").innerHTML = in_out[2];
-      }
+      };
 
 
 let elem = document.getElementById('editor');

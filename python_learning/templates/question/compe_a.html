@@ -11,20 +11,28 @@
     <div class="col-2"></div>
     <div class="col-8 text-start">
         <h4>提出コード結果詳細</h4>
-        <hr>
-        {% for check, fade_in in combine %}
-        <div class="" style="display: flex;">
-        <div style="width: 70%; font-size: 18px;">テストケース{{ forloop.counter }}</div>
-        <div class="{{ fade_in }}" style="width: 30%; font-size: 16px; ">
-            {% if check %}
-            <span style="color: green; font-size: 18px;"><b>○</b></span><span style="font-size: 17px;">正解</span>
-            {% else %}
-            ❌不正解
-            {% endif %}
-        </div>
-        </div>
-        <hr>
-        {% endfor %}
+        <table class="table">
+          <thead>
+            <tr><th>テストケース番号</th><th>ジャッジ結果</th><th>実行時間</th></tr>
+        </thead>
+        <tbody>
+          {% for check, time, fade_in in combine %}
+          <tr>
+            <td style="font-size: 18px;">テストケース{{ forloop.counter }}</td>
+            <td class="{{ fade_in }}" data-abc="{{ forloop.counter }}" style="font-size: 16px;">
+              {% if check %}
+              <span style="color: green; font-size: 18px;"><b>○</b></span><span style="font-size: 17px;">正解</span>
+              {% else %}
+              <span style="font-size: 13px;">❌</span>不正解
+              {% endif %}
+          </td>
+          <td class="{{ fade_in }}" data-abc="{{ forloop.counter }}" style="font-size: 17px;">
+          {{ time }}秒</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+       
     </div>
     <div class="col-2"></div>
 </div>
@@ -44,30 +52,5 @@
     </div>
     <div class="col-1"></div>
   </div>
-  <script>
-    let editor1 = ace.edit("editor1");
-    editor1.$blockScrolling = Infinity;
-    editor1.setTheme("ace/theme/monokai");
-    editor1.getSession().setMode("ace/mode/python");
-    editor1.setOptions({
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: false
-      });
-      let editor2 = ace.edit("editor2");
-    editor2.$blockScrolling = Infinity;
-    editor2.setTheme("ace/theme/monokai");
-    editor2.getSession().setMode("ace/mode/python");
-    editor2.setOptions({
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: false
-      });
-    let switchBtn = document.getElementById('show');
-    let edit = document.getElementById('editor2');
-    switchBtn.addEventListener('click', ()=> {
-        edit.style.display ='';
-        show.style.display ='none';
-}, false);
-  </script>
+  <script src="{% static 'js/answer.js' %}"></script>
 {% endblock content %}

@@ -1,0 +1,100 @@
+{% extends 'pythonL/base.html' %}
+{% load static %}
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+<div style="height: 20px;"></div>
+<h3 class="p-2"><p class="text-center">Paiza形式の問題について</p></h3>
+<div style="height: 20px;"></div>
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div class="h4">⚫️解答するにあたって</div>
+        paiza形式の問題（実際のpaizaでも同じですが）では、コード提出後に複数のテストケースによって正誤の判定が行われます。。
+        具体的には「標準入力による値の取得」→「提出されたコードによる計算処理」→「標準出力」→「正誤の判定」という流れになります。
+        「標準入力による値の取得」ができないと、基本的に正しい解答することができないので、「標準入力による値の取得」する方法を解説します。
+        <div style="height: 20px;"></div>
+        <div class="h4">⚫️標準入力による値の取得</div>
+        問題では以下のように入力される値の形式が提示されます。
+        <div class="m-2 p-2" style="width: 60%; border: grey solid 1px;">
+            <b>入力される値</b>
+            <div class="p-1 m-2 gray_theme" style="width: 80%;">
+                3
+            </div>
+        </div>
+        この例では、数字「3」が「入力される値」として提示されています。「3」を受け取るためには<b>input関数</b>を使用します。
+        実際にはinput関数で値を受け取り、何らかの変数に格納しておくのが望ましいです。
+        <div class="p-2">
+            <div class="yellow_box" style="width: 60%;">
+                num = input()<br>
+                print(num)
+            </div>
+            <div class="blue_box" style="width: 60%;">
+                3
+            </div>
+        </div>
+        今回はinput関数で受け取った値をprint関数でそのまま出力しました。したがって、出力した結果「3」が今回の標準出力となります。
+        注意点としては、input関数で受け取った値はstring型になるので、数値の計算を行う際は、int型に変換するなど行う必要があります。
+        <div style="height: 20px;"></div>
+        <div class="h4">⚫️「入力される値」が半角スペースで区切られている場合</div>
+        以下のように、「入力される値」が半角スペースで区切られている場合があります。
+        <div class="m-2 p-2" style="width: 60%; border: grey solid 1px;">
+            <b>入力される値</b>
+            <div class="p-1 m-2 gray_theme" style="width: 80%;">
+                2 5
+            </div>
+        </div>
+        このようなケースでは、input関数を使用すると、"2 5"という文字列が取得されます。
+        「2」と「5」を別々に取得したい場合は、splidメソッドを使用すると便利です。
+        <div class="p-2">
+            <div class="yellow_box" style="width: 60%;">
+                a, b = input().split()<br>
+                print(a)<br>
+                print(b)
+            </div>
+            <div class="blue_box" style="width: 60%;">
+                2<br>
+                5
+            </div>
+        </div>
+        splitメソッドは文字列を半角スペースで分割し、分割された文字列をリストとして返してくれます。
+        分割された数の変数を用意し格納すれば、それぞれの値を得ることができます。
+        <div style="height: 20px;"></div>
+        <div class="h4">⚫️「入力される値」が複数行ある場合</div>
+        また、以下のように、「入力される値」が複数行示される場合があります。
+        <div class="m-2 p-2" style="width: 60%; border: grey solid 1px;">
+            <b>入力される値</b>
+            <div class="p-1 m-2 gray_theme" style="width: 80%;">
+                4<br>
+                7
+            </div>
+        </div>
+        このような場合は、行数分input関数を使用する事で、取得できます。
+        <div class="p-2">
+            <div class="yellow_box" style="width: 60%;">
+                a = input()<br>
+                b = input()<br>
+                print(a)<br>
+                print(b)
+            </div>
+            <div class="blue_box" style="width: 60%;">
+                4<br>
+                7
+            </div>
+        </div>
+        <div style="height: 20px;"></div>
+        <div class="h4">⚫️本家paizaへの挑戦</div>
+        実際のpaizaでは問題がストーリになっており、面白いですし、時間も計測され、集中力も試されます。
+        是非チャレンジしてみてください。
+    </div>
+    <div class="col-1"></div>
+    <div style="height: 30px;"></div>
+    <div class="text-center"><a href="{% url 'pythonL:p_like' %}">戻る</a></div>
+    <div style="height: 30px;"></div>
+</div>
+
+
+
+{% endblock content %}

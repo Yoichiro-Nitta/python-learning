@@ -5,7 +5,7 @@ from .models import CustomUser
 
 
 class BasisAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'unit', 'section', "q_key")
+    list_display = ('__str__', 'unit', 'section', "category", "q_key")
 
 admin.site.register(IntroCourse)
 admin.site.register(Basis, BasisAdmin) 
