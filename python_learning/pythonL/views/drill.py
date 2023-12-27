@@ -152,6 +152,7 @@ def drill(request, un, pk):
             post_code, post_visual = post_code[c], post_visual[c]
     
     # 事前コードの表示テキストをエディターの色と同じになるように色付け
+    # エディターの配色選択機能を追加予定のため、こちらも大きく修正予定。
     if question.category % 3 == 0:
         pre_visual = assist.font(pre_visual)
         post_visual = assist.font(post_visual)
