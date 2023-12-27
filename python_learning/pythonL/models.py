@@ -46,12 +46,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
-    s_input = models.TextField(blank=True)
-    s_output = models.TextField(blank=True)
-    s_answer = models.TextField(blank=True)
-    s_explain = models.TextField(blank=True)
-    c_number = models.PositiveSmallIntegerField(blank=True, null=True)
-    a_number = models.PositiveSmallIntegerField(blank=True, null=True)
+
 
 
     objects = UserManager()
@@ -120,10 +115,11 @@ class Basis(models.Model):
     post_code = models.TextField(blank=True, verbose_name="指定入力（後）")
     post_visual = models.TextField(blank=True, verbose_name="入力視像（後）")
     i_range = models.TextField(blank=True, verbose_name="範囲[]/gvc/")
+    g_range = models.TextField(blank=True, verbose_name="範囲の範囲")
     role_code = models.TextField(blank=True, verbose_name="演算コード")
-    q_data = models.TextField(blank=True, verbose_name="出題データ/nct/")
-    c_output = models.TextField(blank=True, verbose_name="範囲の範囲/要求出力/nct/")
-    e_answer = models.TextField(blank=True, verbose_name="解答例/nct/")
+    q_data = models.TextField(blank=True, verbose_name="出題データ/Qend")
+    c_output = models.TextField(blank=True, verbose_name="要求出力/Qend")
+    e_answer = models.TextField(blank=True, verbose_name="解答例/Qend")
     explanation = models.TextField(blank=True, verbose_name="解説")
     q_key = models.BooleanField(verbose_name="フィルター用", default=False)
     major_h = models.CharField(blank=True, max_length=20, verbose_name="問題グループ")#q_keyがTrueの時のみ

@@ -14,5 +14,3 @@ sports = ["rugby", "football", "baseball", "basketball", "volleyball", "dodgebal
           "badminton", "tennis", "table tennis", "golf", "bowling", "squash", "skiing"]
 planets = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"]
 
-bbcl = ["Black", "Brown", "color", "list"]
-mrcl = ["Majoricable", "Red", "color", "list"]

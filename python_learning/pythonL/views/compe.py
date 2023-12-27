@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from pythonL.models import CustomUser, IntroCourse, Basis, Quartet, Competition
 from django.contrib.auth.decorators import login_required
+from Crypto.Cipher import AES
+from application import key
 import time
 import random
 import subprocess
@@ -33,6 +35,7 @@ def compe(request, pk):
         text = request.POST['text'] 
         backup = request.POST['backup'] 
         defalt_color = request.POST['defalt_color']
+        data = request.POST['data'] 
         color_dict = {"ace/theme/vibrant_ink": 1, 
                       "ace/theme/monokai": 2, 
                       "ace/theme/cobalt": 3, 
@@ -56,7 +59,7 @@ def compe(request, pk):
                 "format_data": format_data, "format_text": format_text, 
                 "input_ex": input_ex_list[sn - 1], "output_ex": output_ex_list[sn - 1], 
                 "examples": examples, "editor_colors": editor_colors, "testcases": testcases, 
-                 "defalt_color": defalt_color, "cn": cn, "sn": sn, "pk": pk}
+                 "defalt_color": defalt_color, "data": data, "cn": cn, "sn": sn, "pk": pk}
         return render(request, 'question/compe.html', params)
     
     # editor色の初期値
@@ -66,19 +69,18 @@ def compe(request, pk):
 
     defalt_color = "ace/theme/vibrant_ink"
 
-    # 「非表示の入力値」、「求められる出力」、「解答例」をユーザーのデータベースに保存 
-    user = request.user
-    user.s_input = question.input_data
-    user.s_output = question.output_data
-    user.s_answer = question.e_answer
-    user.save()
+    private_info = question.input_data + "///" + question.output_data + "///" + question.e_answer
+    cipher = AES.new(key.key, AES.MODE_EAX, nonce=key.nonce)
+    ciphertext, tag = cipher.encrypt_and_digest(private_info.encode("utf-8"))
+
+    data = str([ciphertext, tag])
 
     params = {"title":title,"sentence": sentence, 
               "expectation": expectation, "condition": condition, 
               "format_data": format_data, "format_text": format_text, 
               "input_ex": input_ex_list[0], "output_ex": output_ex_list[0], 
               "examples": examples, "editor_colors": editor_colors, "testcases": testcases, 
-              "defalt_color": defalt_color, 
+              "defalt_color": defalt_color, "data": data, 
               "cn": cn, "sn": sn, "pk": pk}
     return render(request, 'question/compe.html', params)
 
@@ -93,16 +95,19 @@ def compe_a(request, pk):
     if request.method == 'POST':
         text = request.POST['text'] 
         backup = request.POST['backup'] 
+        data = request.POST['data'] 
+        ciphertext, tag = eval(data)
         if text == '':
             text = backup
-        # ユーザのデータベースから「非表示の入力値」、「求められる出力」、「解答例」を取得
-        user = request.user
-        c_input = user.s_input
-        c_output = user.s_output
-        e_answer = user.s_answer
-        # 統合された情報を分解
-        c_input = c_input.replace("\r", "").split("\n/separate/\n")
-        c_output = c_output.replace("\r", "").split("\n/separate/\n")
+
+        # 暗号化されていた情報を複合化        
+        cipher_dec = AES.new(key.key, AES.MODE_EAX, key.nonce)
+        dec_data = cipher_dec.decrypt_and_verify(ciphertext, tag)
+        private_info = dec_data.decode()
+        c_input = private_info.split("///")[0].replace('\r', '').split("\n/separate/\n")
+        c_output = private_info.split("///")[1].replace('\r', '').split("\n/separate/\n")
+        e_answer = private_info.split("///")[2].replace('\r', '')
+
         # 表示、非表示で分かれていた「入力値」「正解出力値」を統一
         q_input = input_ex_list + c_input
         q_output = output_ex_list + c_output

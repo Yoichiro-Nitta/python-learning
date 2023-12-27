@@ -1,2 +1,1 @@
-mylist = ['r', 'v', 'w', 'a'] + ['p']
-print(mylist)
+print(1091 % 29)
