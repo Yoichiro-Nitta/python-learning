@@ -2,6 +2,7 @@ from django.urls import path
 from .views import index
 from .views import drill
 from .views import compe
+from .views import quartet
 
 app_name = 'pythonL'
 urlpatterns = [
@@ -19,6 +20,10 @@ urlpatterns = [
     path('drill_a/<int:un>/<int:pk>', drill.drill_a, name='drill_a'),
     path('compe/<int:pk>', compe.compe, name='compe'),
     path('compe_a/<int:pk>', compe.compe_a, name='compe_a'),
-    path('p_like/', index.p_like, name='p_like'),
-    path('p_like_ex/', index.p_like_ex, name='p_like_ex'),
+    path('p_like', index.p_like, name='p_like'),
+    path('p_like_ex', index.p_like_ex, name='p_like_ex'),
+    path('pe_study', index.pe_study, name='pe_study'),
+    path('p_study/<int:un>', index.p_study, name='p_study'),
+    path('quartet/<int:un>/<int:pk>', quartet.quartet, name='quartet'),
+    path('quartet_a/<int:un>/<int:pk>', quartet.quartet_a, name='quartet_a'),
 ]

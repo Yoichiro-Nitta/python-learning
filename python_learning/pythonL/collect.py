@@ -1,1 +1,2 @@
-print(1091 % 29)
+num = 13
+print(num)

@@ -39,6 +39,18 @@
   border: 1px solid darkgrey; 
 }
 
+.clear_box{
+  border: 1px solid black;
+  width: 80%;
+  padding: 1rem;
+}
+
+
+.interro_box{
+  border: 1px solid black;
+  padding: 0px 20px;
+}
+
 
 
 .fadeIn_1{

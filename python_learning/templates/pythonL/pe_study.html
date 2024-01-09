@@ -1,0 +1,27 @@
+{% extends 'pythonL/base.html' %}
+{% load static %}
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div style="height: 20px;"></div>
+    <h3 class="p-2 text-center">試験範囲問題</h3>
+    <div style="height: 40px;"></div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 text-center">
+            {% for unit, number in python3_list %}
+            <div class="p-3 m-2" style="border: blue solid 2px;">
+                <a href="{% url 'pythonL:p_study' number %}">第{{ number }}章：{{ unit }}</a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <div class=" mt-4 text-center">
+        <a href="{% url 'pythonL:index' %}">Topへ</a>
+    </div>
+</div>
+
+{% endblock content %}

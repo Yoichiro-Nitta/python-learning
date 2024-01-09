@@ -126,3 +126,22 @@ def p_like(request):
 def p_like_ex(request):
     return render(request, 'pythonL/p_like_ex.html')
 
+def pe_study(request):
+    python3_list = [("Pythonの基本", 1),
+                    ("計算・文字列・リスト", 2),
+                    ("制御構文", 3),]
+    params = {"python3_list": python3_list}
+    return render(request, 'pythonL/pe_study.html', params)
+
+def p_study(request, un):
+    # 大区分unの問題を取得
+    questions = Quartet.objects.filter(unit = un)
+    # ページの分割
+    paginator = Paginator(questions, 10)
+    # クエリパラメーターからページ番号取得
+    number = int(request.GET.get('p', 1))
+    # 取得したページ番号のページを取得
+    page_obj = paginator.page(number)
+
+    params = {'page_obj' : page_obj, "un": un}
+    return render(request, 'pythonL/p_study.html', params)

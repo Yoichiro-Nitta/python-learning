@@ -6,18 +6,14 @@
 {% block content %}
 <div class="container-fluid">
     <div style="height: 20px;"></div>
-    <h3 class="p-2 text-center">Paiza形式問題</h3>
-    <div style="height: 20px;"></div>
-    <div class="text-center"><a href="{% url 'pythonL:p_like_ex' %}">問題に挑戦するにあたって</a></div>
-    <div style="height: 20px;"></div>
-    <div class="text-center"><a href="{% url 'pythonL:compe' 0 %}">練習問題</a></div>
-    <div style="height: 20px;"></div>
+    <h3 class="p-2 text-center">Python3基礎試験内容問題</h3>
+    <div style="height: 40px;"></div>
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8 text-center">
             {% for question in page_obj %}
-            <div class="p-1 m-2" style="border: green solid 2px;">
-                <a href="{% url 'pythonL:compe' question.section %}">{{ question.title }}</a>
+            <div class="p-1 mt-2" style="border: green solid 2px;">
+                <a href="{% url 'pythonL:quartet' un question.section %}">{{ question.title }}</a>
             </div>
             {% endfor %}
         </div>
@@ -45,6 +41,9 @@
             </div>
             {% endif %}
         </div>
+    </div>
+    <div class="mt-4 text-center">
+        <a href="{% url 'pythonL:pe_study' %}">戻る</a>
     </div>
 </div>
 

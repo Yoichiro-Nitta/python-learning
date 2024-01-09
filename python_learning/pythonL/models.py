@@ -130,17 +130,21 @@ class Basis(models.Model):
         return self.title
 
 class Quartet(models.Model):
-    name = models.CharField(max_length=60,verbose_name="問題名")
+    title = models.CharField(blank=True, max_length=60,verbose_name="問題名")
+    unit = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name="大区分")
     section = models.PositiveIntegerField(verbose_name="区分")
     level = models.PositiveSmallIntegerField(verbose_name="難易度")
-    question = models.TextField(verbose_name="問題文")
-    question_code = models.TextField(blank=True,verbose_name="使用コード")
-    choices = models.TextField(verbose_name="選択肢")
+    question = models.TextField(verbose_name="問題文", default="以下のコードを実行した時の出力として正しいものを選択してください。")
+    question_code = models.TextField(blank=True,verbose_name="問題（コード）")
+    choices1 = models.TextField(blank=True, verbose_name="選択肢1")
+    choices2 = models.TextField(blank=True, verbose_name="選択肢2")
+    choices3 = models.TextField(blank=True, verbose_name="選択肢3")
+    choices4 = models.TextField(blank=True, verbose_name="選択肢4")
     answer_idx = models.PositiveSmallIntegerField(verbose_name="解答番号")
     explanation = models.TextField(blank=True, verbose_name="解説")
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Competition(models.Model):

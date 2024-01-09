@@ -4,3 +4,4 @@ pandas
 mpmath
 scipy
 sympy
+pycryptodome
