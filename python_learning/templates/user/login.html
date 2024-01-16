@@ -1,4 +1,4 @@
-{% extends 'pythonL/base.html' %}
+{% extends 'python_learning/base.html' %}
 
 {% block title %}Python-Learning{% endblock title %}
 
@@ -10,7 +10,7 @@
 </div>
 <div style="height: 50px;"></div>
 <div class="container text-center p-2">
-    <form action="{% url 'pythonL:login_view' %}" method="post">
+    <form action="{% url 'python_learning:login_view' %}" method="post">
     {% csrf_token %}
     <div class="p-2">ユーザー名：{{ form.username }}</div>
     <div class="p-2">パスワード：{{ form.password }}</div>

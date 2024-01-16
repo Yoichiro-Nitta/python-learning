@@ -1,0 +1,76 @@
+{% extends 'python_learning/base.html' %}
+
+{% block title %}Point Ranking Checker{% endblock title %}
+
+
+{% block content %}
+<div style="height: 20px;"></div>
+<div class="p-2"><h2><p class="text-center">
+  {% if collect %}⭕️正解です。
+  {% else %}❌不正解です。
+  {% endif %} 
+  </p></h2></div>
+<div style="height: 40px;"></div>
+<div class="container text-center p-2">
+    <div class="row p-2">
+      <div class="col mb-6">
+        <div>あなたの出力</div>
+        <textarea class="ps-2" name="output" rows="8" style="background-color: lightcyan; border: blue solid 1px; width: 100%;" readonly>{{ out }}</textarea>
+      </div>
+      <div class="col mb-6">
+        <div>求められる出力</div>
+        <textarea class="ps-2" name="output" rows="8" style="background-color: lightcyan; border: blue solid 1px; width: 100%;" readonly>{{ correct_output }}</textarea>
+      </div>
+    </div>
+    <div style="height: 20px;"></div>
+    <div class="row p-2">
+        <div class="col mb-6">
+          <div>あなたの解答</div>
+          <div id="editor" class="p-2" style="height: 200px;">{{ text_connect }}</div>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+        </div>
+        <div class="col mb-6">
+          <div>解答例</div>
+          <div id="editor2" class="p-2" style="height: 200px;">{{ example_answer }}</div>
+        </div>
+      </div>
+    <div style="height: 40px;"></div>
+    <div class="row">
+    <div class="col-4">
+    {% if pp >= 1 %}
+    <a href="{% url 'python_learning:drill' un pp %}">前の問題へ</a>
+    {% elif pp == 0 and un >= 2 %}
+    <a href="{% url 'python_learning:drill' pu pu_last %}">前の問題へ</a>
+    {% else %}
+    {% endif %} 
+    </div>
+    <div class="col-4"><a href="{% url 'python_learning:questions' %}">問題一覧へ</a></div>
+    {% if np <= pk_last %}
+    <div class="col-4"><a href="{% url 'python_learning:drill' un np %}">次の問題へ</a></div>
+    {% elif np > pk_last and un < un_last %}
+    <div class="col-4"><a href="{% url 'python_learning:drill' nu 1 %}">次の問題へ</a></div>
+    {% else %}
+    {% endif %} 
+    </div>
+  </div>
+  <script>
+    let editor = ace.edit("editor");
+    editor.$blockScrolling = Infinity;
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/python");
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+      });
+      let editor2 = ace.edit("editor2");
+    editor2.$blockScrolling = Infinity;
+    editor2.setTheme("ace/theme/monokai");
+    editor2.getSession().setMode("ace/mode/python");
+    editor2.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+      });
+  </script>
+{% endblock content %}

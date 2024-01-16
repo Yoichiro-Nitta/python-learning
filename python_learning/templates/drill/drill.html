@@ -1,0 +1,143 @@
+{% extends 'python_learning/base.html' %}
+
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container  pt-2">
+    <div class="row">
+        <div class="col-11">
+            <h4><p>{{ question_title }}</p></h4>
+            <div style="height: 5px;"></div>
+            {% autoescape off %}
+            {{ question_sentence | linebreaksbr }}
+            {% endautoescape %}
+            <div style="height: 5px;"></div>
+            {% if question_data != "" %}
+            <div style="width: 62%; border: green solid 1px; font-size: 100%; padding: 10px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+                {{ question_data }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <div style="height: 10px;"></div>
+    <div style="display: flex;">
+        <div>
+            <select class="form-select-sm ms-3 mb-1 bg-light text-center" id="editor_color" onchange="color()">
+                {% for value, color in editor_colors %}
+                {% if forloop.counter == cn %}
+                <option value="{{ value }}" selected>{{ color }}</option>
+                {% else %} 
+                <option value="{{ value }}">{{ color }}</option>          
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="ms-3">
+            ←エディターの配色を変更できます。
+        </div>
+    </div>
+     
+    <div class="row">
+        <div class="col-7">
+            {% autoescape off %}
+            {% if pre_code != "" and ev >= 3 %}
+            <div class="{{ main_class }}" style="height:  124px; border: brown solid 2px;" data-color="main">
+                <div class="{{ side_class }}" style="height: 120px;" data-color="side">&nbsp;</div>
+                <div style="display: inline-block;">{{ pre_visual | linebreaksbr }}</div>
+            </div>  
+            {% elif pre_code != "" and ev < 3 %}
+            <div class="{{ main_class }}" style="height:  76px; border: brown solid 2px;" data-color="main">
+                <div class="{{ side_class }}" style="height: 72px;" data-color="side">&nbsp;</div>
+                <div style="display: inline-block;">{{ pre_visual | linebreaksbr }}</div>
+            </div>
+            {% endif %}
+            {% endautoescape %}
+            <div id="editor" style="height: 380px; width: 100%;">{{ text }}</div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ace.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ext-language_tools.js"></script>
+            {% if post_code != "" %}
+            {% autoescape off %}
+            <div class="{{ main_class }}" style="height: 80px; border: blue solid 2px;" data-color="main">
+            <div class="{{ side_class }}" style="height: 76px;" data-color="side">&nbsp;</div>
+            <div style="display: inline-block;">{{ post_visual | linebreaksbr }}</div>
+            </div>
+            {% endautoescape %}
+            {% endif %}
+        </div>
+        <div class="col-5">
+            <div style="height: 182px;"></div>
+            {% if pre_code != "" and ev >= 3 %}
+            <div style="height: 124px;"></div>
+            {% elif pre_code != "" and ev < 3 %}
+            <div style="height: 76px;"></div>
+            {% endif %}
+            {% if post_code != "" %}
+            <div style="height: 80px;"></div>
+            {% endif %}
+            <form action="?" method="post">{% csrf_token %}
+                <textarea style="display:none" id="text" name="text"></textarea>
+                <textarea style="display:none" id="backup" name="backup">{{ text }}</textarea>
+                <input type="hidden" id="defalt_color" name="defalt_color" value="{{ defalt_color }}">
+                <textarea style="display:none"  name="data1">{{ data1 }}</textarea>
+                <textarea style="display:none"  name="data2">{{ data2 }}</textarea>
+                <textarea class="ps-2" name="output" rows="8" style="background-color: lightcyan; border: blue solid 1px; width: 100%;" readonly>{{ out }}{{ err }}</textarea>
+        </div>
+    </div>
+    <div class="m-3 text-end">
+        <span><button type="submit" class="btn btn-primary" formaction="{% url 'python_learning:drill' un pk %}">出力確認</button></span>
+        <span><button type="submit" class="btn btn-danger" formaction="{% url 'python_learning:drill_a' un pk %}">解答する</button></span>
+    </div>
+    </form>
+    <div class="text-center"><a href="{% url 'python_learning:questions' %}">問題一覧へ</a></div>
+    <div style="height: 60px;"></div>
+</div>
+<script>
+let eColor = document.getElementById( 'defalt_color' ).value
+let editor = ace.edit("editor");
+editor.$blockScrolling = Infinity;
+editor.setTheme(eColor);
+editor.getSession().setMode("ace/mode/python");
+editor.setFontSize(14);
+editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+      });
+editor.getSession().on('change', function(){
+        let textcode = editor.getSession().getValue();
+        document.getElementById( 'text' ).value = textcode;});
+
+function color() {
+    let changedColor = document.getElementById("editor_color").value.split("//");
+    editor.setTheme(changedColor[0]);
+    document.getElementById( 'defalt_color' ).value = changedColor[0];
+    let numColor = document.querySelectorAll('[data-color="num"]');
+    let strColor = document.querySelectorAll('[data-color="str"]');
+    let printColor = document.querySelectorAll('[data-color="print"]');
+    let funcColor = document.querySelectorAll('[data-color="func"]');
+    let defColor = document.querySelectorAll('[data-color="def"]');
+    let bgColor = document.querySelectorAll('[data-color="bg"]');
+    let mainColor = document.querySelectorAll('[data-color="main"]');
+    let sideColor = document.querySelectorAll('[data-color="side"]');
+    numColor.forEach(element => element.className = changedColor[1] + "num");
+    strColor.forEach(element => element.className = changedColor[1] + "str");
+    printColor.forEach(element => element.className = changedColor[1] + "print");
+    funcColor.forEach(element => element.className = changedColor[1] + "func");
+    defColor.forEach(element => element.className = changedColor[1] + "def");
+    bgColor.forEach(element => element.className = changedColor[1] + "bg");
+    mainColor.forEach(element => element.className = changedColor[1] + "main");
+    sideColor.forEach(element => element.className = changedColor[1] + "side");
+      };
+
+let elem = document.getElementById('editor');
+let elem_Y = elem.getBoundingClientRect().top + window.pageYOffset;
+window.addEventListener("load", function() {
+        if (document.getElementById( 'backup' ).value != '') {
+            scrollTo({top: elem_Y, left: 0, behavior: "instant",});
+        }
+    });
+  </script>
+
+{% endblock content %}

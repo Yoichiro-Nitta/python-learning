@@ -1,0 +1,72 @@
+{% extends 'python_learning/base.html' %}
+{% load static %}
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div style="height: 10px;"></div>
+    <h3 class="p-1 text-center">Paiza形式問題</h3>
+    <div style="height: 10px;"></div>
+    <div class="text-center"><a href="{% url 'python_learning:p_like_ex' %}">問題に挑戦するにあたって</a></div>
+    <div style="height: 10px;"></div>
+    <div class="text-center"><a href="{% url 'python_learning:compe' 0 %}">練習問題</a></div>
+    <div style="height: 10px;"></div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10  text-center">
+            <div style="display: flex; font-weight: bold;">
+                <div style="width: 15%;">難易度</div>
+                <div style="width: 70%;">問題</div>
+                <div style="width: 15%;">挑戦履歴</div>
+            </div>
+            <hr style="margin-top: 5px; margin-bottom: 10px;">
+            {% for level, question, result in questions_and_results %}
+            <div style="display: flex;">
+                <div class="p-1 m-1" style="width: 15%;">
+                    <span style="color: goldenrod;">{{ level }}</span>
+                </div>
+            <div class="m-1" style="width: 70%;">
+                <a href="{% url 'python_learning:compe' question.section %}" class="btn_compe">{{ question.title }}</a>
+            </div>
+            <div class="p-1 m-1" style="width: 15%; font-weight: bold;">
+                {% if result %}
+                <span style="color: green;">Perfect達成!</span>
+                {% elif result is False %}
+                <span style="color: darkred;">Perfect未達成</span>
+                {% else %}
+                未挑戦
+                {% endif %}
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <div class="row mt-4">
+        <div class="col text-end">
+            {% if page_obj.has_previous %}
+            <div class="row">
+            <div class="col"></div>
+            <div class="col"><a href="?p=1">« 先頭ページ</a></div>
+            <div class="col"><a href="?p={{ page_obj.previous_page_number }}">前ページ</a></div>
+            </div>
+            {% endif %}
+        </div>
+            <div class="col text-center">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </div>
+        <div class="col text-start">
+            {% if page_obj.has_next %}
+            <div class="row">
+            <div class="col"><a href="?p={{ page_obj.next_page_number }}">次ページ</a></div>
+            <div class="col"><a href="?p={{ page_obj.paginator.num_pages }}">最終ページ »</a></div>
+            <div class="col"></div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div style="height: 40px;"></div>
+</div>
+
+{% endblock content %}

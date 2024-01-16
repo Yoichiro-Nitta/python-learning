@@ -1,0 +1,21 @@
+{% extends 'python_learning/base.html' %}
+{% load static %}
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <div class="h4 mt-3 mb-3 text-center">{{ title }}</div>
+    <div class="h4 mt-3 mb-3 text-center">
+        {% if judge %}
+        正解です。
+        {% else %}
+        不正解です。
+        {% endif %}
+    </div>
+    <div style="height: 40px;"></div>
+    <div class="text-center">
+        <a href="{% url 'python_learning:p_study' un %}?p={{pn}}">問題一覧へ</a>
+    </div>
+</div>
+{% endblock content %}

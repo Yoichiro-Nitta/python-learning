@@ -22,37 +22,21 @@ def reduce(err, pre_code):
     return err
 
 def font(ww):
-    ww = re.sub(r"([\[\{\( ])([0-9.]+)", r'\1<span style="color:#A783F8;">\2</span>', ww)
-    ww = re.sub(r"('[0-9A-Za-z ,!&~\-]+')", r'<span style="color:#E4DC82;">\1</span>', ww)
-    ww = re.sub(r"print\(", r'<span style="color:#E54073;">print</span>(', ww)
-    ww = re.sub(r"\.([a-z\_]+)", r'.<span style="color:#84D7EC;">\1</span>', ww)
-    ww = re.sub(r" ([<>=!]?=) ", r' <span style="color:#E54073;">\1</span> ', ww)
-    ww = re.sub(r" ([\+\-\*/%]) ", r' <span style="color:#E54073;">\1</span> ', ww)
-    ww = re.sub(r" // ", r' <span style="color:#E54073;">//</span> ', ww)
-    ww = re.sub(r"class ([A-Za-z]+)", r'<span style="color:#E54073;">class</span> <span style="color:#AEE053;">\1</span>', ww)
-    ww = re.sub(r"def ([a-z\_]+)", r'<span style="color:#E54073;">def</span> <span style="color:#AEE053;">\1</span>', ww)
+    ww = re.sub(r"([\[\{\( ])([0-9.]+)", r'\1<span class="vibrant_ink_num" data-color="num">\2</span>', ww)
+    ww = re.sub(r"('[0-9A-Za-z ,!&~\-]+')", r'<span class="vibrant_ink_str" data-color="str">\1</span>', ww)
+    ww = re.sub(r"print\(", r'<span class="vibrant_ink_print"  data-color="print">print</span>(', ww)
+    ww = re.sub(r"\.([a-z\_]+)", r'.<span class="vibrant_ink_func" data-color="func">\1</span>', ww)
+    ww = re.sub(r" ([<>=!]?=) ", r' <span class="vibrant_ink_print" data-color="print">\1</span> ', ww)
+    ww = re.sub(r" ([\+\-\*/%]) ", r' <span class="vibrant_ink_print" data-color="print">\1</span> ', ww)
+    ww = re.sub(r" // ", r' <span class="vibrant_ink_print" data-color="print">//</span> ', ww)
+    ww = re.sub(r"class ([A-Za-z]+)", r'<span class="vibrant_ink_print" data-color="print">class</span> <span class="vibrant_ink_def" data-color="def">\1</span>', ww)
+    ww = re.sub(r"def ([a-z\_]+)", r'<span class="vibrant_ink_print" data-color="print">def</span> <span class="vibrant_ink_def" data-color="def">\1</span>', ww)
+    ww = ww.replace("<e>", '</span>')
+    ww = ww.replace("<f>", '<span class="vibrant_ink_func" data-color="func">')
+    ww = ww.replace("<p>", '<span class="vibrant_ink_print" data-color="print">')
+    ww = ww.replace("<s>", '<span class="vibrant_ink_str" data-color="str">')
+    ww = ww.replace("____", '<span class="vibrant_ink_bg" data-color="bg">____</span>')
     return ww
-
-def font_p(xx):
-    xx = xx.replace("int(", '<span style="color:#84D7EC;">int</span>(')
-    xx = xx.replace("float(", '<span style="color:#84D7EC;">float</span>(')
-    xx = xx.replace("str(", '<span style="color:#84D7EC;">str</span>(')
-    xx = xx.replace("list(", '<span style="color:#84D7EC;">list</span>(')
-    xx = xx.replace("len(", '<span style="color:#84D7EC;">len</span>(')
-    xx = xx.replace("type(", '<span style="color:#84D7EC;">type</span>(')
-    xx = xx.replace("map(", '<span style="color:#84D7EC;">map</span>(')
-    xx = xx.replace("imput(", '<span style="color:#84D7EC;">imput</span>(')
-    xx = xx.replace("range(", '<span style="color:#84D7EC;">range</span>(')
-    xx = xx.replace("import ", '<span style="color:#E54073;">import</span> ')
-    xx = xx.replace("for ", '<span style="color:#E54073;">for</span> ')
-    xx = xx.replace("while ", '<span style="color:#E54073;">while</span> ')
-    xx = xx.replace("if ", '<span style="color:#E54073;">if</span> ')
-    xx = xx.replace("elif ", '<span style="color:#E54073;">elif</span> ')
-    xx = xx.replace("else:", '<span style="color:#E54073;">else</span>:')
-    xx = xx.replace(" in ", ' <span style="color:#E54073;">in</span> ')
-    xx = xx.replace(" is ", ' <span style="color:#E54073;">is</span> ')
-    xx = xx.replace("____", '<span style="color:#282722;">____</span>')
-    return xx
 
 
 def bbcl(func, i_range:str, n:int):

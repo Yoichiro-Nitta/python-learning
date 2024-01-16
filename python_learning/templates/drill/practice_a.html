@@ -1,0 +1,64 @@
+{% extends 'python_learning/base.html' %}
+
+{% block title %}Point Ranking Checker{% endblock title %}
+
+
+{% block content %}
+<div style="height: 20px;"></div>
+<div class="p-2"><h2><p class="text-center">
+  {% if collect %}⭕️正解です。
+  {% else %}❌不正解です。
+  {% endif %} 
+  </p></h2></div>
+<div style="height: 40px;"></div>
+<div class="container text-center p-2">
+    <div class="row p-2">
+      <div class="col mb-6">
+        <div>あなたの出力</div>
+        <div style="background-color: aliceblue; height: 160px;" class="border border-primary text-left p-1">
+          {{ out | linebreaksbr }}
+          </div>
+      </div>
+      <div class="col mb-6">
+        <div>求められる出力</div>
+        <div style="background-color: honeydew; height: 160px;" class="border border-success text-left p-1">
+          Hello, World!
+          </div>
+      </div>
+    </div>
+    <div style="height: 20px;"></div>
+    <div class="row p-2">
+        <div class="col mb-6">
+          <div>あなたの解答</div>
+          <div id="editor" class="p-2" style="height: 200px;">{{ text }}</div>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+        </div>
+        <div class="col mb-6">
+          <div>解答例</div>
+          <div id="editor2" class="p-2" style="height: 200px;">print('Hello, World!')</div>
+        </div>
+      </div>
+    <div style="height: 80px;"></div>
+    <div><a href="{% url 'python_learning:practice' %}">戻る</a></div>
+  </div>
+  <script>
+    let editor = ace.edit("editor");
+    editor.$blockScrolling = Infinity;
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/python");
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+      });
+      let editor2 = ace.edit("editor2");
+    editor2.$blockScrolling = Infinity;
+    editor2.setTheme("ace/theme/monokai");
+    editor2.getSession().setMode("ace/mode/python");
+    editor2.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+      });
+  </script>
+{% endblock content %}

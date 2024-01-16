@@ -1,4 +1,4 @@
-{% extends 'pythonL/base.html' %}
+{% extends 'python_learning/base.html' %}
 
 {% block title %}Python-Learning{% endblock title %}
 
@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-1"></div>
         <div class="col-11">
-        <form action="{% url 'pythonL:signup_view' %}" method="post">
+        <form action="{% url 'python_learning:signup_view' %}" method="post">
              {% csrf_token %}
             <div class="p-2 text-start"><label>ユーザー名</label><br>{{ form.username }}</div>
             <div class="p-2 text-start"><label>メールアドレス</label><br>{{ form.email }}</div>
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="container text-center p-2"><a href="{% url 'pythonL:index' %}">戻る</a></div>
+    <div class="container text-center p-2"><a href="{% url 'python_learning:index' %}">戻る</a></div>
 {% endblock content %}
 
     
