@@ -1,7 +1,10 @@
 {% extends 'python_learning/base.html' %}
-
+{% load static %}
 {% block title %}Python-Learning{% endblock title %}
 
+{% block css %}
+<link href="{% static 'css/modal.css' %}" rel="stylesheet">
+{% endblock css %}
 
 {% block content %}
 <div class="container  pt-2">
@@ -67,7 +70,25 @@
             {% endif %}
         </div>
         <div class="col-5">
-            <div style="height: 182px;"></div>
+            <div style="height: 182px;">
+                <button id="modalOpen" class="button_drill">使用可能なライブラリや関数について</button>
+                <div id="easyModal" class="modal">
+                <div class="modal-content">
+                <div class="modal-header">
+                <h5>このエディターでは以下のようにライブラリや関数が制限されます。</h5>
+                <span class="modalClose">×</span>
+                </div>
+                <div class="modal-body">
+                <p>🟢使用可能な外部ライブラリ</p>
+                <p class="ps-3"> numpy、pandas、mpmath、scipy、sympy</p>
+                <p>🔴使用できないモジュール</p>
+                <p class="ps-3"> os、subprocess</p>
+                <p>🔴使用できない関数</p>
+                <p class="ps-3"> open、exec、eval</p>
+                </div>
+                </div>
+                </div>
+            </div>
             {% if pre_code != "" and ev >= 3 %}
             <div style="height: 124px;"></div>
             {% elif pre_code != "" and ev < 3 %}
@@ -93,6 +114,7 @@
     <div class="text-center"><a href="{% url 'python_learning:questions' %}">問題一覧へ</a></div>
     <div style="height: 60px;"></div>
 </div>
+<script src="{% static 'js/modal.js' %}"></script>
 <script>
 let eColor = document.getElementById( 'defalt_color' ).value
 let editor = ace.edit("editor");

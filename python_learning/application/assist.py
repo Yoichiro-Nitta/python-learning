@@ -38,6 +38,20 @@ def font(ww):
     ww = ww.replace("____", '<span class="vibrant_ink_bg" data-color="bg">____</span>')
     return ww
 
+def security(text):
+    judge = True
+    judge *= not bool(re.search(r"import[a-zA-z0-9 _,\.]+os", text))
+    judge *= not bool(re.search(r"import[a-zA-z0-9 _,\.]+subprocess", text))
+    judge *= not bool(re.search(r"from[a-zA-z0-9 _,\.]+django", text))
+    judge *= not bool(re.search(r"[_\.]+import", text))
+    judge *= not bool(re.search(r"open\(", text))
+    judge *= not bool(re.search(r"exec\(", text))
+    judge *= not bool(re.search(r"eval\(", text))
+    if judge:
+        return text
+    else:
+        return 'print("使用できないコードが含まれています。")'
+
 
 def bbcl(func, i_range:str, n:int):
     i_str, r_str= i_range.split(f"\n/bbcl{n}/")

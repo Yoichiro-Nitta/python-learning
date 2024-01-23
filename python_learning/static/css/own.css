@@ -85,6 +85,11 @@ a.btn_compe:hover {
 	background: darkblue;
 }
 
+.slight_line{
+  margin-top: 5px; 
+  margin-bottom: 10px;
+}
+
 .vibrant_ink_bg{ color:#0F0F0F;}
 .vibrant_ink_print{ color:#ED702E;}
 .vibrant_ink_func{ color:#F2C944;}

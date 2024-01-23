@@ -11,58 +11,52 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Original CSS -->
     <link href="{% static 'css/own.css' %}" rel="stylesheet">
+    <link href="{% static 'css/top.css' %}" rel="stylesheet">
     {% block css %}{% endblock css %}
     <title>{% block title %}{% endblock title %}</title>
   </head>
   <body class="body_color">
     <header>
-      <nav class="navbar navbar-expand-lg " data-bs-theme="dark" style="background-color: navy;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Pyhton-Learning</a>
+      <div class="header_innner">
+        <nav style="margin-right: auto;">
+        <a href="{% url 'python_learning:index' %}"><img class="app_logo" src="{% static 'img/app_logo.png' %}"></a>
+        </nav>
+        <nav class="navbar navbar-expand-md" data-bs-theme="dark">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav nav-underline me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'python_learning:index' %}">Top画面</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  コンテンツ
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{% url 'python_learning:intro' %}">Python入門講座</a></li>
-                  <li><a class="dropdown-item" href="{% url 'python_learning:questions' %}">Python基礎問題</a></li>
-                  <li><a class="dropdown-item" href="#">資格試験形式問題</a></li>
-                  <li><a class="dropdown-item" href="#">paiza挑戦のために</a></li>
-                  <li><a class="dropdown-item" href="#">機械学習練習</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'python_learning:login_view' %}">ログイン</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  アカウント
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{% url 'python_learning:signup_view' %}">ユーザー登録</a></li>
-                  <li><a class="dropdown-item" href="#">アカウント情報</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="{% url 'python_learning:logout_view' %}">ログアウト</a></li>
-                </ul>
-              </li>
-            </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav nav-underline me-auto mb-md-0" style="font-size: 14px;">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'python_learning:login_view' %}">ログイン</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'python_learning:logout_view' %}">ログアウト</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'python_learning:signup_view' %}">ユーザー登録</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                コンテンツ
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'python_learning:intro' %}">Python入門講座</a></li>
+                <li><a class="dropdown-item" href="{% url 'python_learning:questions' %}">Python基礎問題</a></li>
+                <li><a class="dropdown-item" href="{% url 'python_learning:pe_study' %}">資格試験形式問題</a></li>
+                <li><a class="dropdown-item" href="{% url 'python_learning:p_like' %}">paiza形式問題</a></li>
+                <li><a class="dropdown-item" href="#">機械学習練習</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">お問い合わせ</a>
+            </li>
+          </ul>
         </div>
-      </nav>
+        </nav>
+      </div>
     </header>
     {% block content %}{% endblock content %}
     <!-- Optional JavaScript -->

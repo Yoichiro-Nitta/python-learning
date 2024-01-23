@@ -32,6 +32,10 @@ def practice(request):
         # 入力内容に変化がない場合の対応
         if text == '':
             text = backup
+
+        # 危険なコードが含まれている場合の変換処理
+        text = assist.security(text)
+
         # pythonファイルに書き込み、出力を得る
         with open('sheet/practice.py', 'w') as f:
             f.write(text)
@@ -51,6 +55,10 @@ def practice_a(request):
         backup = request.POST['backup']
         if text == '':
             text = backup
+        
+        # 危険なコードが含まれている場合の変換処理
+        text = assist.security(text)
+
         with open('sheet/practice.py', 'w') as f:
             f.write(text)
         op = subprocess.run('python sheet/practice.py', shell=True, capture_output=True, text=True, timeout=3)
@@ -109,6 +117,9 @@ def drill(request, un, pk):
 
         # 事前に与えられているコードと統合
         text_connect = assist.connect(pre_code, text, post_code)
+        
+        # 危険なコードが含まれている場合の変換処理
+        text_connect = assist.security(text_connect)
 
         with open('sheet/practice.py', 'w') as f:
             f.write(text_connect)
@@ -258,7 +269,11 @@ def drill_a(request, un, pk):
         question_data, pre_code, post_code, role, ciphertext, tag = eval(data2)
         if text == '':
             text = backup
+
         text_connect = assist.connect(pre_code, text, post_code)
+        # 危険なコードが含まれている場合の変換処理
+        text_connect = assist.security(text_connect)
+
         with open('sheet/practice.py', 'w') as f:
             f.write(text_connect)
         op = subprocess.run('python sheet/practice.py', shell=True, capture_output=True, text=True, timeout=3)

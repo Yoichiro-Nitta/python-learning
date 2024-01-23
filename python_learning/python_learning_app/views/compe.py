@@ -3,7 +3,7 @@ from python_learning_app.models.index import CustomUser
 from python_learning_app.models.questions import Competition, CompeResult
 from django.contrib.auth.decorators import login_required
 from Crypto.Cipher import AES
-from application import key
+from application import key, assist
 from django.core.paginator import Paginator
 import time
 import subprocess
@@ -23,10 +23,10 @@ def p_like(request):
     results = [] # 挑戦履歴格納用リスト
     for question in page_obj:
         level.append(question.level * '★')
-        try:
-            result = CompeResult.objects.get(user_id = request.user.id, connection_key = question)
+        if CompeResult.objects.filter(user_id = request.user.id, connection_key = question.primary_key).exists():
+            result = CompeResult.objects.get(user_id = request.user.id, connection_key = question.primary_key)
             results.append(result.result)
-        except:
+        else:
             results.append(None)
     
     # forloop用にまとめる
@@ -62,6 +62,8 @@ def compe(request, pk):
     editor_colors = zip(color_text, editor_color)
     testcases = [input_ex_list[i] + "//" + output_ex_list[i] + "//" + str(i + 1) for i in range(len(input_ex_list))]
 
+    pn = (pk - 1) // 10 + 1
+
     if request.method == 'POST':
         text = request.POST['text'] 
         backup = request.POST['backup'] 
@@ -78,6 +80,10 @@ def compe(request, pk):
         n_input = input_ex_list[sn - 1] + "\n"
         if text == '':
             text = backup
+        
+        # 危険なコードが含まれている場合の変換処理
+        text = assist.security(text)
+
         with open('sheet/competition.py', 'w') as f:
                 f.write(text)
         # selectタグの値によって入力値を自動で選択されるように工夫
@@ -90,7 +96,7 @@ def compe(request, pk):
                   "format_data": format_data, "format_text": format_text, 
                   "input_ex": input_ex_list[sn - 1], "output_ex": output_ex_list[sn - 1], 
                   "examples": examples, "editor_colors": editor_colors, "testcases": testcases, 
-                  "defalt_color": defalt_color, "data": data, "cn": cn, "sn": sn, "pk": pk}
+                  "defalt_color": defalt_color, "data": data, "cn": cn, "sn": sn, "pk": pk, "pn": pn}
         
         return render(request, 'compe/compe.html', params)
     
@@ -112,7 +118,7 @@ def compe(request, pk):
               "input_ex": input_ex_list[0], "output_ex": output_ex_list[0], 
               "examples": examples, "editor_colors": editor_colors, "testcases": testcases, 
               "defalt_color": defalt_color, "data": data, 
-              "cn": cn, "sn": sn, "pk": pk}
+              "cn": cn, "sn": sn, "pk": pk, "pn": pn}
     
     return render(request, 'compe/compe.html', params)
 
@@ -131,6 +137,9 @@ def compe_a(request, pk):
         ciphertext, tag = eval(data)
         if text == '':
             text = backup
+        
+        # 危険なコードが含まれている場合の変換処理
+        text = assist.security(text)
 
         # 暗号化されていた情報を複合化        
         cipher_dec = AES.new(key.key, AES.MODE_EAX, key.nonce)
@@ -175,10 +184,11 @@ def compe_a(request, pk):
         perfect = ""
         # ユーザーの挑戦履歴を記録
         try:
-            compe_result = CompeResult.objects.get(user_id = request.user.id, connection_key = question)
+            compe_result = CompeResult.objects.get(user_id = request.user.id, connection_key = question.primary_key)
         except:
             compe_result = CompeResult()
             compe_result.user_id = request.user.id
+            compe_result.connection_key = question
         if compe_result.result:
             pass
         elif not False in check:
@@ -186,7 +196,6 @@ def compe_a(request, pk):
             perfect = "perfect達成!"
         else:
             compe_result.result = False
-        compe_result.connection_key = question
         compe_result.save()
 
         pn = (pk - 1) // 10 + 1

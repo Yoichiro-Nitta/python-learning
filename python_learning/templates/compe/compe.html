@@ -2,6 +2,9 @@
 {% load static %}
 {% block title %}Python-Learning{% endblock title %}
 
+{% block css %}
+<link href="{% static 'css/modal.css' %}" rel="stylesheet">
+{% endblock css %}
 
 {% block content %}
 <div class="container  pt-2">
@@ -54,7 +57,30 @@
         </div>
         <div class="col-1"></div>
     </div>
-    <div class="m-4"><a href="{% url 'python_learning:p_like_ex' %}#input" target="_blank" rel="noopener noreferrer">入力される値の受け取り方はこちら（別タブで開く）</a></div>
+    <div class="row m-1" style="height: 60px;">
+        <div class="col-7">
+        <a href="{% url 'python_learning:p_like_ex' %}#input" target="_blank" rel="noopener noreferrer">入力される値の受け取り方はこちら（別タブで開く）</a>
+        </div>
+        <div class="col-5">
+            <button id="modalOpen" class="button_compe">使用可能なライブラリや関数について</button>
+                <div id="easyModal" class="modal">
+                <div class="modal-content">
+                <div class="modal-header">
+                <h5>このエディターでは以下のようにライブラリや関数が制限されます。</h5>
+                <span class="modalClose">×</span>
+                </div>
+                <div class="modal-body">
+                <p>🟢使用可能な外部ライブラリ</p>
+                <p class="ps-3"> numpy、pandas、mpmath、scipy、sympy</p>
+                <p>🔴使用できないモジュール</p>
+                <p class="ps-3"> os、subprocess</p>
+                <p>🔴使用できない関数</p>
+                <p class="ps-3"> open、exec、eval</p>
+                </div>
+                </div>
+                </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-2">
             <select class="form-select-sm ms-3 mb-1 bg-light text-center" style="width: 90%;" id="editor_color" onchange="color()">
@@ -108,9 +134,10 @@
     </div>
     </form>
     
-     <!--<div class="text-center"><a href="{% url 'python_learning:questions' %}">問題一覧へ</a></div>-->
+     <div class="text-center"><a href="{% url 'python_learning:p_like' %}?p={{pn}}">問題一覧へ</a></div>
     <div style="height: 60px;"></div>
 </div>
+<script src="{% static 'js/modal.js' %}"></script>
 <script>
 let eColor = document.getElementById( 'defalt_color' ).value
 let editor = ace.edit("editor");
