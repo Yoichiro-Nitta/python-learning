@@ -3,6 +3,11 @@ from .views import index
 from .views import drill
 from .views import compe
 from .views import quartet
+from .views import machine
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import path
+from django.conf.urls.static import static
+from django.conf import settings
 
 app_name = 'python_learning'
 urlpatterns = [
@@ -26,4 +31,10 @@ urlpatterns = [
     path('p_study/<int:un>', quartet.p_study, name='p_study'),
     path('quartet/<int:un>/<int:pk>', quartet.quartet, name='quartet'),
     path('quartet_a/<int:un>/<int:pk>', quartet.quartet_a, name='quartet_a'),
+    path('machine_learning', machine.machine_learning, name='machine_learning'),
+    path('how_to', machine.how_to, name='how_to'),
+] + [
+    path('download/<int:pk>', machine.download, name='download')
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()

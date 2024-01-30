@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from python_learning_app.models.index import CustomUser
 from python_learning_app.models.questions import Quartet
 from django.contrib.auth.decorators import login_required
-from Crypto.Cipher import AES
 from django.core.paginator import Paginator
 from application import key
 import random

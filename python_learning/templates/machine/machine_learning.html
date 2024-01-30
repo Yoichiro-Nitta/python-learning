@@ -1,0 +1,57 @@
+{% extends 'python_learning/base.html' %}
+{% load static %}
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+<div class="p-2"><h3 class="text-center">機械学習演習</h3></div>
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div class="m-2">
+        機械学習演習ではGoogle Colaboratoryの使用を推奨しています。<br>
+        Google Colaboratoryの始め方に関しては<a href="{% url 'python_learning:how_to' %}">こちら</a>を参考にしてください。
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="ps-3" style="width: 40%;">学習項目</th>
+                    <th class="ps-3" style="width: 20%;">参考・解説</th>
+                    <th class="ps-3" style="width: 20%;">演習(別タブ)</th>
+                    <th class="ps-3" style="width: 20%;">演習(DL)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="ps-3" style="width: 40%;">
+                        機械学習基礎１
+                    </td>
+                    <td class="ps-3" style="width: 20%;">
+                        <a href="https://colab.research.google.com/drive/1ODvvAs3RAyyJPTzkLTY4rx8lMGSZNcXR?usp=sharing" target="_blank" rel="noopener noreferrer">解説</a>
+                    </td>
+                    <td class="ps-3" style="width: 20%;">
+                        -
+                    </td>
+                    <td class="ps-3" style="width: 20%; vertical-align: middle; background-color: aliceblue;"  rowspan="2">
+                        <a href="{% url 'python_learning:download' 1 %}" download="practice.zip">Download</a>
+                    </td>
+                </tr>
+                <tr >
+                    <td class="ps-3" style="width: 40%;">
+                        機械学習基礎２
+                    </td>
+                    <td class="ps-3" style="width: 20%;">
+                        準備中
+                    </td>
+                    <td class="ps-3" style="width: 20%;">
+                        -
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-1"></div>
+</div>
+</div>
+{% endblock content %}

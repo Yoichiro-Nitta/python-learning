@@ -1,0 +1,30 @@
+{% extends 'python_learning/base.html' %}
+{% load static %}
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <div class="p-2"><h4 class="text-center">Google Colaboratoryの始め方</h4></div>
+    <div class="row">
+        <div class="com-1"></div>
+        <div class="com-10">
+            <h5 class="mt-2">① Googleアカウントの作成</h5>
+            <p>Googleアカウントをお持ちでない場合はアカウントの作成を行ってください。</p>
+            <h5 class="mt-2">② Googleドライブを開く</h5>
+            <p>Google検索ページの右上にあるGoogleアプリのボタンからGoogleドライブを選択してください。</p>
+            <img style="width: 60%; height: auto;" src="{% static 'img/drive.png' %}">
+            <h5 class="mt-2">③ Google Colaboratoryのインストール</h5>
+            <p>Googleドライブの「新規」から「その他」→「アプリの追加」を選び、「Colaboratory」と検索し、インストールしてください。</p>
+            <img style="width: 60%; height: auto;" src="{% static 'img/add.png' %}"><br>
+            <img style="width: 60%; height: auto;" src="{% static 'img/search.png' %}"><br>
+            <img style="width: 60%; height: auto;" src="{% static 'img/install.png' %}">
+            <h5 class="mt-2">③ Google Colaboratoryの開始</h5>
+            <p>Googleドライブの「マイドライブ」で「右クリック」→「その他」→「Google Colaboratory」を選択すれば開始できます。</p>
+            <img style="width: 60%; height: auto;" src="{% static 'img/select.png' %}">
+        </div>
+        <div class="com-1"></div> 
+    </div>
+    <div class="p-2 text-center"><a href="{% url 'python_learning:machine_learning' %}">戻る</a></div>
+</div>
+{% endblock content %}
