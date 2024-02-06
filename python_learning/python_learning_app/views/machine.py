@@ -6,8 +6,19 @@ from django.http import FileResponse
 import random
 
 def machine_learning(request):
+    title = ['Pandas基礎', '機械学習基礎', 'クラス分類演習']
+    url1 = ['https://colab.research.google.com/drive/1U9Z0EhotAtg3FgGgCTGyTeTf4-N3Pcuy?usp=sharing',
+           'https://colab.research.google.com/drive/1ODvvAs3RAyyJPTzkLTY4rx8lMGSZNcXR?usp=sharing',
+           'https://colab.research.google.com/drive/1WWWLaQNZbLKMHcEZ60YIF3F3fAAk3Xa3?usp=sharing']
+    url2 = ['https://colab.research.google.com/drive/1VncELpgIlwh3TQDKnL5EnKIvZ6BhrhSo?usp=sharing',
+            '',
+            'https://colab.research.google.com/drive/1U2KsqvntC-6Gh3DLIZ95A7qu3o68dG4j?usp=sharing']
+    num = [i+1 for i in range(len(url1))]
+    file = ['Pandas_Basis.zip', 'practice.zip', 'machine_learning.zip']
+    practice = zip(title, url1, url2, num, file)
+    params = {'practice': practice}
 
-    return render(request, 'machine/machine_learning.html')
+    return render(request, 'machine/machine_learning.html', params)
 
 def how_to(request):
 
@@ -15,7 +26,7 @@ def how_to(request):
 
 
 def download(request, pk):
-    file = ['practice1.zip']
+    file = ['Pandas_Basis.zip', 'practice.zip', 'machine_learning.zip']
     file_path = 'downloads/' + file[pk - 1]
     filename = file[pk - 1]
     return FileResponse(open(file_path, "rb"), as_attachment=True, filename=filename)
