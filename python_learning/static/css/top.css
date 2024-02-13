@@ -33,3 +33,112 @@ header{
     background: white;
     color: darkblue;
 }
+
+
+
+.l-wrapper_01 {
+    margin: 1rem auto;
+    width: 95%;
+  }
+  
+  /* .l-wrapper_01:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+    transition: all .5s;
+  } */
+  
+  .card_01 {
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .16);
+    color: #212121;
+    text-decoration: none;
+  }
+  
+  .card__header_01 {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .card__title_01 {
+    padding: 1rem 1.5rem;
+    font-size: 1.5rem;
+    order: 1;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.6rem;
+    text-align: right;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .card__thumbnail_01 {
+    margin: 0;
+    order: 0;
+  }
+  
+  .card__image_01 {
+    width: 100%;
+  }
+  
+  .card__body_01 {
+    padding: 0 1.5rem;
+  }
+  
+  
+  .card__text2_01 {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+  }
+  
+  .button_01 {
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 360px;
+    padding: 10px 25px;
+    color: #313131;
+    transition: 0.3s ease-in-out;
+    font-weight: 600;
+    transform: skew(-15deg);
+    color: #fff;
+    background-image: -webkit-gradient(linear, left top, right top, from(#2af598), to(#009efd));
+    background-image: -webkit-linear-gradient(left, #2af598 0%, #009efd 100%);
+    background-image: linear-gradient(90deg, #2af598 0%, #009efd 100%);
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+}
+  
+  .button_01:hover {
+    -webkit-transform: skew(0);
+    transform: skew(0);
+    color: #fff;
+    -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+  }
+
+
+  .sp_1 {
+    display: none;
+    }
+
+
+  @media not all and (min-width: 1000px){
+  .sp_1 {
+    display: block;
+    }
+    }
+  
+  .sp_2 {
+      display: none;
+      }
+  
+  @media not all and (min-width: 750px){
+  .sp_2 {
+      display: block;
+      }
+      }

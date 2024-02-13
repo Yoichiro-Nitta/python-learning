@@ -22,19 +22,30 @@
             <form action="{% url 'python_learning:quartet_a' un pk %}" method="post">
             {% csrf_token %}
             {% for choice, number in shuffled %}
-            <div class="form-check m-3 p-1">
+            {% if frame %}
+            <div class="form-check m-3 p-1 clear_box">
                 <input class="form-check-input" type="radio" name="choice" id="choice{{ number }}" value="{{ number }}">
                 <label class="form-check-label" for="choice{{ number }}">
-                  {{ choice | linebreaksbr }}
+                {% autoescape off %}
+                {{ choice | linebreaksbr }}
+                {% endautoescape %}
                 </label>
-              </div>              
+              </div>
+              {% else %}   
+              <div class="form-check m-3 p-1">
+                <input class="form-check-input" type="radio" name="choice" id="choice{{ number }}" value="{{ number }}">
+                <label class="form-check-label" for="choice{{ number }}">
+                {{ choice | linebreaksbr }}
+                </label>
+              </div>
+              {% endif %}
             {% endfor %}
             <button type="submit" class="btn btn-primary">解答する</button>
             </form>
         </div>
     </div>
     <div style="height: 40px;"></div>
-    <div class="text-center">
+    <div class="button_return">
         <a href="{% url 'python_learning:p_study' un %}?p={{pn}}">問題一覧へ</a>
     </div>
     <div class="col1"></div>

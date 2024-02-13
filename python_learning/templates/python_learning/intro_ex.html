@@ -3,7 +3,7 @@
 {% block css %}
 <style>
     .body_color{
-        background-color: aliceblue;
+        background-color: lightskyblue;
     }
 </style>
 {% endblock css %}
@@ -11,15 +11,15 @@
 
 {% block content %}
 <div style="height: 40px;"></div>
-<div class="container" style="font-size: 18px;">
+<div class="container" style="font-size: 18px; background-color: lightskyblue;">
     <div class="row">
     <div class="col-8" style="background-color: white;">
-        <div><h2><p class="text-center">{{ title }}</p></h2></div>
+        <div><h2 class="text-center pt-2">= {{ title }} =</h2></div>
     {% autoescape off %}
     {% for ex in explanations %}
     {% if ex.text_type == "heading" %}
     <div style="height: 50px;"></div>
-    <div class="h4">{{ ex.content }}</div>
+    <div class="h4 FA_pen">{{ ex.content }}</div>
 
     {% elif ex.text_type == "text" %}
     <div style="height: 2px;"></div>
@@ -92,24 +92,34 @@
     </div>
     <div style="height: 20px;"></div>
     </div>
-    <div class="col-4" style="background-color: aliceblue;">
-        <div style="background-color: white; height: 400px; position: sticky; top: 0;"></div>
+    <div class="col-4" style="background-color: lightskyblue;">
+        <div style="background-color: white; height: 400px; position: sticky; top: 0;">
+            <div class="h4 text-center pt-2">この内容に対する基本問題</div>
+            {% for num, title in questions_list %}
+            <div class="m-4">
+                <a href="{% url 'python_learning:drill' pk num %}" class="button_drill">{{ pk }}-{{ num }}.{{ title }}</a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
     </div>
     <div class="p-2">
         <div class="row">
             <div class="col-4 text-end">
             {% if p >= 1 %}
-            <a href="{% url 'python_learning:intro_ex' p %}">前へ</a>
+            <div class="button_back">
+            <a href="{% url 'python_learning:intro_ex' p %}" class="button_back">前へ</a>
+            </div>
             {% endif %} 
             </div>
-            <div class="col-4 text-center">
-                <a href="{% url 'python_learning:intro' %}">一覧へ</a>
-                
+            <div class="col-4 text-center button_return">
+                <a href="{% url 'python_learning:intro' %}">一覧へ</a>                
             </div>
             <div class="col-4 text-start">
                 {% if n <= 6 %}
+                <div class="button_next">
                 <a href="{% url 'python_learning:intro_ex' n %}">次へ</a>
+                </div>
                 {% endif %} 
             </div>
         </div>

@@ -17,6 +17,8 @@ def p_like(request):
     number = int(request.GET.get('p', 1))
     # 取得したページ番号のページを取得
     page_obj = paginator.page(number)
+    # ページ数のリストを取得
+    page_range = [x for x in paginator.page_range]
 
     # 難易度とユーザーの挑戦履歴を取得
     level = [] # 難易度格納用リスト
@@ -32,7 +34,7 @@ def p_like(request):
     # forloop用にまとめる
     questions_and_results = zip(level, page_obj, results)
 
-    params = {'page_obj' : page_obj, 'questions_and_results': questions_and_results}
+    params = {'page_obj' : page_obj, "page_range": page_range, 'questions_and_results': questions_and_results}
 
     return render(request, 'compe/p_like.html', params)
 

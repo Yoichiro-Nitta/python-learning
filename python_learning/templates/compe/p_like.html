@@ -27,7 +27,7 @@
                     <span style="color: goldenrod;">{{ level }}</span>
                 </div>
             <div class="m-1" style="width: 70%;">
-                <a href="{% url 'python_learning:compe' question.section %}" class="btn_compe">{{ question.title }}</a>
+                <a href="{% url 'python_learning:compe' question.section %}" class="btn_co color_compe">{{ question.title }}</a>
             </div>
             <div class="p-1 m-1" style="width: 15%; font-weight: bold;">
                 {% if result %}
@@ -44,29 +44,52 @@
         <div class="col-1"></div>
     </div>
     <div class="row mt-4">
-        <div class="col text-end">
-            {% if page_obj.has_previous %}
-            <div class="row">
-            <div class="col"></div>
-            <div class="col"><a href="?p=1">« 先頭ページ</a></div>
-            <div class="col"><a href="?p={{ page_obj.previous_page_number }}">前ページ</a></div>
-            </div>
+        <div class="col"></div>
+        <div class="col">
+            {% if page_obj.paginator.num_pages > 1 %}
+            <ul class="Pagination">
+                {% if page_obj.has_previous %}
+                <li class="Pagination-Item">
+                    <a class="Pagination-Item-Link" href="?p=1">≪</a>
+                </li>
+                <li class="Pagination-Item">
+                    <a class="Pagination-Item-Link" href="?p={{ page_obj.previous_page_number }}">&lt;</a>
+                </li>
+                {% else %}
+                <li style="width: 98px;"></li>
+                {% endif %}
+                {% for page in page_range %}
+                {% if page == page_obj.number %}
+                <li class="Pagination-Item">
+                    <a class="Pagination-Item-Link isActive" href="?p={{ page }}"><span>{{ page }}</span></a>
+                </li>
+                {% else %}
+                <li class="Pagination-Item">
+                    <a class="Pagination-Item-Link" href="?p={{ page }}"><span>{{ page }}</span></a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="Pagination-Item">
+                    <a class="Pagination-Item-Link" href="?p={{ page_obj.next_page_number }}">&gt;</a>
+                </li>
+                <li class="Pagination-Item">
+                    <a class="Pagination-Item-Link" href="?p={{ page_obj.paginator.num_pages }}">≫</a>
+                </li>
+                {% endif %}
+            </ul>
             {% endif %}
+            <div class="mt-4 text-center">
+                {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ページ
+           </div>
         </div>
-            <div class="col text-center">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </div>
-        <div class="col text-start">
-            {% if page_obj.has_next %}
-            <div class="row">
-            <div class="col"><a href="?p={{ page_obj.next_page_number }}">次ページ</a></div>
-            <div class="col"><a href="?p={{ page_obj.paginator.num_pages }}">最終ページ »</a></div>
-            <div class="col"></div>
-            </div>
-            {% endif %}
-        </div>
+        <div class="col"></div>
     </div>
     <div style="height: 40px;"></div>
+    <div class="text-center">
+        <a href="{% url 'python_learning:index' %}" class="button_to_top">戻る</a>
+    </div>
+    <div style="height: 50px;"></div>
 </div>
 
 {% endblock content %}

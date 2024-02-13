@@ -1,5 +1,10 @@
 {% extends 'python_learning/base.html' %}
 {% load static %}
+
+
+{% block css %}
+<link href="{% static 'css/top.css' %}" rel="stylesheet">
+{% endblock css %}
 {% block title %}Python-Learning{% endblock title %}
 
 
@@ -25,57 +30,95 @@
         <div class="col-2"></div>
     </div>
 </div>
-<div class="text-center">
-    <div class="row">
-        <div class="col-3">
-            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">
-                <a href="{% url 'python_learning:intro' %}">python入門講座</a>
-            </div>
-            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">
-                <a href="{% url 'python_learning:questions' %}">python基礎問題</a>
-            </div>
-            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">
-                <a href="{% url 'python_learning:pe_study' %}">資格試験形式問題</a>
-            </div>
-            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">
-                <a href="{% url 'python_learning:p_like' %}">paiza形式問題</a>
-            </div>
-            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">
-                <a href="{% url 'python_learning:machine_learning' %}">機械学習演習</a>
-            </div>
-            <div class="ps-3 d-flex align-items-center" style="height: 80px; background-color: aliceblue;">準備中</div>
-        </div>
-        <div class="col-9">
-            <div>
-                <p class="h4 text-start">学習用コンテンツの内容は以下のようになってます。</p>
-            </div>
-            <div style="height: 20px;"></div>
-            <div>
-            <table>
-                <tr style="height: 40px;">
-                <td class="text-end">python入門講座･･･</td>
-                <td class="text-start">python学習０日〜１週間の方向けの入門編です。</td>
-                </tr>
-                <tr style="height: 40px;">
-                <td class="text-end">python基礎問題･･･</td>
-                <td class="text-start">python学習１週間〜２ヶ月の方向けの基礎演習です。</td>
-                </tr>
-                <tr style="height: 40px;">
-                <td class="text-end">資格試験形式問題･･･</td>
-                <td class="text-start">資格試験を受験予定の方向けの練習問題です。</td>
-                </tr>
-                <tr style="height: 40px;">
-                <td class="text-end">paiza形式問題･･･</td>
-                <td class="text-start">これからpaizaを挑戦する方向けの内容です。</td>
-                </tr>
-                <tr style="height: 40px;">
-                <td class="text-end">機械学習練習･･･</td>
-                <td class="text-start">説明文準備中</td>
-                </tr>
-            </table>
-            </div>
-        </div>
+<div style="height: 40px;"></div>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-4">
+        <div class="l-wrapper_01">
+            <article class="card_01">
+              <div class="card__header_01">
+                <p class="card__title_01"><a href="{% url 'python_learning:intro' %}" class="button_01">Python<br class="sp_1">入門<br class="sp_2">講座</a></p>
+                <figure class="card__thumbnail_01">
+                    <img src="{% static 'img/index/gakushu1.png' %}" alt="サムネイル" class="card__image_01">
+              </figure>
+              </div>
+              <div class="card__body_01">
+                <p class="card__text2_01">pythonの基礎知識を学習</p>
+              </div>              
+            </article>
+          </div>
     </div>
+    <div class="col-4">
+        <div class="l-wrapper_01">
+            <article class="card_01">
+              <div class="card__header_01">
+                <p class="card__title_01"><a href="{% url 'python_learning:questions' %}" class="button_01">Python<br class="sp_1">基本<br class="sp_2">問題</a></p>
+                <figure class="card__thumbnail_01">
+                    <img src="{% static 'img/index/renshu1.png' %}" alt="サムネイル" class="card__image_01">
+              </figure>
+              </div>
+              <div class="card__body_01">
+                <p class="card__text2_01">pythonの基本の問題集</p>
+              </div>              
+            </article>
+          </div>
+    </div>
+    <div class="col-2"></div>
+</div>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-4">
+        <div class="l-wrapper_01">
+            <article class="card_01">
+              <div class="card__header_01">
+                <p class="card__title_01"><a href="{% url 'python_learning:pe_study' %}" class="button_01">Python<br class="sp_1">知識<br class="sp_2">問題</a></p>
+                <figure class="card__thumbnail_01">
+                    <img src="{% static 'img/index/yontaku2.png' %}" alt="サムネイル" class="card__image_01">
+              </figure>
+              </div>
+              <div class="card__body_01">
+                <p class="card__text2_01">pythonの知識問題集</p>
+              </div>              
+            </article>
+          </div>
+    </div>
+    <div class="col-4">
+        <div class="l-wrapper_01">
+            <article class="card_01">
+              <div class="card__header_01">
+                <p class="card__title_01"><a href="{% url 'python_learning:p_like' %}" class="button_01">Paiza<br class="sp_1">形式<br class="sp_2">問題</a></p>
+                <figure class="card__thumbnail_01">
+                    <img src="{% static 'img/index/zissen2.png' %}" alt="サムネイル" class="card__image_01">
+              </figure>
+              </div>
+              <div class="card__body_01">
+                <p class="card__text2_01">Paiza形式の問題集</p>
+              </div>              
+            </article>
+          </div>
+    </div>
+    <div class="col-2"></div>
+</div>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-4">
+        <div class="l-wrapper_01">
+            <article class="card_01">
+              <div class="card__header_01">
+                <p class="card__title_01"><a href="{% url 'python_learning:machine_learning' %}" class="button_01">機械学習<br class="sp_1">演習</a></p>
+                <figure class="card__thumbnail_01">
+                    <img src="{% static 'img/index/enshu2.png' %}" alt="サムネイル" class="card__image_01">
+              </figure>
+              </div>
+              <div class="card__body_01">
+                <p class="card__text2_01">機械学習の演習</p>
+              </div>              
+            </article>
+          </div>
+    </div>
+    <div class="col-4">
+    </div>
+    <div class="col-2"></div>
 </div>
 </div>
 <footer style="height: 30px; position: relative; bottom: 0;  width: 100%; background-color: navy;">

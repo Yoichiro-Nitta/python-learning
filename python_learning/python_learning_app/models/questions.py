@@ -41,6 +41,7 @@ class Quartet(models.Model):
     choices3 = models.TextField(blank=True, verbose_name="選択肢3")
     choices4 = models.TextField(blank=True, verbose_name="選択肢4")
     answer_idx = models.PositiveSmallIntegerField(verbose_name="解答番号")
+    frame = models.BooleanField(default = False, verbose_name="枠")
     explanation = models.TextField(blank=True, verbose_name="解説")
 
     def __str__(self):

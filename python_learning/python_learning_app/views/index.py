@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from python_learning_app.models.index import CustomUser, IntroCourse
+from python_learning_app.models.questions import Basis
 from python_learning_app.forms import SignupForm, LoginForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -62,8 +63,15 @@ def intro(request):
 
 def intro_ex(request, pk):
     # データベースから回毎のデータを取得（第１回、第２回といった具合で、「回」で分類）
-    explanations = IntroCourse.objects.filter(section = pk)
-    explanations = explanations.order_by('order')
+    explanations = IntroCourse.objects.filter(section = pk).order_by('order')
+
+    # 基本問題をunit単位で取得
+    Basis_questions = Basis.objects.filter(unit = pk, q_key = True).order_by('section')
+    # unitに対応する基本問題のタイトルを取得
+    questions_title = [q.title for q in Basis_questions]
+    questions_title = list(map(lambda x : x.split('/')[0], questions_title))
+    # 問題番号とタイトルをリストにまとめる
+    questions_list = [(x + 1, y) for x, y in enumerate(questions_title)]
 
     # 各回の最初のデータにはタイトルが付与されているので、それを取得
     title = explanations.first().title
@@ -90,12 +98,13 @@ def intro_ex(request, pk):
         err = err.split('",')[-1]
 
         params = {
-        'text': text, 'out' : out, 'err': err, 
+        'text': text, 'out' : out, 'err': err, "questions_list": questions_list, 
         "explanations": explanations, "title": title, "pk": pk, "n": n, "p": p}
 
         return render(request, 'python_learning/intro_ex.html', params)
     
-    params = {"explanations": explanations, "title":title, "pk": pk, "n": n, "p": p}
+    params = {"explanations": explanations, "title":title, "questions_list": questions_list,
+              "pk": pk, "n": n, "p": p}
 
     return render(request, 'python_learning/intro_ex.html', params)
 

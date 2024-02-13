@@ -23,10 +23,8 @@
     <div class="col-xl-9">
         <div class="row">
         {% for question in value %}
-        <div class="col-3 m-1" style="width: 23%; background-color: lightyellow; border: green solid 1px; border-radius: 10px;">
-            <div class="pt-2 pb-2">
-            <a href="{% url 'python_learning:drill' question.unit question.section %}">{{ question.unit }}-{{ question.section }}.{{ question.minor_h }}</a>
-            </div>
+        <div class="col-3" style="width: 25%;">
+            <a href="{% url 'python_learning:drill' question.unit question.section %}" class="button_drill">{{ question.unit }}-{{ question.section }}.{{ question.minor_h }}</a>
         </div>
         {% endfor %}
         </div>
@@ -40,7 +38,9 @@
     {% endif %}
     {% endfor %}
     <div style="height: 20px;"></div>
-    <div class="text-center"><a href="{% url 'python_learning:index' %}">戻る</a></div>
-    <div style="height: 20px;"></div>
+    <div class="text-center">
+        <a href="{% url 'python_learning:index' %}" class="button_to_top">戻る</a>
+    </div>
+    <div style="height: 50px;"></div>
 </div>
 {% endblock content %}

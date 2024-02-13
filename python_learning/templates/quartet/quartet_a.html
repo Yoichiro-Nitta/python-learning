@@ -14,8 +14,20 @@
         {% endif %}
     </div>
     <div style="height: 40px;"></div>
-    <div class="text-center">
-        <a href="{% url 'python_learning:p_study' un %}?p={{pn}}">問題一覧へ</a>
+    <div class="row">
+        <div class="col button_back">
+            {% if pk > 1 %}
+            <a href="{% url 'python_learning:quartet' un pk_b %}">前の問題へ</a>
+            {% endif %}
+        </div>
+        <div class="col button_return">
+            <a href="{% url 'python_learning:p_study' un %}?p={{pn}}">問題一覧へ</a>
+        </div>
+        <div class="col button_next">
+            {% if pk < num_of_series %}
+            <a href="{% url 'python_learning:quartet' un pk_a %}">次の問題へ</a>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock content %}
