@@ -10,21 +10,26 @@
 
 {% block content %}
 <div>
-<div class="pt-3" style="background-color: lightskyblue;">
+<div class="pt-3" style="background-color: #add8fa;">
     <h2 class="text-center mb-5">Python学習サイト</h2>
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
             <div class="text-center" style="font-weight: bold;">更新情報</div>
             <hr class="slight_line">
-            <div class="ps-4">準備中</div>
+            {% for news in recent %}
+            <div class="ps-4" style="display: flex;">
+              <div style="width: 20%;">
+                {{ news.date|date:"Y.m.d" }}
+              </div>
+              <div style="width: 80%;">
+                {{ news.comment }}
+              </div>
+            </div>
             <hr class="slight_line">
-            <div class="ps-4">準備中</div>
-            <hr class="slight_line">
-            <div class="ps-4">準備中</div>
-            <hr class="slight_line">
-            <div class="button01 m-4">
-                <a href="#">一覧へ</a>
+            {% endfor %}
+            <div class="button_list m-4">
+                <a href="{% url 'python_learning:news_list' %}">一覧へ</a>
             </div>
         </div>
         <div class="col-2"></div>
@@ -71,7 +76,7 @@
         <div class="l-wrapper_01">
             <article class="card_01">
               <div class="card__header_01">
-                <p class="card__title_01"><a href="{% url 'python_learning:pe_study' %}" class="button_01">Python<br class="sp_1">知識<br class="sp_2">問題</a></p>
+                <p class="card__title_01"><a href="{% url 'python_learning:chapter' %}" class="button_01">Python<br class="sp_1">知識<br class="sp_2">問題</a></p>
                 <figure class="card__thumbnail_01">
                     <img src="{% static 'img/index/yontaku2.png' %}" alt="サムネイル" class="card__image_01">
               </figure>

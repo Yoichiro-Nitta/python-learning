@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
-            <a href="{% url 'python_learning:practice' %}">練習問題</a>
+            <a href="{% url 'python_learning:practice' %}" class="button_practice">練習問題</a>
         </div>
         <div class="col-2"></div>
     </div>
@@ -24,7 +24,7 @@
         <div class="row">
         {% for question in value %}
         <div class="col-3" style="width: 25%;">
-            <a href="{% url 'python_learning:drill' question.unit question.section %}" class="button_drill">{{ question.unit }}-{{ question.section }}.{{ question.minor_h }}</a>
+            <a href="{% url 'python_learning:drill_beginner' question.unit question.section %}" class="button_drill">{{ question.unit }}-{{ question.section }}.{{ question.minor_h }}</a>
         </div>
         {% endfor %}
         </div>
@@ -37,6 +37,11 @@
     <hr>
     {% endif %}
     {% endfor %}
+    <div style="height: 20px;"></div>
+    <div class="text-center">
+        <a href="{% url 'python_learning:drill_beginners' 1 %}" class="button_series">10問連続ランダム出題</a>
+        <div class="m-1">このページの問題からランダムに１０問連続で挑戦できます。</div>
+    </div>
     <div style="height: 20px;"></div>
     <div class="text-center">
         <a href="{% url 'python_learning:index' %}" class="button_to_top">戻る</a>

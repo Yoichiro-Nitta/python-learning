@@ -13,7 +13,7 @@
         <div class="col-8 text-center">
             {% for unit, number in python3_list %}
             <div class="p-1 m-1">
-                <a href="{% url 'python_learning:p_study' number %}" class="btn_ps">第{{ number }}章：{{ unit }}</a>
+                <a href="{% url 'python_learning:q_list' number %}" class="btn_ps">第{{ number }}章：{{ unit }}</a>
             </div>
             {% endfor %}
         </div>

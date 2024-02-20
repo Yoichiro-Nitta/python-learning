@@ -6,15 +6,15 @@ from django.core.paginator import Paginator
 from application import key
 import random
 
-def pe_study(request):
+def chapter(request):
     python3_list = [("Pythonの基本", 1),
                     ("計算・文字列・リスト", 2),
                     ("制御構文", 3),]
     params = {"python3_list": python3_list}
 
-    return render(request, 'quartet/pe_study.html', params)
+    return render(request, 'quartet/chapter.html', params)
 
-def p_study(request, un):
+def q_list(request, un):
     # 大区分unの問題を昇順で取得
     questions = Quartet.objects.filter(unit = un).order_by('section')
     # ページの分割
@@ -28,7 +28,7 @@ def p_study(request, un):
 
     params = {'page_obj' : page_obj, "page_range": page_range, "un": un}
 
-    return render(request, 'quartet/p_study.html', params)
+    return render(request, 'quartet/q_list.html', params)
 
 def quartet(request, un, pk):
      #データベースからデータを取得

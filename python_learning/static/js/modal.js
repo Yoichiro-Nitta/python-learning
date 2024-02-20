@@ -1,6 +1,8 @@
 const buttonOpen = document.getElementById('modalOpen');
 const modal = document.getElementById('easyModal');
 const buttonClose = document.getElementsByClassName('modalClose')[0];
+// const acegutter = document.getElementsByClassName('ace_gutter')[0];
+
 
 // ボタンがクリックされた時
 buttonOpen.addEventListener('click', modalOpen);

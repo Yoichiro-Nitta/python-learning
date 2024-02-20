@@ -13,7 +13,7 @@ header{
     height: auto;
 }
 
-.button01 a {
+.button_list a {
     background: darkblue;
     border-radius: 50px;
     position: relative;
@@ -24,13 +24,13 @@ header{
     margin: 0 auto;
     max-width: 260px;
     padding: 10px 25px;
-    color: white;
+    color: #FFF;
     transition: 0.3s ease-in-out;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-.button01 a:hover {
-    background: white;
+.button_list a:hover {
+    background: aliceblue;
     color: darkblue;
 }
 

@@ -3,7 +3,7 @@
 {% block css %}
 <style>
     .body_color{
-        background-color: lightskyblue;
+        background-color: #add8fa;
     }
 </style>
 {% endblock css %}
@@ -11,7 +11,7 @@
 
 {% block content %}
 <div style="height: 40px;"></div>
-<div class="container" style="font-size: 18px; background-color: lightskyblue;">
+<div class="container" style="font-size: 18px; background-color: #add8fa;">
     <div class="row">
     <div class="col-8" style="background-color: white;">
         <div><h2 class="text-center pt-2">= {{ title }} =</h2></div>
@@ -92,12 +92,12 @@
     </div>
     <div style="height: 20px;"></div>
     </div>
-    <div class="col-4" style="background-color: lightskyblue;">
+    <div class="col-4" style="background-color: #add8fa;">
         <div style="background-color: white; height: 400px; position: sticky; top: 0;">
             <div class="h4 text-center pt-2">この内容に対する基本問題</div>
             {% for num, title in questions_list %}
             <div class="m-4">
-                <a href="{% url 'python_learning:drill' pk num %}" class="button_drill">{{ pk }}-{{ num }}.{{ title }}</a>
+                <a href="{% url 'python_learning:drill_beginner' pk num %}" class="button_drill">{{ pk }}-{{ num }}.{{ title }}</a>
             </div>
             {% endfor %}
         </div>

@@ -77,6 +77,60 @@
   background-image: linear-gradient(-180deg, #1D95C9 0%, #17759C 100%);
 }
 
+.button_practice {
+  background-image: linear-gradient(-180deg, #60cc21 0%, #55b006 100%);
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 550;
+  width: 240px;
+  height: 56px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button_practice:hover {
+  background-image: linear-gradient(-180deg, #4ab105 0%, #298400 100%);
+}
+
+
+
+.button_series {
+  background-image: linear-gradient(-180deg, #e09035 0%, #c4771a 100%);
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 500;
+  width: 280px;
+  height: 56px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button_series:hover {
+  background-image: linear-gradient(-180deg, #c57c19 0%, #985c13 100%);
+}
+
 
 .button_to_top {
   position: relative;
@@ -411,7 +465,10 @@ border-color: #2b76bf;
   color: aliceblue;
   pointer-events: none;
 }
-.Pagination-Item-Link:not(.isActive):hover {
+.Pagination-Item-Link.isReader {
+  pointer-events: none;
+}
+.Pagination-Item-Link:not(.isActive):not(.isReader):hover {
   background: darkblue;
   color: aliceblue;
 }
@@ -440,6 +497,37 @@ border-color: #2b76bf;
   transform: translateY(-50%);
 }
 
+.FA_point {
+  position: relative;
+  background: #eff4ff;
+  padding: 2px 5px 2px 20px;
+  font-size: 20px;
+  color: #474747;
+  border-radius: 0 10px 10px 0;
+}
+
+.FA_point:before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f041";
+  display: inline-block;
+  line-height: 40px;
+  position: absolute;
+  padding: 0em;
+  color: white;
+  background: #81a1e4;
+  font-weight: 900;
+  width: 40px;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  left: -1.35em;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  border-radius: 50%;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.29);
+  border-bottom: solid 2px #4967b4;
+}
 
 
 .fadeIn_1{

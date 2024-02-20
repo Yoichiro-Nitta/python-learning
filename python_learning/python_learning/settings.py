@@ -127,4 +127,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'python_learning_app.CustomUser'
 
-LOGIN_URL = 'python_learning_app:login_req'
+LOGIN_URL = 'python_learning:login_req'

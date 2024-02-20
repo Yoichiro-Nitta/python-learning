@@ -69,6 +69,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 
+class News(models.Model):
+    date = models.DateField(verbose_name="更新日")
+    comment = models.CharField(max_length=80, verbose_name="更新内容")
+
+
 class IntroCourse(models.Model):
     TEXT_TYPES = (
         ('heading', '見出し'),

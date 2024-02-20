@@ -1,15 +1,48 @@
 from django.shortcuts import render, redirect
-from python_learning_app.models.index import CustomUser, IntroCourse
+from python_learning_app.models.index import CustomUser, IntroCourse, News
 from python_learning_app.models.questions import Basis
 from python_learning_app.forms import SignupForm, LoginForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-import random
+from django.views.generic import ListView
 import subprocess
 
 def top_page(request):
-    return render(request, 'python_learning/index.html')
+    news = News.objects.all().order_by('date').reverse()
+    if len(news) < 3:
+        recent = news[0:len(news)]
+    else:
+        recent = news[0:3]
+    
+    params = {'recent': recent}
+
+    return render(request, 'python_learning/index.html', params)
+
+
+def news_list(request):
+    news = News.objects.all().order_by('date').reverse()
+    # ページの分割
+    paginator = Paginator(news, 10)
+    # クエリパラメーターからページ番号取得
+    number = int(request.GET.get('p', 1))
+    # 取得したページ番号のページを取得
+    page_obj = paginator.page(number)
+    # ページ数
+    last = paginator.num_pages
+    # 現在のページ番号に応じて表示するページ数のリストを作成
+    if last <= 5:
+        page_range = [x for x in paginator.page_range]
+    elif number <= 3:
+        page_range = [1, 2, 3, 4, '…']
+    elif last - number <= 2:
+        page_range = ['…', last - 3, last - 2, last - 1, last]
+    else:
+        page_range = ['…', number - 1, number, number + 1, '…']
+
+    params = {'page_obj' : page_obj, "page_range": page_range}
+
+    return render(request, 'python_learning/news_list.html', params)
 
 def signup_view(request):
     if request.method == 'POST':
