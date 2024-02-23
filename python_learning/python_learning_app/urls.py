@@ -1,9 +1,5 @@
 from django.urls import path
-from .views import index
-from .views import drill
-from .views import compe
-from .views import quartet
-from .views import machine
+from .views import index, drill, compe, quartet, machine
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from django.conf.urls.static import static

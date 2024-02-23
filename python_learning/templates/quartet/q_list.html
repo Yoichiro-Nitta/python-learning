@@ -9,15 +9,33 @@
     <h3 class="p-2 text-center">Python3基礎試験内容問題</h3>
     <div style="height: 20px;"></div>
     <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8 text-center">
-            {% for question in page_obj %}
-            <div class="p-1 mt-2">
+        <div class="col-1"></div>
+        <div class="col-10 text-center">
+            <div style="display: flex; font-weight: bold;">
+                <div style="width: 15%;"></div>
+                <div style="width: 70%;">問題</div>
+                <div style="width: 15%;">解答履歴</div>
+            </div>
+            <hr class="slight_line">
+            {% for question, result in questions_and_results %}
+            <div style="display: flex;">
+            <div class="p-1 mt-2" style="width: 15%;"></div>
+            <div class="p-1 mt-2" style="width: 70%;">
                 <a href="{% url 'python_learning:quartet' un question.section %}" class="btn_co color_compe">{{ question.title }}</a>
+            </div>
+            <div class="p-1 mt-2" style="width: 15%;">
+                {% if result %}
+                <span style="color: green; font-weight: bold;">正答済み!</span>
+                {% elif result is False %}
+                <span style="color: darkred; font-weight: bold;">未正答</span>
+                {% else %}
+                <span style="font-weight: bold;">未解答</span>
+                {% endif %}
+            </div>
             </div>
             {% endfor %}
         </div>
-        <div class="col-2"></div>
+        <div class="col-1"></div>
     </div>
     <div class="row mt-4">
         <div class="col"></div>

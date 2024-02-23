@@ -185,12 +185,8 @@ def compe_a(request, pk):
 
         perfect = ""
         # ユーザーの挑戦履歴を記録
-        try:
-            compe_result = CompeResult.objects.get(user_id = request.user.id, connection_key = question.primary_key)
-        except:
-            compe_result = CompeResult()
-            compe_result.user_id = request.user.id
-            compe_result.connection_key = question
+        compe_result, created = CompeResult.objects.get_or_create(user_id = request.user.id, connection_key = question)
+        
         if compe_result.result:
             pass
         elif not False in check:

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from python_learning_app.models.index import CustomUser
-from python_learning_app.models.questions import Quartet
+from python_learning_app.models.questions import Quartet, QuartetResult
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from application import key
@@ -26,7 +26,19 @@ def q_list(request, un):
     # ページ数のリストを取得
     page_range = [x for x in paginator.page_range]
 
-    params = {'page_obj' : page_obj, "page_range": page_range, "un": un}
+    results = [] # 挑戦履歴格納用リスト
+    for question in page_obj:
+        record = QuartetResult.objects.filter(user_id = request.user.id, connection_key = question.primary_key).exists()
+        if record:
+            result = QuartetResult.objects.get(user_id = request.user.id, connection_key = question.primary_key)
+            results.append(result.result)
+        else:
+            results.append(None)
+    
+    # forloop用にまとめる
+    questions_and_results = zip(page_obj, results)
+
+    params = {'page_obj' : page_obj,'questions_and_results': questions_and_results, "page_range": page_range, "un": un}
 
     return render(request, 'quartet/q_list.html', params)
 
@@ -67,10 +79,26 @@ def quartet_a(request, un, pk):
             judge = True
         else:
             judge = False
+
+        
+        quartet_result, created = QuartetResult.objects.get_or_create(user_id = request.user.id, connection_key = question)
+
+        if created:
+            quartet_result.result = judge
+        elif judge or quartet_result.result:
+            quartet_result.result = True
+        else:
+            quartet_result.result = False
+        
+        quartet_result.save()
+
+        explanation = question.explanation
+            
         params = {"title": title, "judge": judge, "num_of_series": num_of_series,
-                   "un": un, "pk": pk, "pk_b": pk_b, "pk_a": pk_a, "pn": pn}
+                  "explanation": explanation, "un": un, "pk": pk, "pk_b": pk_b, "pk_a": pk_a, "pn": pn}
 
         return render(request, 'quartet/quartet_a.html', params) 
+    
     params = {"title": title, "num_of_series": num_of_series,
                "pk": pk, "pk_b": pk_b, "pk_a": pk_a, "pn": pn} 
 

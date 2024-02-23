@@ -302,6 +302,26 @@ border-color: #2b76bf;
 	transition: 0.5s;
 }
 
+
+.btn_quartet {
+  position: relative;
+  font-weight: bold;
+  width: 240px;
+  padding: 7px 10px 10px 10px;
+  text-decoration: none;
+  color: #FFF;
+  background: #1b28b5;
+  transition: .4s;
+}
+
+.btn_quartet > span {
+  border-bottom: solid 2px #FFF;
+}
+
+.btn_quartet:hover {
+  background: #1269c0;
+}
+
 .color_intro {
   height: 50px;
   font-size: 18px;

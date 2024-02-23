@@ -30,6 +30,7 @@ class Basis(models.Model):
         return self.title
 
 class Quartet(models.Model):
+    primary_key = models.PositiveIntegerField(primary_key=True, verbose_name="primary_key")
     title = models.CharField(blank=True, max_length=60,verbose_name="問題名")
     unit = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name="大区分")
     section = models.PositiveIntegerField(verbose_name="区分")
@@ -45,7 +46,15 @@ class Quartet(models.Model):
     explanation = models.TextField(blank=True, verbose_name="解説")
 
     def __str__(self):
-        return self.title
+        return str(self.primary_key) + '.' + self.title
+    
+class QuartetResult(models.Model):
+    user_id = models.PositiveIntegerField(verbose_name="ユーザーID")
+    result = models.BooleanField(blank=True, null=True, verbose_name="結果")
+    connection_key = models.ForeignKey(Quartet, on_delete=models.CASCADE, related_name='results')
+
+    def __str__(self):
+        return str(self.user_id) + '-' + str(self.connection_key)
 
 
 class Competition(models.Model):
@@ -69,7 +78,7 @@ class Competition(models.Model):
 
 class CompeResult(models.Model):
     user_id = models.PositiveIntegerField(verbose_name="ユーザーID")
-    result = models.BooleanField(verbose_name="結果")
+    result = models.BooleanField(blank=True, null=True, verbose_name="結果")
     connection_key = models.ForeignKey(Competition, on_delete=models.CASCADE, related_name='results')
 
     def __str__(self):

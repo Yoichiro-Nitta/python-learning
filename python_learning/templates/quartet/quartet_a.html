@@ -8,10 +8,21 @@
     <div class="h4 mt-3 mb-3 text-center">{{ title }}</div>
     <div class="h4 mt-3 mb-3 text-center">
         {% if judge %}
-        正解です。
+        <span style="color: green; font-weight: bold;">正解です。</span>
         {% else %}
-        不正解です。
+        <span style="color: darkred; font-weight: bold;">不正解です。</span>
         {% endif %}
+    </div>
+    <div style="height: 40px;"></div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <span style="font-size: large; font-weight: bold;">[解説]</span><br>
+            {% autoescape off %}
+            {{ explanation| linebreaksbr }}
+            {% endautoescape %}
+        </div>
+        <div class="col-11"></div>
     </div>
     <div style="height: 40px;"></div>
     <div class="row">
