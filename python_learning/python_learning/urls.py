@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from python_learning_app.views import index
+
+handler500 = index.my_customized_server_error
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('python_learning_app.urls')),
