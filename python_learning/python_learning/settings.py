@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
 import os
+import secrets
+from pathlib import Path
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -120,6 +123,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -140,25 +145,73 @@ except ImportError:
 
 if not DEBUG:
     # Heroku settings
+    import dj_database_url
+    import logging
+    logger = logging.getLogger(__name__)
 
-    # staticの設定
-    import os
-    import django_heroku
-
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    ALLOWED_HOSTS = ["*"]
 
     # Static files (CSS, JavaScript, Images)
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATIC_URL = '/static/'
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    STATIC_URL = 'static/'
+    
+    STORAGES = {
+    # Enable WhiteNoise's GZip and Brotli compression of static assets:
+    # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+    }
+
+    WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+
+    if 'DATABASE_URL' in os.environ:
+        logger.info('Adding $DATABASE_URL to default DATABASE Django setting.')
+
+        # Configure Django for DATABASE_URL environment variable.
+        DATABASES['default'] = dj_database_url.config(conn_max_age=conn_max_age, ssl_require=True)
+
+        logger.info('Adding $DATABASE_URL to TEST default DATABASE Django setting.')
+
+        # Enable test database if found in CI environment.
+        if 'CI' in os.environ:
+            DATABASES['default']['TEST'] = DATABASES['default']
+
+    else:
+        logger.info('$DATABASE_URL not found, falling back to previous settings!')
 
     # Extra places for collectstatic to find static files.
-    STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static'),
-    )
-
-    MIDDLEWARE += [
-        'whitenoise.middleware.WhiteNoiseMiddleware',
+    # STATICFILES_DIRS = (
+    #     os.path.join(BASE_DIR, 'static'),
+    # )
+    
+    INSTALLED_APPS = [
+    # Use WhiteNoise's runserver implementation instead of the Django default, for dev-prod parity.
+    "whitenoise.runserver_nostatic",
+    # Uncomment this and the entry in `urls.py` if you wish to use the Django admin feature:
+    # https://docs.djangoproject.com/en/5.0/ref/contrib/admin/
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    'python_learning_app',
     ]
 
-    # HerokuのConfigを読み込み
-    django_heroku.settings(locals())
+    MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    ]
+
+    if 'SECRET_KEY' in os.environ:
+        logger.info('Adding $SECRET_KEY to SECRET_KEY Django setting.')
+        # Set the Django setting from the environment variable.
+        SECRET_KEY = os.environ['SECRET_KEY']
+
