@@ -155,13 +155,13 @@ if not DEBUG:
     STATIC_ROOT = BASE_DIR / "staticfiles"
     STATIC_URL = 'static/'
     
-    STORAGES = {
-    # Enable WhiteNoise's GZip and Brotli compression of static assets:
-    # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-    }
+    
+    # STORAGES = {
+    # # ...
+    # "staticfiles": {
+    #     "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    # },
+    # }
 
     WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
@@ -169,7 +169,7 @@ if not DEBUG:
         logger.info('Adding $DATABASE_URL to default DATABASE Django setting.')
 
         # Configure Django for DATABASE_URL environment variable.
-        DATABASES['default'] = dj_database_url.config(conn_max_age=conn_max_age, ssl_require=True)
+        DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
         logger.info('Adding $DATABASE_URL to TEST default DATABASE Django setting.')
 
