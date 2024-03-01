@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
-import secrets
 from pathlib import Path
+import json
 
 
 
@@ -134,15 +134,27 @@ AUTH_USER_MODEL = 'python_learning_app.CustomUser'
 
 LOGIN_URL = 'python_learning:login_req'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+if "EMAIL_HOST" and "EMAIL_HOST_PASS" in os.environ:
+    e_mail = os.environ["EMAIL_HOST"]
+    password = os.environ["EMAIL_HOST_PASS"]
+else:
+    with open("settings.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    e_mail = data["EMAIL_HOST"]
+    password = data["EMAIL_HOST_PASS"]
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # 開発用
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 運用用
 EMAIL_HOST = "smtp.gmail.com" # GmailのSMTPサーバー
 EMAIL_PORT = 587 # Gmailサーバーのポート
-EMAIL_HOST_USER = "XXXXXXXX" # 自身のGmailアドレス（メール送信用SMTPサーバーの認証）
-EMAIL_HOST_PASSWORD = "xxxxxxxx" # アプリパスワード
+EMAIL_HOST_USER = e_mail # 自身のGmailアドレス（メール送信用SMTPサーバーの認証）
+EMAIL_HOST_PASSWORD = password # アプリパスワード
 EMAIL_USE_TLS = True # SMTPサーバーと通信する際に、TLS（セキュア）接続する
 
 
+# 以下、本番環境用
 DEBUG = False
 
 try:

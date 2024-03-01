@@ -10,6 +10,8 @@ from django.core.mail import EmailMessage
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+import os
+import json
 import subprocess
 
 # 本番環境でエラー表示する場合は以下をuncomment
@@ -106,6 +108,7 @@ class ContactView(FormView):
 
     # テンプレート
     template_name = "python_learning/contact.html"
+    
     # フォームクラス
     form_class = ContactForm
 
@@ -121,11 +124,19 @@ class ContactView(FormView):
         title = form.cleaned_data["title"]
         message_param = form.cleaned_data["message"]
 
+        if "EMAIL_HOST" and "EMAIL_HOST_PASS" in os.environ:
+            e_mail = os.environ["EMAIL_HOST"]
+        else:
+            with open("settings.json", "r", encoding="utf-8") as f:
+                data = json.load(f)
+            
+            e_mail = data["EMAIL_HOST"]
+
         # お問い合わせメールの送信処理
         subject = f"お問い合わせ: {title}"
         message = f"名前: {name}\nメールアドレス: {email}\n\n{message_param}"
-        from_email = "XXXXXXXX"  # 送信元のメールアドレス
-        recipient_list = ["XXXXXXXX"]  # 受信者のメールアドレスリスト
+        from_email = e_mail  # 送信元のメールアドレス
+        recipient_list = [e_mail]  # 受信者のメールアドレスリスト
 
         msg = EmailMessage(
             subject=subject, body=message, from_email=from_email, to=recipient_list
