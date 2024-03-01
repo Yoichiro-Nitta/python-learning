@@ -13,6 +13,7 @@ urlpatterns = [
     path('login_view', index.login_view, name='login_view'),
     path('login_req', index.login_req, name='login_req'),
     path('logout_view', index.logout_view, name='logout_view'),
+    path('contact', index.ContactView.as_view(), name='contact'),
     path('intro', index.intro, name='intro'),
     path('intro_ex/<int:pk>', index.intro_ex, name='intro_ex'),
     path('questions', drill.questions, name='questions'),

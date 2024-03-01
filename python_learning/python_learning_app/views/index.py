@@ -2,12 +2,18 @@ from django.shortcuts import render, redirect
 from python_learning_app.models.index import CustomUser, IntroCourse, News
 from python_learning_app.models.questions import Basis
 from python_learning_app.forms import SignupForm, LoginForm
+from django.views.generic import FormView
+from django.urls import reverse_lazy
+from python_learning_app.forms import ContactForm
+from django.contrib import messages
+from django.core.mail import EmailMessage
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.views.generic import ListView
 import subprocess
 
+# 本番環境でエラー表示する場合は以下をuncomment
+"""
 from django.views.decorators.csrf import requires_csrf_token
 from django.http import HttpResponseServerError
 
@@ -17,6 +23,7 @@ def my_customized_server_error(request, template_name='500.html'):
     from django.views import debug
     error_html = debug.technical_500_response(request, *sys.exc_info()).content
     return HttpResponseServerError(error_html)
+"""
 
 
 def top_page(request):
@@ -93,6 +100,44 @@ def login_req(request):
 def logout_view(request):
     logout(request)
     return render(request, 'user/logout.html')
+
+
+class ContactView(FormView):
+
+    # テンプレート
+    template_name = "python_learning/contact.html"
+    # フォームクラス
+    form_class = ContactForm
+
+    # お問い合わせ送信成功後URL
+    success_url = reverse_lazy("python_learning:contact")
+
+    def form_valid(self, form):
+        """お問い合わせ送信処理"""
+
+        # パラメータ取得
+        name = form.cleaned_data["name"]
+        email = form.cleaned_data["email"]
+        title = form.cleaned_data["title"]
+        message_param = form.cleaned_data["message"]
+
+        # お問い合わせメールの送信処理
+        subject = f"お問い合わせ: {title}"
+        message = f"名前: {name}\nメールアドレス: {email}\n\n{message_param}"
+        from_email = "XXXXXXXX"  # 送信元のメールアドレス
+        recipient_list = ["XXXXXXXX"]  # 受信者のメールアドレスリスト
+
+        msg = EmailMessage(
+            subject=subject, body=message, from_email=from_email, to=recipient_list
+        )
+
+        try:
+            msg.send()
+            messages.success(self.request, "送信完了しました。")
+        except Exception as e:
+            messages.error(self.request, f"送信に失敗しました。エラー：{e}")
+
+        return super().form_valid(form)
 
 
 def intro(request):

@@ -1,0 +1,68 @@
+{% extends 'python_learning/base.html' %}
+{% load static %}
+
+
+{% block css %}
+<link href="{% static 'css/top.css' %}" rel="stylesheet">
+{% endblock css %}
+{% block title %}Python-Learning{% endblock title %}
+
+
+{% block content %}
+<div class="m-4">
+    <div class="container px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          <p>当サイトへのご意見、ご質問、ご相談等ありましたらお気軽に下記のフォームからお問い合わせください。<br/>また、コンテンツ等に問題がありましたらご報告ください。<br/><br/>必要事項を入力の上、【送信】ボタンをクリックしてください。</p>
+          <!-- メッセージ出力領域 -->
+          {% if messages %}
+          <ul class="list-unstyled" style="list-style: none;">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <div class="my-5">
+            <!-- * * * * * * * * * * * * * * *-->
+            <!-- * * お問い合わせフォーム * *-->
+            <!-- * * * * * * * * * * * * * * *-->
+            <form method="post">
+              {% csrf_token %}
+              <div class="form-floating">
+                <input class="form-control" id="name" type="text" name="name" placeholder="お名前を入力してください"/>
+                <label for="name">お名前</label>
+                {% if form.name.errors %}
+                <div class="text-danger">{{ form.name.errors.as_text }}</div>
+                {% endif %}
+              </div>
+              <div class="form-floating">
+                <input class="form-control" id="email" type="email" name="email" placeholder="メールアドレスを入力してください" />
+                <label for="email">メールアドレス</label>
+                {% if form.email.errors %}
+                <div class="text-danger">{{ form.email.errors.as_text }}</div>
+                {% endif %}
+              </div>
+              <div class="form-floating">
+                <input class="form-control" id="title" type="text" name="title" placeholder="件名を入力してください"/>
+                <label for="title">件名</label>
+                {% if form.title.errors %}
+                <div class="text-danger">{{ form.title.errors.as_text }}</div>
+                {% endif %}
+              </div>
+              <div class="form-floating">
+                <textarea class="form-control" id="message" name="message" placeholder="メッセージを入力してください" style="height: 12rem"></textarea>
+                <label for="message">メッセージ</label>
+                {% if form.message.errors %}
+                <div class="text-danger">{{ form.message.errors.as_text }}</div>
+                {% endif %}
+              </div>
+              <br />
+              <!-- 送信ボタン-->
+              <button class="btn btn-primary" id="" type="submit">送信</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
