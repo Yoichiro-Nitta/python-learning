@@ -1,1 +1,2 @@
-print(84 % 17)
+mylist = [6, 1, 14]
+print(mylist)

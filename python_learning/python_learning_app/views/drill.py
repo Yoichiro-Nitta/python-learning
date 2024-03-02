@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from python_learning_app.models.questions import Basis
+from python_learning_app.models.questions import IntroCourse, Basis
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from Crypto.Cipher import AES
@@ -263,6 +263,7 @@ class DrillView(View):
         # エラー表示の際に、エディターの行数が表示されるように工夫
         if len(out) < len(err) and pre_code:
             err = assist.reduce(err, pre_code)
+            
         params = {"text": text, "out" : out, "err": err, 
                  "question_title": question_title, 
                  "question_sentence": question_sentence, 

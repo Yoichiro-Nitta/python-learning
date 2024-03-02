@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, drill, compe, quartet, machine
+from .views import index, intro, drill, compe, quartet, machine
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from django.conf.urls.static import static
@@ -14,8 +14,8 @@ urlpatterns = [
     path('login_req', index.login_req, name='login_req'),
     path('logout_view', index.logout_view, name='logout_view'),
     path('contact', index.ContactView.as_view(), name='contact'),
-    path('intro', index.intro, name='intro'),
-    path('intro_ex/<int:pk>', index.intro_ex, name='intro_ex'),
+    path('intro', intro.intro, name='intro'),
+    path('intro_ex/<int:pk>', intro.intro_ex, name='intro_ex'),
     path('questions', drill.questions, name='questions'),
     path('practice', drill.practice, name='practice'),
     path('practice_a', drill.practice_a, name='practice_a'),

@@ -1,6 +1,6 @@
 from django.contrib import admin
-from python_learning_app.models.index import CustomUser, IntroCourse, News
-from python_learning_app.models.questions import Basis, Quartet,QuartetResult, Competition, CompeResult
+from python_learning_app.models.index import CustomUser,  News
+from python_learning_app.models.questions import IntroCourse, Basis, Quartet,QuartetResult, Competition, CompeResult
 from .models import CustomUser
 # Register your models here.
 

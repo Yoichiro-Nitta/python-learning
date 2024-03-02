@@ -9,20 +9,25 @@
 {% block content %}
 <div class="container  pt-2">
     <div class="row">
-        <div class="col-11">
+        <div class="col-7">
             <h4><p>{{ question_title }}</p></h4>
             <div style="height: 5px;"></div>
             {% autoescape off %}
             {{ question_sentence | linebreaksbr }}
             {% endautoescape %}
             <div style="height: 5px;"></div>
-            {% if question_data != "" %}
-            <div style="width: 62%; border: green solid 1px; font-size: 100%; padding: 10px; box-shadow: 0 5px 7px 0 #c0c0c0;">
+            {% if question_data %}
+            <div style="width: 100%; border: green solid 1px; font-size: 100%; padding: 10px; box-shadow: 0 5px 7px 0 #c0c0c0;">
                 {{ question_data }}
             </div>
             {% endif %}
         </div>
-        <div class="col-1"></div>
+        <div class="col-5">
+            <div style="height: 50px;"></div>
+            <div class="p-1">
+                <a href="{% url 'python_learning:intro_ex' urls.un %}" class="btn_co color_intro">この範囲の入門講座</a>
+            </div>
+        </div>
     </div>
     <div style="height: 10px;"></div>
     <div style="display: flex;">

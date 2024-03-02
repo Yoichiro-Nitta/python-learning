@@ -1,2 +1,2 @@
-from python_learning_app.models.index import CustomUser, IntroCourse
-from python_learning_app.models.questions import Basis, Quartet, Competition, CompeResult
+from python_learning_app.models.index import CustomUser
+from python_learning_app.models.questions import IntroCourse, Basis, Quartet, Competition, CompeResult
