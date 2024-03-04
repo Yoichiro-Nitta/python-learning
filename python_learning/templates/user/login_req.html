@@ -9,5 +9,7 @@
 </div>
     <div class="container text-center p-2"><a href="{% url 'python_learning:login_view' %}">ログイン画面へ</a></div>
     <div style="height: 20px;"></div>
-    <div class="container text-center p-2"><a href="{% url 'python_learning:index' %}">戻る</a></div>
+    <div class="text-center">
+        <a href="{% url 'python_learning:index' %}" class="button_to_top">戻る</a>
+    </div>
 {% endblock content %}

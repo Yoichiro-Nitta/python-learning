@@ -56,7 +56,7 @@ def intro_ex(request, pk):
         'text': text, 'out' : out, 'err': err, "questions_list": questions_list, 
         "explanations": explanations, "title": title, "pk": pk, "n": n, "p": p}
 
-        return render(request, 'python_learning/intro_ex.html', params)
+        return render(request, 'intro/intro_ex.html', params)
     
     params = {"explanations": explanations, "title":title, "questions_list": questions_list,
               "pk": pk, "n": n, "p": p}

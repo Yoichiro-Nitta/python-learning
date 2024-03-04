@@ -8,23 +8,29 @@
 <div class="container text-center p-2">
         <h4>ユーザー名、メールアドレス、パスワードを入力してください。</h4>
 </div>
-<div style="height: 50px;"></div>
+<div style="height: 20px;"></div>
     <div class="container text-center p-2">
       <div class="row">
         <div class="col-1"></div>
-        <div class="col-11">
+        <div class="col-10">
+          <div class="container text-center p-2">
         <form action="{% url 'python_learning:signup_view' %}" method="post">
              {% csrf_token %}
-            <div class="p-2 text-start"><label>ユーザー名</label><br>{{ form.username }}</div>
-            <div class="p-2 text-start"><label>メールアドレス</label><br>{{ form.email }}</div>
-            <div class="p-2 text-start"><label>パスワード</label><br>{{ form.password1 }}</div>
-            <div class="p-2 text-start"><label>パスワード（確認）</label><br>{{ form.password2 }}</div>
-            <div class="p-2 text-start"><input type="submit" value="登録"></div>
+            <div class="p-2"><label>ユーザー名</label><br>{{ form.username }}</div>
+            <div class="p-2"><label>メールアドレス</label><br>{{ form.email }}</div>
+            <div class="p-2"><label>パスワード</label><br>{{ form.password1 }}</div>
+            <div class="p-2"><label>パスワード（確認）</label><br>{{ form.password2 }}</div>
+            <div class="p-2"><input type="submit" value="登録"></div>
         </form>
         </div>
+        </div>
+        <div class="col-1"></div>
       </div>
     </div>
-    <div class="container text-center p-2"><a href="{% url 'python_learning:index' %}">戻る</a></div>
+    <div style="height: 20px;"></div>
+    <div class="text-center">
+      <a href="{% url 'python_learning:index' %}" class="button_to_top">戻る</a>
+    </div>
 {% endblock content %}
 
     

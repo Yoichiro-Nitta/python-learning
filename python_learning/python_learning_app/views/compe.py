@@ -34,7 +34,8 @@ def p_like(request):
     # forloop用にまとめる
     questions_and_results = zip(level, page_obj, results)
 
-    params = {'page_obj' : page_obj, "page_range": page_range, 'questions_and_results': questions_and_results}
+    params = {'page_obj' : page_obj, "page_range": page_range, 
+              'number': number, 'questions_and_results': questions_and_results}
 
     return render(request, 'compe/p_like.html', params)
 
@@ -64,7 +65,11 @@ def compe(request, pk):
     editor_colors = zip(color_text, editor_color)
     testcases = [input_ex_list[i] + "//" + output_ex_list[i] + "//" + str(i + 1) for i in range(len(input_ex_list))]
 
-    pn = (pk - 1) // 10 + 1
+    if pk == 0:
+        pn = request.GET.get('p')
+    else:
+        pn = (pk - 1) // 10 + 1
+    
 
     if request.method == 'POST':
         text = request.POST['text'] 
@@ -184,25 +189,29 @@ def compe_a(request, pk):
         last_fade_in = f'fadeIn_{num_of_question + 1}'
 
         perfect = ""
-        # ユーザーの挑戦履歴を記録
-        compe_result, created = CompeResult.objects.get_or_create(user_id = request.user.id, connection_key = question)
         
-        if compe_result.result:
-            pass
-        elif not False in check:
-            compe_result.result = True
-            perfect = "perfect達成!"
+        if pk == 0:
+            pn = request.GET.get('p')
         else:
-            compe_result.result = False
-        compe_result.save()
-
-        pn = (pk - 1) // 10 + 1
+            # ユーザーの挑戦履歴を記録
+            compe_result, created = CompeResult.objects.get_or_create(user_id = request.user.id, connection_key = question)
+        
+            if compe_result.result:
+                pass
+            elif not False in check:
+                compe_result.result = True
+                perfect = "perfect達成!"
+            else:
+                compe_result.result = False
+                
+            compe_result.save()
+            pn = (pk - 1) // 10 + 1
 
         # for文でまわすためにzipオブジェクトを作成
         combine = zip(check, processing_time, fade_in)
         params = {"combine": combine, "text": text, "example_answer": example_answer, 
                   "num_of_question": num_of_question, "num_of_correct": num_of_correct, 
-                  "last_fade_in": last_fade_in, "perfect": perfect, "pn": pn }
+                  "last_fade_in": last_fade_in, "perfect": perfect, "pn": pn, "pk": pk }
 
         return render(request, 'compe/compe_a.html', params)
     

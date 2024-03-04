@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from python_learning_app.models.index import CustomUser, News
-from python_learning_app.models.questions import IntroCourse, Basis
+from python_learning_app.models.index import News
 from python_learning_app.forms import SignupForm, LoginForm
 from django.views.generic import FormView
 from django.urls import reverse_lazy
@@ -8,8 +7,8 @@ from python_learning_app.forms import ContactForm
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from config.settings import DEBUG
 import os
 import json
 
@@ -34,7 +33,7 @@ def top_page(request):
     else:
         recent = news[0:3]
     
-    params = {'recent': recent}
+    params = {'recent': recent, "debug": DEBUG}
 
     return render(request, 'python_learning/index.html', params)
 

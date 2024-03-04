@@ -45,20 +45,33 @@
     <div class="col-5">
       <div>あなたの解答</div>
       <div id="editor1" class="p-2" style="height: 200px;">{{ text }}</div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
     </div>
     <div class="col-5">
       <div>解答例</div>
       <div id="editor2" class="p-2" style="height: 200px; display: none;">{{ example_answer }}</div>
-      <div style="height: 60px;"></div>
-      <div class="text-center"><button class="btn btn-success" id="show">解答例を表示する</button></div>
+      <div class="text-center" style="position: relative;">
+        <button class="btn btn-success" style="position: absolut; transform: translateY(150%);" id="show">解答例を表示する</button>
+      </div>
     </div>
     <div class="col-1"></div>
   </div>
   <div style="height: 40px;"></div>
-  <div class="button_return">
-    <a href="{% url 'python_learning:p_like' %}?p={{pn}}">問題一覧へ</a>
-</div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">
+      <div class="button_retry">
+        <a href="{% url 'python_learning:compe' pk %}">再挑戦する</a>
+    </div>
+    </div>
+    <div class="col">
+      <div class="button_return">
+        <a href="{% url 'python_learning:p_like' %}?p={{pn}}">問題一覧へ</a>
+    </div>
+    </div>
+    <div class="col"></div>
+  </div>
+  
 <div style="height: 20px;"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
   <script src="{% static 'js/answer.js' %}"></script>
 {% endblock content %}

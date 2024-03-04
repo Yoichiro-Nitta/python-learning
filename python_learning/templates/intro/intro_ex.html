@@ -72,8 +72,7 @@
         <div class="row">
         <div class="col-9">
         <div id="editor" style="height: 133px; width: 100%;">{{ text }}</div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
+
         <div style="height: 10px;"></div>
         <div><textarea class="ps-2" name="output" style="height: 133px; background-color: lightcyan; border: blue solid 1px; width: 100%;">{{ out }}{{ err }}
         </textarea></div>
@@ -104,6 +103,7 @@
     </div>
     </div>
     <div class="p-2">
+        <div style="height: 20px;"></div>
         <div class="row">
             <div class="col-4 text-end">
             {% if p >= 1 %}
@@ -122,13 +122,13 @@
                 </div>
                 {% endif %} 
             </div>
+            <div style="height: 20px;"></div>
         </div>
         
     </div>
 
 </div>
-<footer>
-    <div style="height: 30px; position: relative; bottom: 0;  width: 100%; background-color: navy;"></div>
-  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
   <script src="{% static 'js/check.js' %}"></script>
 {% endblock content %}

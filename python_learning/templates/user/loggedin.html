@@ -5,7 +5,9 @@
 
 {% block content %}
 <div class="p-2"><h4><p class="text-center">ログインしました。</p></h4></div>
-<div style="height: 50px;">
+<div style="height: 60px;">
 </div>
-    <div class="container text-center p-2"><a href="{% url 'python_learning:index' %}">戻る</a></div>
+<div class="text-center">
+    <a href="{% url 'python_learning:index' %}" class="button_to_top">戻る</a>
+</div>
 {% endblock content %}
