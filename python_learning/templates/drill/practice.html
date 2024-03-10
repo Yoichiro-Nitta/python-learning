@@ -1,7 +1,10 @@
 {% extends 'python_learning/base.html' %}
+{% load static %}
+{% block title %}練習問題{% endblock title %}
 
-{% block title %}Python-Learning{% endblock title %}
-
+{% block css %}
+<link href="{% static 'css/modal.css' %}" rel="stylesheet">
+{% endblock css %}
 
 {% block content %}
 <div class="container  p-1">
@@ -18,12 +21,28 @@
 </div>
 <div class="row">
   <div class="col-6">
-      <div id="editor" style="height: 400px; width: 90%;">{{ text }}</div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ext-language_tools.js"></script>
+      <div id="editor" style="height: 400px;">{{ text }}</div>
   </div>
   <div class="col-6">
-      <div style="height: 202px; width: 480;"></div>
+      <div style="height: 202px;">
+          <button id="modalOpen" class="button_drill">使用可能なライブラリや関数について</button>
+          <div id="easyModal" class="modal">
+          <div class="modal-content">
+          <div class="modal-header">
+          <h5>このエディターでは以下のようにライブラリや関数が制限されます。</h5>
+          <span class="modalClose">×</span>
+          </div>
+          <div class="modal-body">
+          <p>🟢使用可能な外部ライブラリ</p>
+          <p class="ps-3"> numpy、pandas、mpmath、scipy、sympy</p>
+          <p>🔴使用できないモジュール・ライブラリ</p>
+          <p class="ps-3"> os、subprocess、pathlib、shutil</p>
+          <p>🔴使用できない関数</p>
+          <p class="ps-3"> open、exec、eval</p>
+          </div>
+          </div>
+          </div>  
+      </div>
       <form action="?" method="post">{% csrf_token %}
           <textarea style="display:none" id="text" name="text"></textarea>
           <textarea style="display:none"  name="backup">{{ text }}</textarea>
@@ -31,24 +50,13 @@
   </div>
 </div>
 <div class="m-3 text-end">
-  <span><button type="submit" class="btn btn-primary" formaction="{% url 'python_learning:practice' %}">出力確認</button></span>
-  <span><button type="submit" class="btn btn-danger" formaction="{% url 'python_learning:practice_a' %}">解答する</button></span>
+  <span><button type="submit" class="btn btn-primary" formaction="{% url 'python_learning:practice' %}?m={{model_num}}">出力確認</button></span>
+  <span><button type="submit" class="btn btn-danger" formaction="{% url 'python_learning:practice_a' %}?m={{model_num}}">解答する</button></span>
 </div>
-<div class="text-center"><a href="{% url 'python_learning:questions' %}">一覧画面へ戻る</a></div>
+<div class="button_return"><a href="{% url question_index_url %}">問題一覧へ</a></div>
 </div>
-<script>
-  let editor = ace.edit("editor");
-  editor.$blockScrolling = Infinity;
-  editor.setTheme("ace/theme/monokai");
-  editor.getSession().setMode("ace/mode/python");
-  editor.setFontSize(14);
-  editor.setOptions({
-      enableBasicAutocompletion: true,
-      enableSnippets: true,
-      enableLiveAutocompletion: false
-    });
-  editor.getSession().on('change', function(){
-        let textcode = editor.getSession().getValue();
-        document.getElementById( 'text' ).value = textcode;});
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ext-language_tools.js"></script>
+<script src="{% static 'js/modal.js' %}"></script>
+<script src="{% static 'js/practice.js' %}"></script>
 {% endblock content %}

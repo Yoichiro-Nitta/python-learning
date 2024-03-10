@@ -1,6 +1,6 @@
 {% extends 'python_learning/base.html' %}
 {% load static %}
-{% block title %}Point Ranking Checker{% endblock title %}
+{% block title %}10問チャレンジ{% endblock title %}
 
 
 {% block content %}
@@ -35,11 +35,11 @@
       </div>
     <div style="height: 20px;"></div>
     {% if urls.qn > 10 %}
-    <h4 class="text-center">結果：１０問中{{ urls.num_of_correct }}問正解です。</h4>
+    <h4 class="text-center">結果:10問中{{ urls.num_of_correct }}問正解です。</h4>
     <div style="height: 20px;"></div>
     <div class="row">
         <div class="col-4"></div>
-        <div class="col-4 button_return"><a href="{% url 'python_learning:questions' %}">問題一覧へ</a></div>
+        <div class="col-4 button_return"><a href="{% url question_index_url %}">問題一覧へ</a></div>
         <div class="col-4"></div>
     </div>
     {% else %}
@@ -52,6 +52,6 @@
     {% endif %}
     <div style="height: 40px;"></div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
   <script  src="{% static 'js/drillanswer.js' %}"></script>
 {% endblock content %}

@@ -1,9 +1,7 @@
-from django.shortcuts import render, redirect
-from python_learning_app.models.index import CustomUser
-from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+from django.shortcuts import render
 from django.http import FileResponse
-import random
+# ↓現状使用していないのでコメントアウト中
+# from django.core.paginator import Paginator
 
 def machine_learning(request):
     # タイトルのリスト

@@ -72,4 +72,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class News(models.Model):
     date = models.DateField(verbose_name="更新日")
     comment = models.CharField(max_length=80, verbose_name="更新内容")
+    detail = models.TextField(blank=True, verbose_name="詳細")
+
+    def __str__(self):
+        return str(self.date) + " : " + self.comment
 

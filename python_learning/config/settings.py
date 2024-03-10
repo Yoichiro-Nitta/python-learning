@@ -15,7 +15,6 @@ from pathlib import Path
 import json
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -175,23 +174,16 @@ if not DEBUG:
     STATIC_ROOT = BASE_DIR / "staticfiles"
     STATIC_URL = 'static/'
     
-    
-    # STORAGES = {
-    # # ...
-    # "staticfiles": {
-    #     "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    # },
-    # }
-
     WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
     if 'DATABASE_URL' in os.environ:
         logger.info('Adding $DATABASE_URL to default DATABASE Django setting.')
 
         # Configure Django for DATABASE_URL environment variable.
-        DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-
-        logger.info('Adding $DATABASE_URL to TEST default DATABASE Django setting.')
+        db_from_env = dj_database_url.config()
+        DATABASES = {
+            'default': dj_database_url.config()
+                    }
 
         # Enable test database if found in CI environment.
         if 'CI' in os.environ:
@@ -199,11 +191,6 @@ if not DEBUG:
 
     else:
         logger.info('$DATABASE_URL not found, falling back to previous settings!')
-
-    # Extra places for collectstatic to find static files.
-    # STATICFILES_DIRS = (
-    #     os.path.join(BASE_DIR, 'static'),
-    # )
     
     INSTALLED_APPS = [
     # Use WhiteNoise's runserver implementation instead of the Django default, for dev-prod parity.
@@ -234,4 +221,3 @@ if not DEBUG:
         logger.info('Adding $SECRET_KEY to SECRET_KEY Django setting.')
         # Set the Django setting from the environment variable.
         SECRET_KEY = os.environ['SECRET_KEY']
-

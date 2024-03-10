@@ -1,6 +1,6 @@
 {% extends 'python_learning/base.html' %}
-
-{% block title %}Point Ranking Checker{% endblock title %}
+{% load static %}
+{% block title %}練習問題結果{% endblock title %}
 
 
 {% block content %}
@@ -31,7 +31,6 @@
         <div class="col mb-6">
           <div>あなたの解答</div>
           <div id="editor" class="p-2" style="height: 200px;">{{ text }}</div>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js"></script>
         </div>
         <div class="col mb-6">
           <div>解答例</div>
@@ -39,26 +38,8 @@
         </div>
       </div>
     <div style="height: 80px;"></div>
-    <div><a href="{% url 'python_learning:practice' %}">戻る</a></div>
+    <div class="button_return"><a href="{% url question_index_url %}">問題一覧へ</a></div>
   </div>
-  <script>
-    let editor = ace.edit("editor");
-    editor.$blockScrolling = Infinity;
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/python");
-    editor.setOptions({
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: false
-      });
-      let editor2 = ace.edit("editor2");
-    editor2.$blockScrolling = Infinity;
-    editor2.setTheme("ace/theme/monokai");
-    editor2.getSession().setMode("ace/mode/python");
-    editor2.setOptions({
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: false
-      });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
+  <script src="{% static 'js/drillanswer.js' %}"></script>
 {% endblock content %}

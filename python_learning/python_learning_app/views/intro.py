@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.views.generic import View
 from python_learning_app.models.questions import IntroCourse, Basis
-from django.contrib.auth.decorators import login_required
 import subprocess
-
+# ↓現状使用していないのでコメントアウト中
+# from django.contrib.auth.decorators import login_required
 
 
 def intro(request):
@@ -16,26 +17,60 @@ def intro(request):
     return render(request, 'intro/intro.html', params)
 
 
-def intro_ex(request, pk):
-    # データベースから回毎のデータを取得（第１回、第２回といった具合で、「回」で分類）
-    explanations = IntroCourse.objects.filter(section = pk).order_by('order')
+class CourseView(View):
 
-    # 基本問題をunit単位で取得
-    Basis_questions = Basis.objects.filter(unit = pk, q_key = True).order_by('section')
-    # unitに対応する基本問題のタイトルを取得
-    questions_title = [q.title for q in Basis_questions]
-    questions_title = list(map(lambda x : x.split('/')[0], questions_title))
-    # 問題番号とタイトルをリストにまとめる
-    questions_list = [(x + 1, y) for x, y in enumerate(questions_title)]
+    """Python入門講座のViewのスーパークラス
+    
+    パラメーター説明
 
-    # 各回の最初のデータにはタイトルが付与されているので、それを取得
-    title = explanations.first().title
+    text:                   ユーザーの入力内容
+    out:                    出力結果(出力時)
+    err:                    出力結果(エラー時)
+    questions_list:         関連する基本問題の番号とタイトル
+    explanations:           説明文のクエリセット
+    title:                  関連する基本問題のタイトルのクエリセット
+    pk:                     今回の講座番号
+    next_num:               次回の講座番号
+    previous_num:           前回の講座番号
+    next_page:              次回講座の存在の有無
+    
+    """
 
-    # 前と後の回の数値を格納
-    n, p = pk + 1, pk - 1
+    # 共有変数を定義
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
 
-    # エディター使用時の処理
-    if request.method == 'POST':
+        # データベースから回毎のデータを取得（第１回、第２回といった具合で、「回」で分類）
+        self.explanations = self.__class__.course.objects.filter(section = kwargs['pk']).order_by('order')
+
+        # 基本問題をunit単位で取得
+        questions = self.__class__.questions.objects.filter(unit = kwargs['pk'], q_key = True).order_by('section')
+
+        # unitに対応する基本問題のタイトルを取得
+        questions_title = [q.title for q in questions]
+        questions_title = list(map(lambda x : x.split('/')[0], questions_title))
+
+        # 問題番号とタイトルをリストにまとめる
+        self.questions_list = [(x + 1, y) for x, y in enumerate(questions_title)]
+
+        # 各回の最初のデータにはタイトルが付与されているので、それを取得
+        self.title = self.explanations.first().title
+
+        # 前と後の回の数値を格納
+        self.next_num, self.previous_num = kwargs['pk'] + 1, kwargs['pk'] - 1
+
+        # 次のページの存在を格納
+        self.next_page = self.__class__.course.objects.filter(section = self.next_num).exists()
+    
+    def get(self, request, *args, **kwargs):
+
+        params = {"explanations": self.explanations, "title":self.title,
+                  "questions_list": self.questions_list, "pk": kwargs['pk'], 
+                  "next_num": self.next_num, "previous_num": self.previous_num, "next_page": self.next_page}
+        
+        return render(request, self.__class__.template_name, params)
+    
+    def post(self, request, *args, **kwargs):
         text = request.POST['text'] 
         backup = request.POST['backup'] 
 
@@ -52,13 +87,15 @@ def intro_ex(request, pk):
         # 標準エラーの内容を「line~」以降に限定
         err = err.split('",')[-1]
 
-        params = {
-        'text': text, 'out' : out, 'err': err, "questions_list": questions_list, 
-        "explanations": explanations, "title": title, "pk": pk, "n": n, "p": p}
+        params = {"text": text, "out" : out, "err": err, "questions_list": self.questions_list, 
+                  "explanations": self.explanations, "title": self.title, "pk": kwargs['pk'], 
+                  "next_num": self.next_num, "previous_num": self.previous_num, "next_page": self.next_page}
+        
+        return render(request, self.__class__.template_name, params)
 
-        return render(request, 'intro/intro_ex.html', params)
-    
-    params = {"explanations": explanations, "title":title, "questions_list": questions_list,
-              "pk": pk, "n": n, "p": p}
+class IntroCourseView(CourseView):
 
-    return render(request, 'intro/intro_ex.html', params)
+    course = IntroCourse
+    questions = Basis
+    template_name = 'intro/intro_ex.html'
+

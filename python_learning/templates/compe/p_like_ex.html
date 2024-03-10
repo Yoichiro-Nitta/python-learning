@@ -1,6 +1,6 @@
 {% extends 'python_learning/base.html' %}
 {% load static %}
-{% block title %}Python-Learning{% endblock title %}
+{% block title %}Paiza形式問題（使い方）{% endblock title %}
 
 
 {% block content %}
@@ -91,7 +91,7 @@
     </div>
     <div class="col-1"></div>
     <div style="height: 30px;"></div>
-    <div class="text-center"><a href="{% url 'python_learning:p_like' %}">戻る</a></div>
+    <div class="button_return"><a href="{% url 'python_learning:p_like' %}?p={{pn}}">戻る</a></div>
     <div style="height: 30px;"></div>
 </div>
 

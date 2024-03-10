@@ -1,32 +1,27 @@
-from django.shortcuts import render, redirect
-from .drill_class import DrillView, DrillAnswerView
+from django.shortcuts import render
+from .drill_class import QuestionsListView, DrillView, DrillAnswerView
 from python_learning_app.models.questions import IntroCourse, Basis
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from application import assist
 import numpy as np
 import random
 import subprocess
 
-def questions(request):
-    # 問題の大区分数を取得
-    un_last = Basis.objects.order_by('unit').last().unit
+# 問題モデルの一覧リスト
+questions_list_urls = ['questions_beginner',
+                       ]
 
-    # 大区分毎のクエリセットをリストに格納
-    unit_list = [Basis.objects.filter(unit = i+1, q_key = True).order_by('section') for i in range(un_last)]
 
-    # 大区分名をkey、大区分クエリセットをvalueとして辞書に格納
-    units ={}
-    for i in range(un_last):
-        units[unit_list[i].first().major_h] = unit_list[i]
-    
-    # 5の倍数毎に２重線を引くために、5の倍数のリストを作成
-    multiple5 = [ 5 * x for x in range(1,11) ]
-    params = {"units": units, "un_last": un_last, "multiple5": multiple5}
+class QuestionsBeginner(QuestionsListView):
+    model = [Basis, 0]
 
-    return render(request, 'drill/questions.html', params)
 
 def practice(request):
+
+    model_num = int(request.GET.get('m'))
+
+    question_index_url = "python_learning:" + questions_list_urls[model_num]
+
     if request.method == 'POST':
         text = request.POST['text'] 
         backup = request.POST['backup'] 
@@ -44,13 +39,21 @@ def practice(request):
         out, err = op.stdout, op.stderr
         # 標準エラーの内容を「line~」以降に限定
         err = err.split('",')[-1]
-        params = {'text': text, 'out' : out, 'err': err}
+        params = {'text': text, 'out' : out, 'err': err, 
+                  "model_num": model_num, "question_index_url": question_index_url}
 
         return render(request, 'drill/practice.html', params)
     
-    return render(request, 'drill/practice.html')
+    params = {"model_num": model_num, "question_index_url": question_index_url}
+
+    return render(request, 'drill/practice.html', params)
 
 def practice_a(request):
+
+    model_num = int(request.GET.get('m'))
+
+    question_index_url = "python_learning:" + questions_list_urls[model_num]
+
     if request.method == 'POST':
         text = request.POST['text']
         backup = request.POST['backup']
@@ -72,12 +75,11 @@ def practice_a(request):
         else:
             correct = False
         
-        params = {
-        'text': text, 'out' : out, 'correct': correct}
+        params = {'text': text, 'out' : out, 'correct': correct, "question_index_url": question_index_url}
 
         return render(request, 'drill/practice_a.html', params)
     
-    return render(request, 'drill/practice_a.html')
+    return render(request, 'drill/practice_a.html', {"question_index_url": question_index_url})
 
 
 # ーーーーーーーーーーーー↓ここから問題ページのView↓ーーーーーーーーーーーー
@@ -87,6 +89,7 @@ def practice_a(request):
 
 class DrillBeginner(LoginRequiredMixin, DrillView):
     model = Basis
+    index_url_name = questions_list_urls[0]
     template_name = 'drill/drill_question.html'
     url_name = 'drill_beginner'
     course = IntroCourse
@@ -94,6 +97,7 @@ class DrillBeginner(LoginRequiredMixin, DrillView):
 
 class DrillBeginnerSeries(LoginRequiredMixin, DrillView):
     model = Basis
+    index_url_name = questions_list_urls[0]
     template_name = 'drill/drill_questions.html'
     url_name = 'drill_beginners'
     course = None
@@ -136,6 +140,7 @@ class DrillBeginnerSeries(LoginRequiredMixin, DrillView):
 
 class DrillBeginnerAnswer(LoginRequiredMixin, DrillAnswerView):
     model = Basis
+    index_url_name = questions_list_urls[0]
     template_name = 'drill/drill_answer.html'
     url_name = 'drill_beginner'
         
@@ -143,6 +148,7 @@ class DrillBeginnerAnswer(LoginRequiredMixin, DrillAnswerView):
 
 class DrillBeginnerSeriesAnswer(LoginRequiredMixin, DrillAnswerView):
     model = Basis
+    index_url_name = questions_list_urls[0]
     template_name = 'drill/drill_answers.html'
     url_name = 'drill_beginners'
 

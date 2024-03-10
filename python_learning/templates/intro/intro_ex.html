@@ -106,9 +106,9 @@
         <div style="height: 20px;"></div>
         <div class="row">
             <div class="col-4 text-end">
-            {% if p >= 1 %}
+            {% if previous_num >= 1 %}
             <div class="button_back">
-            <a href="{% url 'python_learning:intro_ex' p %}" class="button_back">前へ</a>
+            <a href="{% url 'python_learning:intro_ex' previous_num %}" class="button_back">前へ</a>
             </div>
             {% endif %} 
             </div>
@@ -116,9 +116,9 @@
                 <a href="{% url 'python_learning:intro' %}">一覧へ</a>                
             </div>
             <div class="col-4 text-start">
-                {% if n <= 6 %}
+                {% if next_page %}
                 <div class="button_next">
-                <a href="{% url 'python_learning:intro_ex' n %}">次へ</a>
+                <a href="{% url 'python_learning:intro_ex' next_num %}">次へ</a>
                 </div>
                 {% endif %} 
             </div>

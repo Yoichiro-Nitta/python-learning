@@ -1,5 +1,3 @@
-from decimal import Decimal, ROUND_HALF_UP
-import random
 import re
 
 def connect(pre_code, text, post_code):
@@ -35,14 +33,17 @@ def font(ww):
     ww = ww.replace("<f>", '<span class="vibrant_ink_func" data-color="func">')
     ww = ww.replace("<p>", '<span class="vibrant_ink_print" data-color="print">')
     ww = ww.replace("<s>", '<span class="vibrant_ink_str" data-color="str">')
-    ww = ww.replace("____", '<span class="vibrant_ink_bg" data-color="bg">____</span>')
+    ww = "<pre>" + ww + "</pre>"
     return ww
 
 def security(text):
     judge = True
     judge *= not bool(re.search(r"import[a-zA-z0-9 _,\.]+os", text))
+    judge *= not bool(re.search(r"import[a-zA-z0-9 _,\.]+Path", text))
+    judge *= not bool(re.search(r"import[a-zA-z0-9 _,\.]+shutil", text))
     judge *= not bool(re.search(r"import[a-zA-z0-9 _,\.]+subprocess", text))
     judge *= not bool(re.search(r"from[a-zA-z0-9 _,\.]+django", text))
+    judge *= not bool(re.search(r"from[a-zA-z0-9 _,\.]+pathlib", text))
     judge *= not bool(re.search(r"[_\.]+import", text))
     judge *= not bool(re.search(r"open\(", text))
     judge *= not bool(re.search(r"exec\(", text))
@@ -51,10 +52,3 @@ def security(text):
         return text
     else:
         return 'print("使用できないコードが含まれています。")'
-
-
-def bbcl(func, i_range:str, n:int):
-    i_str, r_str= i_range.split(f"\n/bbcl{n}/")
-    n_str = str(list(map(func, eval(i_str))))
-    a_str = n_str + "\n" + r_str
-    return a_str

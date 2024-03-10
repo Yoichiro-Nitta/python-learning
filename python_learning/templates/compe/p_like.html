@@ -1,6 +1,6 @@
 {% extends 'python_learning/base.html' %}
 {% load static %}
-{% block title %}Python-Learning{% endblock title %}
+{% block title %}Paiza形式問題一覧{% endblock title %}
 
 
 {% block content %}
@@ -8,7 +8,7 @@
     <div style="height: 10px;"></div>
     <h3 class="p-1 text-center">Paiza形式問題</h3>
     <div style="height: 10px;"></div>
-    <div class="text-center"><a href="{% url 'python_learning:p_like_ex' %}">問題に挑戦するにあたって</a></div>
+    <div class="text-center"><a href="{% url 'python_learning:p_like_ex' %}?p={{number}}">問題に挑戦するにあたって</a></div>
     <div style="height: 10px;"></div>
     <div class="text-center"><a href="{% url 'python_learning:compe' 0 %}?p={{number}}">練習問題</a></div>
     <div style="height: 10px;"></div>
@@ -62,6 +62,10 @@
                 {% if page == page_obj.number %}
                 <li class="Pagination-Item">
                     <a class="Pagination-Item-Link isActive" href="?p={{ page }}"><span>{{ page }}</span></a>
+                </li>
+                {% elif page == '…' %}
+                <li class="Pagination-Item">
+                    <a class="Pagination-Item-Link isReader" href="#"><span>{{ page }}</span></a>
                 </li>
                 {% else %}
                 <li class="Pagination-Item">

@@ -1,6 +1,6 @@
 {% extends 'python_learning/base.html' %}
 {% load static %}
-{% block title %}Python-Learning{% endblock title %}
+{% block title %}10問チャレンジ{% endblock title %}
 
 {% block css %}
 <link href="{% static 'css/modal.css' %}" rel="stylesheet">
@@ -10,7 +10,7 @@
 <div class="container  pt-2">
     <div class="row mt-2">
         <div class="col-7">
-            <h4 class="question_title">{{ question_title }}</h4>
+            <h4 class="question_title">{{ question_title }}【{{urls.qn}}/10】</h4>
             <div style="height: 5px;"></div>
             {% autoescape off %}
             {{ question_sentence | linebreaksbr }}
@@ -46,13 +46,13 @@
         <div class="col-7">
             {% autoescape off %}
             {% if pre_code != "" and ev >= 3 %}
-            <div class="{{ main_class }}" style="height:  124px; border: brown solid 2px;" data-color="main">
-                <div class="{{ side_class }}" style="height: 120px;" data-color="side">&nbsp;</div>
+            <div class="{{ main_class }}" style="height: 114px; border: brown solid 2px;" data-color="main">
+                <div class="{{ side_class }}" style="height: 110px;" data-color="side">&nbsp;</div>
                 <div style="display: inline-block;">{{ pre_visual | linebreaksbr }}</div>
             </div>  
             {% elif pre_code != "" and ev < 3 %}
-            <div class="{{ main_class }}" style="height:  76px; border: brown solid 2px;" data-color="main">
-                <div class="{{ side_class }}" style="height: 72px;" data-color="side">&nbsp;</div>
+            <div class="{{ main_class }}" style="height: 70px; border: brown solid 2px;" data-color="main">
+                <div class="{{ side_class }}" style="height: 66px;" data-color="side">&nbsp;</div>
                 <div style="display: inline-block;">{{ pre_visual | linebreaksbr }}</div>
             </div>
             {% endif %}
@@ -60,9 +60,9 @@
             <div id="editor" style="height: 380px; width: 100%;">{{ text }}</div>
             {% if post_code != "" %}
             {% autoescape off %}
-            <div class="{{ main_class }}" style="height: 80px; border: blue solid 2px;" data-color="main">
-            <div class="{{ side_class }}" style="height: 76px;" data-color="side">&nbsp;</div>
-            <div style="display: inline-block;">{{ post_visual | linebreaksbr }}</div>
+            <div class="{{ main_class }}" style="height: 74px; border: blue solid 2px;" data-color="main">
+            <div class="{{ side_class }}" style="height: 70px;" data-color="side">&nbsp;</div>
+            <div style="display: inline-block; font-size: 110%;">{{ post_visual | linebreaksbr }}</div>
             </div>
             {% endautoescape %}
             {% endif %}
@@ -79,21 +79,21 @@
                 <div class="modal-body">
                 <p>🟢使用可能な外部ライブラリ</p>
                 <p class="ps-3"> numpy、pandas、mpmath、scipy、sympy</p>
-                <p>🔴使用できないモジュール</p>
-                <p class="ps-3"> os、subprocess</p>
+                <p>🔴使用できないモジュール・ライブラリ</p>
+                <p class="ps-3"> os、subprocess、pathlib、shutil</p>
                 <p>🔴使用できない関数</p>
                 <p class="ps-3"> open、exec、eval</p>
                 </div>
                 </div>
                 </div>
             </div>
-            {% if pre_code != "" and ev >= 3 %}
-            <div style="height: 124px;"></div>
-            {% elif pre_code != "" and ev < 3 %}
-            <div style="height: 76px;"></div>
+            {% if pre_code and ev >= 3 %}
+            <div style="height: 114px;"></div>
+            {% elif pre_code and ev < 3 %}
+            <div style="height: 70px;"></div>
             {% endif %}
-            {% if post_code != "" %}
-            <div style="height: 80px;"></div>
+            {% if post_code %}
+            <div style="height: 74px;"></div>
             {% endif %}
             <form action="?" method="post">{% csrf_token %}
                 <textarea style="display:none" id="text" name="text"></textarea>
@@ -109,11 +109,17 @@
         <span><button type="submit" class="btn btn-danger" formaction="{% url answer_url urls.qn %}?query={{urls.query}}">解答する</button></span>
     </div>
     </form>
-    <div class="button_return"><a href="{% url 'python_learning:questions' %}">問題一覧へ</a></div>
+    <div class="button_return"><a href="{% url question_index_url %}">
+        {% if urls.qn == 1 %}
+        問題一覧へ
+        {% else %}
+        挑戦をやめる
+        {% endif %}
+    </a></div>
     <div style="height: 60px;"></div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ace.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ext-language_tools.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ext-language_tools.js"></script>
 <script src="{% static 'js/modal.js' %}"></script>
 <script src="{% static 'js/drillquestion.js' %}"></script>
 

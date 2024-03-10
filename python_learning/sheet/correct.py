@@ -1,1 +1,2 @@
-print(311 % 22)
+num = 84
+print(num)

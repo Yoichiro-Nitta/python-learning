@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect
-from python_learning_app.models.index import CustomUser
+from django.shortcuts import render
 from python_learning_app.models.questions import Competition, CompeResult
 from django.contrib.auth.decorators import login_required
 from Crypto.Cipher import AES
@@ -9,6 +8,17 @@ import time
 import subprocess
 
 def p_like(request):
+    """Paiza形式問題一覧のView
+    
+    パラメーター説明
+
+    page_obj:               Paginatorのオブジェクト
+    page_range:             ページ番号のリスト（ページのリンクボタンで使用）
+    number:                 クエリパラメータから取得した現在のページ番号
+    questions_and_results:  問題レベル、page_obj、解答履歴をまとめたイテラブルオブジェクト
+
+    """
+
     # 例題（問題番号０）以外の問題を取得
     questions = Competition.objects.filter(section__gte = '1').order_by('section')
     # ページの分割
@@ -17,8 +27,17 @@ def p_like(request):
     number = int(request.GET.get('p', 1))
     # 取得したページ番号のページを取得
     page_obj = paginator.page(number)
-    # ページ数のリストを取得
-    page_range = [x for x in paginator.page_range]
+    # ページ数
+    last = paginator.num_pages
+    # 現在のページ番号に応じて表示するページ数のリストを作成
+    if last <= 5:
+        page_range = [x for x in paginator.page_range]
+    elif number <= 3:
+        page_range = [1, 2, 3, 4, '…']
+    elif last - number <= 2:
+        page_range = ['…', last - 3, last - 2, last - 1, last]
+    else:
+        page_range = ['…', number - 1, number, number + 1, '…']
 
     # 難易度とユーザーの挑戦履歴を取得
     level = [] # 難易度格納用リスト
@@ -34,16 +53,60 @@ def p_like(request):
     # forloop用にまとめる
     questions_and_results = zip(level, page_obj, results)
 
-    params = {'page_obj' : page_obj, "page_range": page_range, 
+    params = {'page_obj' : page_obj, 'page_range': page_range, 
               'number': number, 'questions_and_results': questions_and_results}
 
     return render(request, 'compe/p_like.html', params)
 
 def p_like_ex(request):
-    return render(request, 'compe/p_like_ex.html')
+    """Paiza形式問題の説明ページのView
+    
+    パラメーター説明
+
+    pn:               ページ番号
+
+    """
+
+    # クエリ情報の取得
+    query = request.GET.get('p')
+
+    # 問題一覧に戻るページ数を設定
+    if query in ['1', None]:
+        pn = 1
+    else:
+        pn = int(query)
+
+    return render(request, 'compe/p_like_ex.html', {"pn": pn})
 
 @login_required
 def compe(request, pk):
+    """Paiza形式問題ページのView
+    
+    パラメーター説明
+
+    text:                   ユーザーの入力内容
+    out:                    出力結果(出力時)
+    err:                    出力結果(エラー時)
+    title:                  問題のタイトル
+    sentence:               問題文
+    expectation:            期待される出力
+    condition:              問題の条件
+    format_data:            入力フォーマットのデータ部
+    format_text:            入力フォーマットの説明部
+    input_ex:               入力例の初期値(postメソッド時はpost時の値)
+    output_ex:              出力例の初期値(postメソッド時はpost時の値)
+    examples:               入力例と出力例をまとめたイテラブルオブジェクト
+    editor_colors:          エディター配色のリスト
+    testcases:              テストケース表示用リスト（javascriptに渡すためのデータ）
+    defalt_color:           初期配色
+    data:                   暗号化データ
+    cn:                     カラー番号
+    sn:                     セレクトタグの番号
+    pk:                     問題番号
+    pn:                     リンク元のページ番号
+
+    """
+
     # データベースからデータを取得
     question = Competition.objects.get(section = pk)
     title, sentence = question.title, question.question,
@@ -65,6 +128,7 @@ def compe(request, pk):
     editor_colors = zip(color_text, editor_color)
     testcases = [input_ex_list[i] + "//" + output_ex_list[i] + "//" + str(i + 1) for i in range(len(input_ex_list))]
 
+    # 練習問題（問題番号0）および各ページの問題から問題一覧ページに戻る際は元のページに戻るように設定
     if pk == 0:
         pn = request.GET.get('p')
     else:
@@ -97,7 +161,7 @@ def compe(request, pk):
         op = subprocess.run('python sheet/competition.py',input=n_input, shell=True, capture_output=True, text=True, timeout=3)
         out, err = op.stdout, op.stderr
         err = err.split('",')[-1]
-        params = {'text': text, 'out' : out, 'err': err, 
+        params = {"text": text, "out" : out, "err": err, 
                   "title":title,"sentence": sentence, 
                   "expectation": expectation, "condition": condition, 
                   "format_data": format_data, "format_text": format_text, 
@@ -132,6 +196,22 @@ def compe(request, pk):
 
 @login_required
 def compe_a(request, pk):
+    """Paiza形式解答結果ページのView
+    
+    パラメーター説明
+
+    combine:                解答の正誤、実行時間、フェードインのcssクラスをまとめたイテラブルオブジェクト
+    text:                   ユーザーの入力内容
+    example_answer:         解答例
+    num_of_question:        テストケース数
+    num_of_correct:         正解ケース数
+    last_fade_in:           正解ケース数/テストケース数をフェードインで表示するcssクラス
+    perfect:                perfect達成の判定
+    pk:                     問題番号
+    pn:                     リンク元のページ番号
+
+    """
+
     # 非公開の入力データ、出力データを再取得
     question = Competition.objects.get(section = pk)
     input_ex_list = question.input_ex.replace("\r", "").split("\n/separate/\n")

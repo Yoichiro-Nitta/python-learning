@@ -17,7 +17,7 @@ class IntroCourse(models.Model):
     section = models.PositiveIntegerField(verbose_name="区分")
     order = models.PositiveSmallIntegerField(verbose_name="順番")
     text_type = models.CharField(max_length=20, choices=TEXT_TYPES, verbose_name="タイプ", blank=True)
-    content = models.TextField(blank=True, verbose_name="内容")
+    content = models.TextField(blank=True, verbose_name="内容[&nbsp;]")
 
     def add_title(self):
         if self.text_type == 'heading':
@@ -38,6 +38,7 @@ class IntroCourse(models.Model):
 
 
 class Basis(models.Model):
+    primary_key = models.PositiveIntegerField(primary_key=True, verbose_name="primary_key")
     title = models.CharField(max_length=60,verbose_name="問題内容")
     unit = models.PositiveIntegerField(verbose_name="大区分")
     section = models.PositiveSmallIntegerField(verbose_name="小区分")
@@ -108,7 +109,7 @@ class Competition(models.Model):
     explanation = models.TextField(blank=True, verbose_name="解説")
 
     def __str__(self):
-        return self.title
+        return str(self.primary_key) + '.' + self.title
 
 class CompeResult(models.Model):
     user_id = models.PositiveIntegerField(verbose_name="ユーザーID")

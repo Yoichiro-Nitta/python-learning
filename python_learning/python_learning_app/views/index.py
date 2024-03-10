@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from python_learning_app.models.index import News
 from python_learning_app.forms import SignupForm, LoginForm
 from django.views.generic import FormView
@@ -147,9 +147,3 @@ class ContactView(FormView):
             messages.error(self.request, f"送信に失敗しました。エラー：{e}")
 
         return super().form_valid(form)
-
-
-
-
-
-

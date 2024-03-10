@@ -1,14 +1,78 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import View
-from python_learning_app.models.questions import IntroCourse, Basis
-from django.contrib.auth.mixins import LoginRequiredMixin
 from Crypto.Cipher import AES
 from application import assist, pllist, key
 import random
 import subprocess
 
 
+class QuestionsListView(View):
+
+    """Python基本問題一覧ページのViewのスーパークラス
+    
+    パラメーター説明
+
+    units:                  {'大区分名': 大区分クエリセット}の辞書型オブジェクト
+    un_last:                問題の大区分数
+    multiple5:              5の倍数のリスト（問題大区分5の倍数でが2重線で区切るため）
+    model_num:              使用するモデルのリストの番号（リストは drll.py の questions_list_urls）
+    
+    """
+
+    def get(self, request):
+
+        questions, model_num = self.__class__.model
+
+        # 問題の大区分数を取得
+        un_last =  questions.objects.order_by('unit').last().unit
+
+        # 大区分毎のクエリセットをリストに格納
+        unit_list = [questions.objects.filter(unit = i+1, q_key = True).order_by('section') for i in range(un_last)]
+
+        # 大区分名をkey、大区分クエリセットをvalueとして辞書に格納
+        units = {}
+        for i in range(un_last):
+            units[unit_list[i].first().major_h] = unit_list[i]
+
+        # 5の倍数毎に２重線を引くために、5の倍数のリストを作成
+        multiple5 = [ 5 * x for x in range(1,11) ]
+
+        params = {"units": units, "un_last": un_last, "multiple5": multiple5, "model_num": model_num}
+
+        return render(request, 'drill/questions.html', params)
+
+
 class DrillView(View):
+
+    """Python基本問題解答入力ページのViewのスーパークラス
+    
+    パラメーター説明
+
+    text:                   ユーザーの入力内容
+    out:                    出力結果(出力時)
+    err:                    出力結果(エラー時)
+    question_title:         問題タイトル
+    question_sentence:      問題文
+    question_data:          問題データ
+    pre_code:               入力欄前の強制入力コード
+    pre_visual:             pre_codeの表示内容
+    post_code:              入力欄後の強制入力コード 
+    post_visual:            post_codeの表示内容
+    data1:                  自身のpostメソッドのみに送る内容のまとめ
+    data2:                  自身のpostメソッドおよび解答ページに送る内容のまとめ
+    editor_colors:          エディター色のリスト
+    cn:                     エディター色のカラー番号
+    defalt_color:           エディター色の初期値
+    main_class:             強制入力欄のCSSクラス
+    side_class:             強制入力部の行番号表示欄のCSSクラス 
+    urls:                   問題区分の辞書型変数；{un: 大区分, pk: 小区分}
+    ev:                     pre_codeの行数-1
+    course_exist:           対応する講座の有無
+    question_index_url:     問題一覧ページのURL(templateでurls.pyのnameを指定)
+    question_url:           問題ページのURL(templateでurls.pyのnameを指定)
+    answer_url:             解答ページのURL(templateでurls.pyのnameを指定)
+
+    """
 
     # 共有変数を定義
     def setup(self, request, *args, **kwargs):
@@ -21,6 +85,7 @@ class DrillView(View):
                       "ace/theme/crimson_editor//crimson_editor_"]
         editor_color = ["Vibrant Ink", "Monokai", "Cobalt", "Solarized Light", "Crimson Editor"]
         self.editor_colors = zip(color_text, editor_color)
+        self.question_index_url = 'python_learning:' + self.__class__.index_url_name
         self.question_url = 'python_learning:' + self.__class__.url_name
         self.answer_url = 'python_learning:' + self.__class__.url_name + '_answer'
         self.course = self.__class__.course
@@ -133,28 +198,6 @@ class DrillView(View):
         data1 = str([question_title, question_sentence, pre_visual, post_visual]) # postメソッドのみに送る内容
         data2 = str([question_data, pre_code, post_code, role, ciphertext, tag]) # 両方に送る内容
 
-        """ 【変数の説明】
-        question_title:     問題タイトル
-        question_sentence:  問題文
-        question_data:      問題データ
-        pre_code:           入力欄前の強制入力コード
-        pre_visual:         pre_codeの表示内容
-        post_code:          入力欄後の強制入力コード 
-        post_visual:        post_codeの表示内容
-        data1:              自身のpostメソッドのみに送る内容のまとめ
-        data2:              自身のpostメソッドおよび解答ページに送る内容のまとめ
-        editor_colors:      エディター色のリスト
-        cn:                 エディター色のカラー番号
-        defalt_color:       エディター色の初期値
-        main_class:         強制入力欄のCSSクラス
-        side_class:         強制入力部の行番号表示欄のCSSクラス 
-        urls:               問題区分の辞書型変数；{un: 大区分, pk: 小区分}
-        ev:                 pre_codeの行数-1
-        course_exist        対応する講座の有無
-        question_url:       問題一覧ページのURL(templateでurls.pyのnameを指定)
-        answer_url:         解答ページのURL(templateでurls.pyのnameを指定)
-        """
-
         params ={"question_title": question_title, 
                  "question_sentence": question_sentence, 
                  "question_data": question_data, 
@@ -168,6 +211,7 @@ class DrillView(View):
                  "main_class": main_class, "side_class": side_class, 
                  "urls": urls, "ev": ev, 
                  "course_exist": self.course_exist,
+                 "question_index_url": self.question_index_url,
                  "question_url": self.question_url, 
                  "answer_url": self.answer_url}
         
@@ -218,12 +262,6 @@ class DrillView(View):
         # エラー表示の際に、エディターの行数が表示されるように工夫
         if len(out) < len(err) and pre_code:
             err = assist.reduce(err, pre_code)
-
-        """ 【変数の説明（新規のみ）】
-        text:               ユーザーの入力内容
-        out:                出力結果(出力時)
-        err:                出力結果(エラー時)
-        """
             
         params = {"text": text, "out" : out, "err": err, 
                  "question_title": question_title, 
@@ -239,6 +277,7 @@ class DrillView(View):
                  "main_class": main_class, "side_class": side_class, 
                  "urls": urls,  "ev": ev,
                  "course_exist": self.course_exist, 
+                 "question_index_url": self.question_index_url, 
                  "question_url": self.question_url, 
                  "answer_url": self.answer_url}
         
@@ -250,9 +289,27 @@ class DrillView(View):
 
 class DrillAnswerView(View):
 
+    """Python基本問題解答結果ページのViewのスーパークラス
+    
+    パラメーター説明
+    
+    text_connect:           ユーザー入力（＋強制入力）
+    out :                   ユーザー出力
+    correct_output:         正解出力
+    example_answer:         解答例
+    correct:                正解のbool値
+    urls:                   問題区分の辞書型変数；{un: 大区分, pk: 小区分}
+    pages:                  ページ関連の辞書型データ
+    question_index_url:     問題一覧ページのURL(templateでurls.pyのnameを指定)
+    question_url:           問題ページのURL(templateでurls.pyのnameを指定)
+    answer_url:             解答ページのURL(templateでurls.pyのnameを指定)
+
+    """
+
     # 共有変数を定義
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
+        self.question_index_url = 'python_learning:' + self.__class__.index_url_name
         self.question_url = 'python_learning:' + self.__class__.url_name
         self.answer_url = 'python_learning:' + self.__class__.url_name + '_answer'
     
@@ -318,7 +375,7 @@ class DrillAnswerView(View):
         
         # 独自の正誤判定を用いる場合
         if role and out:
-            local_val = {'out': out, 'correct': correct}
+            local_val = {'out': out, 'correct': correct, 'correct_output': correct_output}
             exec(role, globals(), local_val)
             correct = local_val['correct']
         
@@ -327,24 +384,13 @@ class DrillAnswerView(View):
         # 前後のunitおよびsectionの番号を変数に格納
         pages = self.pages(**kwargs)
 
-        """
-        text_connect:       ユーザー入力（＋強制入力）
-        out :               ユーザー出力
-        correct_output:     正解出力
-        example_answer:     解答例
-        correct:            正解のbool値
-        urls:               問題区分の辞書型変数；{un: 大区分, pk: 小区分}
-        pages:              ページ関連の辞書型データ
-        question_url:       問題一覧ページのURL(templateでurls.pyのnameを指定)
-        answer_url:         解答ページのURL(templateでurls.pyのnameを指定)
-        """
-
         params = {"text_connect": text_connect, 
                  "out" : out, 
                  "correct_output": correct_output, 
                  "example_answer": example_answer,
                  "correct": correct,
                  "urls": urls, "pages": pages,
+                 "question_index_url": self.question_index_url, 
                  "question_url": self.question_url, 
                  "answer_url": self.answer_url}
         
@@ -358,7 +404,8 @@ class DrillAnswerView(View):
 
         params ={"correct_output": "", 
                  "example_answer": "",
-                 "urls": urls, "pages": pages,
+                 "urls": urls, "pages": pages, 
+                 "question_index_url": self.question_index_url, 
                  "question_url": self.question_url, 
                  "answer_url": self.answer_url}
         

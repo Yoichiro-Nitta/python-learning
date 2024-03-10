@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect
-from python_learning_app.models.index import CustomUser
+from django.shortcuts import render
 from python_learning_app.models.questions import Quartet, QuartetResult
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -7,14 +6,28 @@ from application import key
 import random
 
 def chapter(request):
+    """Python知識問題の章を表示するView"""
+
     python3_list = [("Pythonの基本", 1),
                     ("計算・文字列・リスト", 2),
-                    ("制御構文", 3),]
+                    ("制御構文", 3),
+                     ("データ構造", 4),]
     params = {"python3_list": python3_list}
 
     return render(request, 'quartet/chapter.html', params)
 
 def q_list(request, un):
+    """Python知識問題各章の問題一覧を表示するView
+    
+    パラメーター説明
+
+    page_obj:               Paginatorのオブジェクト
+    questions_and_results:  page_obj、解答履歴をまとめたイテラブルオブジェクト
+    page_range:             ページ番号のリスト（ページのリンクボタンで使用）
+    un:                     章番号
+
+    """
+
     # 大区分unの問題を昇順で取得
     questions = Quartet.objects.filter(unit = un).order_by('section')
     # ページの分割
@@ -43,14 +56,30 @@ def q_list(request, un):
     return render(request, 'quartet/q_list.html', params)
 
 def quartet(request, un, pk):
+    """Python知識問題の解答入力View
+
+    パラメーター説明
+
+    title:                  問題タイトル
+    sentence:               問題文
+    code:                   Pythonコード
+    shuffled:               シャッフル済みの選択肢一覧
+    frame:                  選択肢がコードの場合 True
+    un:                     章番号
+    pk:                     問題番号
+    pn:                     ページ番号
+
+    """
      #データベースからデータを取得
     question = Quartet.objects.get(unit= un, section = pk)
-    title, sentence, code = question.title, question.question, question.question_code
+    title, sentence, code, frame = question.title, question.question, question.question_code, question.frame
 
-    # アンダースコアを白色に変換する処理 
-    code = code.replace('____', '<span style="color: white;">____</span>')
+    # アンダースコアをスペースに変換する処理
+    if code:
+        code = "<pre>" + code + "</pre>"
     choices = [question.choices1, question.choices2, question.choices3, question.choices4]
-    choices = list(map(lambda x : x.replace('____', '<span style="color: white;">____</span>'), choices))
+    if frame:
+        choices = list(map(lambda x : ("<pre>" + x + "</pre>"), choices))
 
     # 選択肢をまとめる
     choices = [(y, x+1) for x, y in enumerate(choices)]
@@ -63,6 +92,21 @@ def quartet(request, un, pk):
 
 
 def quartet_a(request, un, pk):
+    """Python知識問題の解答結果View
+
+    パラメーター説明
+
+    title:                  問題タイトル
+    judge:                  judge
+    num_of_series:          問題が属する章の問題数
+    explanation:            解説
+    un:                     章番号
+    pk:                     問題番号
+    pk_b:                   問題番号 - 1
+    pk_a:                   問題番号 + 1
+    pn:                     ページ番号
+
+    """
     # データベースからデータを取得
     question = Quartet.objects.get(unit= un, section = pk)
     title = question.title
