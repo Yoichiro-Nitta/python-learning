@@ -7,24 +7,28 @@
 <div class="p-2"><h3><p class="text-center">ユーザー登録</p></h3></div>
 <div class="container text-center p-2">
         <h4>ユーザー名、メールアドレス、パスワードを入力してください。</h4>
+        <div>・パスワードは最低８文字以上が必要です</div>
+        <div>・数字だけのパスワードにはできません</div>
 </div>
 <div style="height: 20px;"></div>
     <div class="container text-center p-2">
       <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
+        <div class="col-3"></div>
+        <div class="col-6">
           <div class="container text-center p-2">
-        <form action="{% url 'python_learning:signup_view' %}" method="post">
+        <form method="post">
              {% csrf_token %}
-            <div class="p-2"><label>ユーザー名</label><br>{{ form.username }}</div>
-            <div class="p-2"><label>メールアドレス</label><br>{{ form.email }}</div>
-            <div class="p-2"><label>パスワード</label><br>{{ form.password1 }}</div>
-            <div class="p-2"><label>パスワード（確認）</label><br>{{ form.password2 }}</div>
+             {{ form.non_field_errors }}
+            {% for field in form %}
+            <div class="p-2">{{ field.label }}<br>{{ field }}
+
+              <span class="text-start">{{ field.errors }}<span></div>
+            {% endfor %}
             <div class="p-2"><input type="submit" value="登録"></div>
         </form>
         </div>
         </div>
-        <div class="col-1"></div>
+        <div class="col-3"></div>
       </div>
     </div>
     <div style="height: 20px;"></div>

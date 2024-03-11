@@ -16,4 +16,12 @@
     <div class="p-2">パスワード：{{ form.password }}</div>
         <p><input type="submit" value="ログイン"></p>
     </form>
+    <div style="height: 20px;"></div>
+    <div class="container text-center p-2">
+        {% if err_message %}
+        <p>{{err_message}}</p>
+        {% endif %}
+        <a href="{% url 'python_learning:index' %}" class="button_to_top">戻る</a>
+    </div>
+        
 {% endblock content %}

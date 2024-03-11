@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from python_learning_app.models.index import News
 from python_learning_app.forms import SignupForm, LoginForm
-from django.views.generic import FormView
+from django.views.generic import  TemplateView, FormView, CreateView
 from django.urls import reverse_lazy
 from python_learning_app.forms import ContactForm
 from django.contrib import messages
 from django.core.mail import EmailMessage
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.core.paginator import Paginator
 from config.settings import DEBUG
 import os
@@ -62,22 +62,25 @@ def news_list(request):
 
     return render(request, 'python_learning/news_list.html', params)
 
-def signup_view(request):
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
+class SignupView(CreateView):
+    """ ユーザー登録用ビュー """
+    form_class = SignupForm # 作成した登録用フォームを設定
+    template_name = "user/signup.html" 
+    success_url = reverse_lazy("python_learning:signed_view") # ユーザー作成後のリダイレクト先ページ
 
-            return render(request, 'user/signed.html')
+    def form_valid(self, form):
+        # ユーザー作成後にそのままログイン状態にする設定
+        response = super().form_valid(form)
+        account_id = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password1")
+        user = authenticate(account_id=account_id, password=password)
+        login(self.request, user)
+        return response
+    
 
-    else:
-        form = SignupForm()
-    params = {
-        'form': form
-    }
-
-    return render(request, 'user/signup.html', params)
+class SignedView(TemplateView):
+    """ 登録完了画面 """
+    template_name = "user/signed.html"
 
 def login_view(request):
     if request.method == 'POST':
@@ -88,9 +91,18 @@ def login_view(request):
                 login(request, user)
 
                 return render(request, 'user/loggedin.html')
+            
+        else:
+            err_message = "ログインに失敗しました。ユーザー名とパスワードを確認してください。"
+            form = LoginForm()
+            param = {'form': form, "err_message": err_message}
+            return render(request, 'user/login.html', param)
+            
     else:
         form = LoginForm()
-    param = {'form': form}
+
+    err_message = ""
+    param = {'form': form, "err_message": err_message}
     
     return render(request, 'user/login.html', param)
 
