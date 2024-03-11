@@ -4,6 +4,8 @@ from django.http import FileResponse
 # from django.core.paginator import Paginator
 
 def machine_learning(request):
+    """機械学習一覧のView"""
+
     # タイトルのリスト
     title = ['Pandas基礎', '機械学習基礎', 'クラス分類演習']
     # 解説URLのリスト
@@ -24,11 +26,13 @@ def machine_learning(request):
     return render(request, 'machine/machine_learning.html', params)
 
 def how_to(request):
+    """Google Colaboratoryの使い方のView"""
 
     return render(request, 'machine/how_to.html')
 
 
 def download(request, pk):
+    """ダウンロード用のView"""
     file = ['Pandas_Basis.zip', 'practice.zip', 'machine_learning.zip']
     file_path = 'downloads/' + file[pk - 1]
     filename = file[pk - 1]

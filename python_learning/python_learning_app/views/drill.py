@@ -17,6 +17,7 @@ class QuestionsBeginner(QuestionsListView):
 
 
 def practice(request):
+    """練習問題解答入力ページのView"""
 
     model_num = int(request.GET.get('m'))
 
@@ -49,6 +50,7 @@ def practice(request):
     return render(request, 'drill/practice.html', params)
 
 def practice_a(request):
+    """練習問題解答結果ページのView"""
 
     model_num = int(request.GET.get('m'))
 

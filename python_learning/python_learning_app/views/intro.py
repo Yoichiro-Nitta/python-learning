@@ -7,6 +7,8 @@ import subprocess
 
 
 def intro(request):
+    """入門講座一覧のView"""
+    
     # データベースから各回の最初のデータを取得（第１回、第２回といった具合で、「回」で分類）
     introforewords = IntroCourse.objects.filter(order = 1)
     # sectionで昇順に並べ替え

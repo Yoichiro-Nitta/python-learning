@@ -128,6 +128,7 @@ def compe(request, pk):
     editor_colors = zip(color_text, editor_color)
     testcases = [input_ex_list[i] + "//" + output_ex_list[i] + "//" + str(i + 1) for i in range(len(input_ex_list))]
 
+    # エディター色と番号の辞書を作成
     color_numbers = [1, 2, 3, 4, 5]
     color_dict = dict(zip(color_text, color_numbers))
 
