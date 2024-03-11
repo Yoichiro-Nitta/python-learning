@@ -74,8 +74,11 @@ def practice_a(request):
             correct = True
         else:
             correct = False
+
+        default_color = "ace/theme/monokai"
         
-        params = {'text': text, 'out' : out, 'correct': correct, "question_index_url": question_index_url}
+        params = {"text": text, "out" : out, "correct": correct, 
+                  "question_index_url": question_index_url, "default_color": default_color}
 
         return render(request, 'drill/practice_a.html', params)
     

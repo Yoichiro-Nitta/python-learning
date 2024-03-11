@@ -98,7 +98,7 @@ def compe(request, pk):
     examples:               入力例と出力例をまとめたイテラブルオブジェクト
     editor_colors:          エディター配色のリスト
     testcases:              テストケース表示用リスト（javascriptに渡すためのデータ）
-    defalt_color:           初期配色
+    default_color:          エディターの初期配色
     data:                   暗号化データ
     cn:                     カラー番号
     sn:                     セレクトタグの番号
@@ -128,6 +128,9 @@ def compe(request, pk):
     editor_colors = zip(color_text, editor_color)
     testcases = [input_ex_list[i] + "//" + output_ex_list[i] + "//" + str(i + 1) for i in range(len(input_ex_list))]
 
+    color_numbers = [1, 2, 3, 4, 5]
+    color_dict = dict(zip(color_text, color_numbers))
+
     # 練習問題（問題番号0）および各ページの問題から問題一覧ページに戻る際は元のページに戻るように設定
     if pk == 0:
         pn = request.GET.get('p')
@@ -138,14 +141,9 @@ def compe(request, pk):
     if request.method == 'POST':
         text = request.POST['text'] 
         backup = request.POST['backup'] 
-        defalt_color = request.POST['defalt_color']
+        default_color = request.POST['default_color']
         data = request.POST['data'] 
-        color_dict = {"ace/theme/vibrant_ink": 1, 
-                      "ace/theme/monokai": 2, 
-                      "ace/theme/cobalt": 3, 
-                      "ace/theme/solarized_light": 4, 
-                      "ace/theme/crimson_editor": 5} 
-        cn = color_dict[defalt_color]
+        cn = color_dict[default_color]
         # post時に選択されていたselectタグの値をint型で取得
         sn = int(request.POST['selected_n'] )
         n_input = input_ex_list[sn - 1] + "\n"
@@ -167,15 +165,21 @@ def compe(request, pk):
                   "format_data": format_data, "format_text": format_text, 
                   "input_ex": input_ex_list[sn - 1], "output_ex": output_ex_list[sn - 1], 
                   "examples": examples, "editor_colors": editor_colors, "testcases": testcases, 
-                  "defalt_color": defalt_color, "data": data, "cn": cn, "sn": sn, "pk": pk, "pn": pn}
+                  "default_color": default_color, "data": data, "cn": cn, "sn": sn, "pk": pk, "pn": pn}
         
         return render(request, 'compe/compe.html', params)
     
     # editor色の初期値
-    cn = 1
+    e_query = request.GET.get('e')
+    if e_query:
+        default_color = "ace/theme/" + e_query
+        cn = color_dict[default_color]
+    else:
+        default_color = "ace/theme/vibrant_ink"
+        cn = 1
     # selectタグの初期値
     sn = 1
-    defalt_color = "ace/theme/vibrant_ink"
+    
 
     private_info = question.input_data + "///" + question.output_data + "///" + question.e_answer
     cipher = AES.new(key.key, AES.MODE_EAX, nonce=key.nonce)
@@ -188,7 +192,7 @@ def compe(request, pk):
               "format_data": format_data, "format_text": format_text, 
               "input_ex": input_ex_list[0], "output_ex": output_ex_list[0], 
               "examples": examples, "editor_colors": editor_colors, "testcases": testcases, 
-              "defalt_color": defalt_color, "data": data, 
+              "default_color": default_color, "data": data, 
               "cn": cn, "sn": sn, "pk": pk, "pn": pn}
     
     return render(request, 'compe/compe.html', params)
@@ -202,11 +206,13 @@ def compe_a(request, pk):
 
     combine:                解答の正誤、実行時間、フェードインのcssクラスをまとめたイテラブルオブジェクト
     text:                   ユーザーの入力内容
+    default_color:          エディター色の初期値
     example_answer:         解答例
     num_of_question:        テストケース数
     num_of_correct:         正解ケース数
     last_fade_in:           正解ケース数/テストケース数をフェードインで表示するcssクラス
     perfect:                perfect達成の判定
+    e_query:                クエリ文字列で渡すエディター色
     pk:                     問題番号
     pn:                     リンク元のページ番号
 
@@ -219,6 +225,7 @@ def compe_a(request, pk):
 
     if request.method == 'POST':
         text = request.POST['text'] 
+        default_color = request.POST['default_color']
         backup = request.POST['backup'] 
         data = request.POST['data'] 
         ciphertext, tag = eval(data)
@@ -287,11 +294,15 @@ def compe_a(request, pk):
             compe_result.save()
             pn = (pk - 1) // 10 + 1
 
+        # クエリ文字列で渡すエディター配色
+        e_query = default_color.split("/")[-1]
+
         # for文でまわすためにzipオブジェクトを作成
         combine = zip(check, processing_time, fade_in)
         params = {"combine": combine, "text": text, "example_answer": example_answer, 
-                  "num_of_question": num_of_question, "num_of_correct": num_of_correct, 
-                  "last_fade_in": last_fade_in, "perfect": perfect, "pn": pn, "pk": pk }
+                  "default_color": default_color,"num_of_question": num_of_question,
+                  "num_of_correct": num_of_correct, "last_fade_in": last_fade_in, 
+                  "perfect": perfect, "e_query": e_query, "pn": pn, "pk": pk }
 
         return render(request, 'compe/compe_a.html', params)
     

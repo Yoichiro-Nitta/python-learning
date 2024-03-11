@@ -98,7 +98,7 @@
             <form action="?" method="post">{% csrf_token %}
                 <textarea style="display:none" id="text" name="text"></textarea>
                 <textarea style="display:none" id="backup" name="backup">{{ text }}</textarea>
-                <input type="hidden" id="defalt_color" name="defalt_color" value="{{ defalt_color }}">
+                <input type="hidden" id="default_color" name="default_color" value="{{ default_color }}">
                 <textarea style="display:none"  name="data1">{{ data1 }}</textarea>
                 <textarea style="display:none"  name="data2">{{ data2 }}</textarea>
                 <textarea class="ps-2" name="output" rows="8" style="background-color: lightcyan; border: blue solid 1px; width: 100%;" readonly>{{ out }}{{ err }}</textarea>

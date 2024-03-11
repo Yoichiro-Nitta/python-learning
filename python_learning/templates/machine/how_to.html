@@ -17,7 +17,7 @@
             <h5 class="mt-4 mb-3 FA_point">③ Google Colaboratoryのインストール</h5>
             <p>Googleドライブの「新規」から「その他」→「アプリの追加」を選び、「Colaboratory」と検索し、インストールしてください。</p>
             <img style="width: 60%; height: auto;" src="{% static 'img/add.png' %}"><br>
-            <img style="width: 60%; height: auto;" src="{% static 'img/search.png' %}"><br>
+            <img style="width: 60%; height: auto;" src="{% static 'img/input.png' %}"><br>
             <img style="width: 60%; height: auto;" src="{% static 'img/install.png' %}">
             <h5 class="mt-4 mb-3 FA_point">④ Google Colaboratoryの開始</h5>
             <p>Googleドライブの「マイドライブ」で「右クリック」→「その他」→「Google Colaboratory」を選択すれば開始できます。</p>
@@ -25,7 +25,8 @@
         </div>
         <div class="com-1"></div> 
     </div>
-    <div class="p-2 text-center"><a href="{% url 'python_learning:machine_learning' %}">戻る</a></div>
+    <div style="height: 20px;"></div>
+    <div class="button_return"><a href="{% url 'python_learning:machine_learning' %}">戻る</a></div>
 </div>
 <div style="height: 40px;"></div>
 {% endblock content %}

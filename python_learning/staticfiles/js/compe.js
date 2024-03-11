@@ -1,4 +1,4 @@
-let eColor = document.getElementById( 'defalt_color' ).value
+let eColor = document.getElementById( 'default_color' ).value
 let editor = ace.edit("editor");
 editor.$blockScrolling = Infinity;
 editor.setTheme(eColor);
@@ -15,7 +15,7 @@ editor.getSession().on('change', function(){
 function color() {
     let changedColor = document.getElementById("editor_color").value;
     editor.setTheme(changedColor);
-    document.getElementById( 'defalt_color' ).value = changedColor;
+    document.getElementById( 'default_color' ).value = changedColor;
       };
 
 function select() {

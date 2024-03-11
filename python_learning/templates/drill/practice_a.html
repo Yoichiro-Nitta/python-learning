@@ -39,6 +39,7 @@
       </div>
     <div style="height: 80px;"></div>
     <div class="button_return"><a href="{% url question_index_url %}">問題一覧へ</a></div>
+    <input type="hidden" id="default_color" name="default_color" value="{{ default_color }}">
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
   <script src="{% static 'js/drillanswer.js' %}"></script>

@@ -46,11 +46,12 @@
     <div style="height: 20px;"></div>
     <div class="row">
     <div class="col-4"></div>
-    <div class="col-4 button_return"><a href="{% url question_url urls.qn %}?query={{urls.query}}">次の問題へ</a></div>
+    <div class="col-4 button_next"><a href="{% url question_url urls.qn %}?query={{urls.query}}&e={{e_query}}">次の問題へ</a></div>
     <div class="col-4"></div>
     </div>
     {% endif %}
     <div style="height: 40px;"></div>
+    <input type="hidden" id="default_color" name="default_color" value="{{ default_color }}">
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
   <script  src="{% static 'js/drillanswer.js' %}"></script>

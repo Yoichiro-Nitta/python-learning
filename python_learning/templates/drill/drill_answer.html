@@ -37,23 +37,24 @@
     <div class="row">
     <div class="col-4 button_back">
     {% if pages.pre_pk >= 1 %}
-    <a href="{% url question_url urls.un pages.pre_pk %}">前の問題へ</a>
+    <a href="{% url question_url urls.un pages.pre_pk %}?e={{e_query}}">前の問題へ</a>
     {% elif pages.pre_pk == 0 and urls.un >= 2 %}
-    <a href="{% url question_url pages.pre_un pages.pu_last %}">前の問題へ</a>
+    <a href="{% url question_url pages.pre_un pages.pu_last %}?e={{e_query}}">前の問題へ</a>
     {% else %}
     {% endif %} 
     </div>
     <div class="col-4 button_return"><a href="{% url question_index_url %}">問題一覧へ</a></div>
     <div class="col-4 button_next">
     {% if pages.next_pk <= pages.pk_last %}
-    <a href="{% url question_url urls.un pages.next_pk %}">次の問題へ</a>
+    <a href="{% url question_url urls.un pages.next_pk %}?e={{e_query}}">次の問題へ</a>
     {% elif pages.next_pk > pages.pk_last and urls.un < pages.un_last %}
-    <a href="{% url  question_url pages.next_un 1 %}">次の問題へ</a>
+    <a href="{% url  question_url pages.next_un 1 %}?e={{e_query}}">次の問題へ</a>
     {% else %}
     {% endif %} 
     </div>
     </div>
     <div style="height: 40px;"></div>
+    <input type="hidden" id="default_color" name="default_color" value="{{ default_color }}">
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
   <script  src="{% static 'js/drillanswer.js' %}"></script>

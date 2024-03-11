@@ -62,7 +62,7 @@ class DrillView(View):
     data2:                  自身のpostメソッドおよび解答ページに送る内容のまとめ
     editor_colors:          エディター色のリスト
     cn:                     エディター色のカラー番号
-    defalt_color:           エディター色の初期値
+    default_color:          エディター色の初期値
     main_class:             強制入力欄のCSSクラス
     side_class:             強制入力部の行番号表示欄のCSSクラス 
     urls:                   問題区分の辞書型変数；{un: 大区分, pk: 小区分}
@@ -85,6 +85,11 @@ class DrillView(View):
                       "ace/theme/crimson_editor//crimson_editor_"]
         editor_color = ["Vibrant Ink", "Monokai", "Cobalt", "Solarized Light", "Crimson Editor"]
         self.editor_colors = zip(color_text, editor_color)
+        self.color_dict = {"ace/theme/vibrant_ink": 1, 
+                           "ace/theme/monokai": 2, 
+                           "ace/theme/cobalt": 3, 
+                           "ace/theme/solarized_light": 4, 
+                           "ace/theme/crimson_editor": 5} 
         self.question_index_url = 'python_learning:' + self.__class__.index_url_name
         self.question_url = 'python_learning:' + self.__class__.url_name
         self.answer_url = 'python_learning:' + self.__class__.url_name + '_answer'
@@ -178,10 +183,17 @@ class DrillView(View):
             post_visual = assist.font(post_visual)
     
         # editor色の初期値
-        cn = 1
-        defalt_color = "ace/theme/vibrant_ink"
-        main_class = "vibrant_ink_main"
-        side_class = "vibrant_ink_side"
+        e_query = self.request.GET.get('e')
+        if e_query:
+            default_color = "ace/theme/" + e_query
+            cn = self.color_dict[default_color]
+            main_class = e_query + "_main"
+            side_class = e_query + "_side"
+        else:
+            default_color = "ace/theme/vibrant_ink"
+            cn = 1
+            main_class = "vibrant_ink_main"
+            side_class = "vibrant_ink_side"
         
         # 要求される出力と解答例を暗号化
         private_info = correct_output + "///" + example_answer
@@ -207,7 +219,7 @@ class DrillView(View):
                  "post_visual": post_visual, 
                  "data1": data1, "data2": data2, 
                  "editor_colors": self.editor_colors, 
-                 "cn": cn, "defalt_color": defalt_color, 
+                 "cn": cn, "default_color": default_color, 
                  "main_class": main_class, "side_class": side_class, 
                  "urls": urls, "ev": ev, 
                  "course_exist": self.course_exist,
@@ -224,21 +236,16 @@ class DrillView(View):
 
         text = request.POST['text'] 
         backup = request.POST['backup'] 
-        defalt_color = request.POST['defalt_color']
+        default_color = request.POST['default_color']
         data1 = request.POST['data1']
         data2 = request.POST['data2']
 
-        # defalt_colorを色番号に変換
-        color_dict = {"ace/theme/vibrant_ink": 1, 
-                      "ace/theme/monokai": 2, 
-                      "ace/theme/cobalt": 3, 
-                      "ace/theme/solarized_light": 4, 
-                      "ace/theme/crimson_editor": 5} 
-        cn = color_dict[defalt_color]
+        # default_colorを色番号に変換
+        cn = self.color_dict[default_color]
         
         # エディター前後の指定入力欄をエディターの色と揃えるためのcssのclass名
-        main_class = defalt_color.replace("ace/theme/", "") + "_main"
-        side_class = defalt_color.replace("ace/theme/", "") + "_side"
+        main_class = default_color.replace("ace/theme/", "") + "_main"
+        side_class = default_color.replace("ace/theme/", "") + "_side"
 
         # まとめられて送られた内容を再び展開
         question_title, question_sentence, pre_visual, post_visual = eval(data1)
@@ -273,7 +280,7 @@ class DrillView(View):
                  "post_visual": post_visual, 
                  "data1": data1, "data2": data2,
                  "editor_colors": self.editor_colors, 
-                 "cn": cn, "defalt_color": defalt_color, 
+                 "cn": cn, "default_color": default_color, 
                  "main_class": main_class, "side_class": side_class, 
                  "urls": urls,  "ev": ev,
                  "course_exist": self.course_exist, 
@@ -294,12 +301,14 @@ class DrillAnswerView(View):
     パラメーター説明
     
     text_connect:           ユーザー入力（＋強制入力）
-    out :                   ユーザー出力
+    out:                    ユーザー出力
     correct_output:         正解出力
     example_answer:         解答例
     correct:                正解のbool値
     urls:                   問題区分の辞書型変数；{un: 大区分, pk: 小区分}
     pages:                  ページ関連の辞書型データ
+    default_color:          エディター色の初期値
+    e_query:                クエリ文字列で渡すエディター色
     question_index_url:     問題一覧ページのURL(templateでurls.pyのnameを指定)
     question_url:           問題ページのURL(templateでurls.pyのnameを指定)
     answer_url:             解答ページのURL(templateでurls.pyのnameを指定)
@@ -343,6 +352,7 @@ class DrillAnswerView(View):
     def post(self, request, *args, **kwargs):
         urls = kwargs
         text = request.POST['text'] 
+        default_color = request.POST['default_color']
         backup = request.POST['backup'] 
         data2 = request.POST['data2']
 
@@ -384,12 +394,16 @@ class DrillAnswerView(View):
         # 前後のunitおよびsectionの番号を変数に格納
         pages = self.pages(**kwargs)
 
+        # クエリ文字列で渡すエディター配色
+        e_query = default_color.split("/")[-1]
+
         params = {"text_connect": text_connect, 
                  "out" : out, 
                  "correct_output": correct_output, 
                  "example_answer": example_answer,
                  "correct": correct,
                  "urls": urls, "pages": pages,
+                 "default_color": default_color, "e_query" : e_query, 
                  "question_index_url": self.question_index_url, 
                  "question_url": self.question_url, 
                  "answer_url": self.answer_url}
@@ -405,6 +419,7 @@ class DrillAnswerView(View):
         params ={"correct_output": "", 
                  "example_answer": "",
                  "urls": urls, "pages": pages, 
+                 "default_color": "ace/theme/vibrant_ink", 
                  "question_index_url": self.question_index_url, 
                  "question_url": self.question_url, 
                  "answer_url": self.answer_url}

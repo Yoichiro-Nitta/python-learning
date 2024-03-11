@@ -1,2 +1,2 @@
-num = 84
-print(num)
+word = 'lemon'
+print(type(word))

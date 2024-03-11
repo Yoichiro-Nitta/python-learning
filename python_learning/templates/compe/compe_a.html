@@ -60,7 +60,7 @@
     <div class="col"></div>
     <div class="col">
       <div class="button_retry">
-        <a href="{% url 'python_learning:compe' pk %}">再挑戦する</a>
+        <a href="{% url 'python_learning:compe' pk %}?e={{e_query}}">再挑戦する</a>
     </div>
     </div>
     <div class="col">
@@ -70,7 +70,7 @@
     </div>
     <div class="col"></div>
   </div>
-  
+  <input type="hidden" id="default_color" name="default_color" value="{{ default_color }}">
 <div style="height: 20px;"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
   <script src="{% static 'js/answer.js' %}"></script>
