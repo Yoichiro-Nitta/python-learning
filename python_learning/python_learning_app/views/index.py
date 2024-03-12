@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from python_learning_app.models.index import News
+from python_learning_app.models.index import News, CustomUser
 from python_learning_app.forms import SignupForm, LoginForm
 from django.views.generic import  TemplateView, FormView, CreateView
 from django.urls import reverse_lazy
@@ -73,7 +73,7 @@ class SignupView(CreateView):
         response = super().form_valid(form)
         account_id = form.cleaned_data.get("username")
         password = form.cleaned_data.get("password1")
-        user = authenticate(account_id=account_id, password=password)
+        user = authenticate(username=account_id, password=password)
         login(self.request, user)
         return response
     
