@@ -55,6 +55,7 @@ def q_list(request, un):
 
     return render(request, 'quartet/q_list.html', params)
 
+@login_required
 def quartet(request, un, pk):
     """Python知識問題の解答入力View
 
@@ -90,7 +91,7 @@ def quartet(request, un, pk):
     
     return render(request, 'quartet/quartet.html', params)
 
-
+@login_required
 def quartet_a(request, un, pk):
     """Python知識問題の解答結果View
 
