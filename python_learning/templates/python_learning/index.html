@@ -148,4 +148,99 @@
     <div style="height: 20px;">
   </footer>
 {% endif %}
+<script type="text/javascript">
+  let clickData = [];
+  
+  let attentionInterval = 1000; // 1秒ごとにチェック
+  let rangeSize = 1; // ピクセルごとに区切る
+  
+  let attentionData = [];
+  let intervalID = null;
+  
+  let scrollData = [];
+  let maxScrollPosition = 0;
+  
+  let page_size_x = document.body.scrollWidth; //【ページの幅を取得するコード】
+  let page_size_y = document.body.scrollHeight; //【ページの高さを取得するコード】
+  
+  // スクロールイベントのリスニング
+  window.addEventListener('scroll', () => {
+      let scrollPosition = this.scrollY;
+      if(scrollPosition > maxScrollPosition) {
+          maxScrollPosition = scrollPosition;
+      }
+  });
+  
+  // クリックイベントのリスニング
+  window.addEventListener('click', (event) => {
+      let click_position_x = event.pageX;
+      let click_position_y = event.pageY;
+      let browser_url = this.location.href; //【URLを取得するコード】
+  
+      // クリック位置のデータを追加
+      clickData.push([click_position_x, click_position_y, browser_url, page_size_x, page_size_y]);
+  });
+  
+  // アテンションデータの収集
+  function increaseStayTime() {
+      if (document.hasFocus()) {  // <- 追加：ウェブページがフォーカスされている時だけ滞在時間を増やす
+          let scrollPosition = this.scrollY;
+          let time = attentionInterval / 1000
+          let browser_url = this.location.href;
+          
+          attentionData.push([scrollPosition, time, browser_url, page_size_x, page_size_y]);
+      }
+  }
+  
+  document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+          // ページが非表示状態になったとき、setIntervalをクリアする
+          clearInterval(intervalID);
+          intervalID = null;
+      } else {
+          // ページが表示状態になったとき、setIntervalを開始する
+          intervalID = setInterval(increaseStayTime, attentionInterval);
+      }
+  });
+  
+  intervalID = setInterval(increaseStayTime, attentionInterval);
+  
+  window.addEventListener('beforeunload', () => {
+    let browser_url = this.location.href;
+    scrollData.push([maxScrollPosition, browser_url, page_size_x, page_size_y]);
+  
+      sendDataToServer('http://127.0.0.1:8000/receive-click-data', clickData);
+      sendDataToServer('http://127.0.0.1:8000/receive-attention-data', attentionData);
+      sendDataToServer('http://127.0.0.1:8000/receive-scroll-data', scrollData);
+      // sendDataToServer('http://<MY-DOMAIN>/receive-click-data', clickData);            // 本番環境で変更
+      // sendDataToServer('http://<MY-DOMAIN>/receive-attention-data', attentionData);    // 本番環境で変更
+      // sendDataToServer('http://<MY-DOMAIN>/receive-scroll-data', scrollData);          // 本番環境で変更
+  });
+  
+  
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie !== '') {
+          let cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              let cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  
+  function sendDataToServer(url, data) {
+      let csrfToken = getCookie('csrftoken'); // CSRFトークンの取得
+      let jsonString = JSON.stringify(data);
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", url); 
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.setRequestHeader("X-CSRFToken", csrfToken); // リクエストヘッダーにCSRFトークンを設定
+      xhr.send(jsonString);
+  }
+    </script>
 {% endblock content %}

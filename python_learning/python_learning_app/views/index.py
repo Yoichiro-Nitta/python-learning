@@ -2,7 +2,7 @@ from django.shortcuts import render
 from python_learning_app.models.index import News, CustomUser
 from python_learning_app.forms import SignupForm, LoginForm
 from django.views.generic import  TemplateView, FormView, CreateView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse, resolve
 from python_learning_app.forms import ContactForm
 from django.contrib import messages
 from django.core.mail import EmailMessage

@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from python_learning_app.models.index import CustomUser
 from django.contrib.auth import get_user_model
 
-CustomUser = get_user_model()
+# CustomUser = get_user_model()
 
 class SignupForm(UserCreationForm):
     class Meta:
